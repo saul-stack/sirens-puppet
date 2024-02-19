@@ -1,4 +1,4 @@
-#!/Users/michaelsimac/Northcoders/projects/project/team-pirate-game/Backend/.venv/bin/python3.12
+#!/home/toyshe/Northcoders/projects/team-pirate-game/Backend/.venv/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys
