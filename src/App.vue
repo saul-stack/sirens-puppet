@@ -1,30 +1,37 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
   <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+    <ul>
+      <li v-for="(message, index) in messages" :key="index">
+        {{ message.name }}: {{ message.message }}
+      </li>
+    </ul>
   </div>
-  <HelloWorld msg="Vite + Vue" />
 </template>
-
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
-</style>
+<script>
+import { ref, onMounted, onUnmounted } from 'vue';
+import io from 'socket.io-client';
+export default {
+  setup() {
+    const messages = ref([]);
+    let socket;
+    onMounted(() => {
+      socket = io("http://127.0.0.1:5000"); // replace with your server URL
+      socket.on("connect", (data) => {
+        // replace "room_name" with the name of the room you want to join
+        socket.emit("join_room", "DYBD");
+        console.log(data)
+      });
+      socket.on("message", (message) => {
+        console.log("Received 'message' event:", message);
+        messages.value.push(message);
+      });
+    });
+    onUnmounted(() => {
+      if (socket) {
+        socket.disconnect();
+      }
+    });
+    return { messages };
+  },
+};
+</script>
