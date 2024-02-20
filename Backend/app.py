@@ -11,7 +11,7 @@ def avatars():
 
 @app.route("/hangmanPrompts", methods=["GET"])
 def hangman():
-    with open("../Back-end-Prompts/hangman-prompts.txt") as f:
+    with open("./Back-end-Prompts/hangman-prompts.txt") as f:
         wordList = []
         for line in f:
             wordList.append(line.strip())
@@ -19,7 +19,7 @@ def hangman():
     
 @app.route("/pictionaryPrompts", methods=["GET"])
 def pictionary():
-    with open("../Back-end-Prompts/pictionary-prompts.txt") as f:
+    with open("./Back-end-Prompts/pictionary-prompts.txt") as f:
         wordList = []
         for line in f:
             wordList.append(line.strip())
