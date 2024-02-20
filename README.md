@@ -17,3 +17,9 @@ This template should help get you started developing with Vue 3 in Vite. The tem
 ``` source venv/bin/activate ```
 
 ``` pip3 install flask flask-socketio ```
+
+
+
+
+
+https://pirate-game-y566.onrender.com
