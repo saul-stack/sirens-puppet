@@ -24,7 +24,7 @@ def generate_unique_code(length):
 
 @app.route("/", methods=["POST", "GET"])
 def home():
-    session.clear()
+    # session.clear()
     if request.method == "POST":
         name = request.form.get("name")
         code = request.form.get("code")
