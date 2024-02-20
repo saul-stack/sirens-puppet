@@ -1,5 +1,5 @@
 import pytest, json  
-from app import app
+from Backend.app import app
 
 def test_avatars():
     response = app.test_client().get('/avatars')
