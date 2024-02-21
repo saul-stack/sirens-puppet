@@ -8,10 +8,20 @@ body {
   font-style: normal;
 }
 
+/* .parent {
+  position: relative;
+  vertical-align: top;
+  flex-grow: 2;
+  max-height: fit-content;
+} */
+
+
 .parent {
   position: relative;
   vertical-align: top;
-  height: 75vw;
+  flex-grow: 2;
+  /* height: 75vw; */
+  max-height: fit-content;
 }
 
 .child {
@@ -34,7 +44,7 @@ body {
   max-height: 50vw;
 }
 
-h1{
+h1 {
   text-align: center;
   font-size: 8vw;
   color: black;
@@ -51,6 +61,36 @@ button {
   font-size: 3vw;
   padding: 10px 20px;
   border-radius: 4px;
+  margin-right: 5px;
+  margin-left: 10px;
   background-color: teal;
   border-color: lightseagreen;
+}
+
+label {
+  font-size: 5vw;
+  color: rgb(7, 7, 7);
+  text-align: center;
+}
+
+input {
+  font-size: 3vw;
+  padding: 10px 20px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  border-color: lightseagreen;
+}
+form {
+  background-color: rgb(245, 245, 220, 0.3);
+  border-radius: 4px;
+}
+
+.container {
+  display: flex;
+  overflow: hidden;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Change the height to 100vh */
+  max-height: 100%;
+  flex-direction: column;
 }

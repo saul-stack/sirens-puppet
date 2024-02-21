@@ -17,6 +17,7 @@ export default function StoryPage() {
 
   return (
     <>
+      <div className="container">
       <div className="parent">
         <img src={"../../images/scroll.png"} className="story-scroll" />
         <div className="child">
@@ -28,19 +29,23 @@ export default function StoryPage() {
           </p>
         </div>
       </div>
-      <form>
-        <label htmlFor="username">Enter Username</label>
-        <input
-          value={username}
-          onChange={(event) => handleInput(event.target.value)}
-          id="username"
-          type="text"
-          placeholder="Username"
-        />
-        <br />
-        <button onClick={handleJoin}>Join Room</button>
-        <button onClick={handleCreate}>Create Room</button>
-      </form>
+      <center>
+        <form>
+          <label htmlFor="username">Enter Username</label>
+          <br />
+          <input
+            value={username}
+            onChange={(event) => handleInput(event.target.value)}
+            id="username"
+            type="text"
+            placeholder="Username"
+          />
+          <br />
+          <button onClick={handleJoin}>Join Room</button>
+          <button onClick={handleCreate}>Create Room</button>
+        </form>
+      </center>
+      </div>
     </>
   );
 }
