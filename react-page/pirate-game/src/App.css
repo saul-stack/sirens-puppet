@@ -10,7 +10,8 @@ body {
 
 .parent {
   position: relative;
-  top: 0vw
+  vertical-align: top;
+  height: 75vw;
 }
 
 .child {
@@ -27,9 +28,10 @@ body {
 }
 
 .story-scroll {
-  vertical-align: 100%;
+  vertical-align: top;
   max-width: 80vw;
   height: 60vw;
+  max-height: 50vw;
 }
 
 h1{
@@ -41,6 +43,8 @@ h1{
 p {
   font-size: 2vw;
   color: black;
+  text-align: center;
+  height: 50vw;
 }
 
 button {
