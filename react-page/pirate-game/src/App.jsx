@@ -4,8 +4,8 @@ import { Route, Routes } from 'react-router-dom'
 import TitlePage from './components/TitlePage'
 import StoryPage from './components/StoryPage'
 import JoinRoom from './components/JoinRoom'
-import Candles from './components/Candles'
 import Sound from 'react-sound'
+import Mute from './components/Mute'
 
 
 function App() {
@@ -22,7 +22,7 @@ function App() {
     playStatus={musicPlaying ? Sound.status.PLAYING : Sound.status.PAUSED}
     autoLoad={true}
     loop={true} />
-    <Candles />
+     <Mute musicPlaying={musicPlaying} setMusicPlaying={setMusicPlaying} />
      <Routes>
       <Route path="/" element={<TitlePage playMusic={playMusic}/>}/>
       <Route path="/story" element={<StoryPage/>}/>

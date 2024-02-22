@@ -126,3 +126,8 @@ form {
   list-style: none;
 }
 
+.mute{
+  position: absolute;
+  bottom: 5%;
+  right: 20%;
+}
