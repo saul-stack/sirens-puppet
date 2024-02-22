@@ -19,9 +19,9 @@ body {
   .wick {
     position: absolute;
     width: 6px;
-    height: 50px; /* Replace $wick-height with a specific value */
+    height: 50px; 
     background: #23161a;
-    top: 120px; /* Replace $flame-height - 0.8*$wick-height with a specific value */
+    top: 120px; 
     left: 50%;
     transform: translateX(-50%) skewX(2deg);
     border-radius: 10%;
