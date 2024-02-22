@@ -94,3 +94,29 @@ form {
   max-height: 100%;
   flex-direction: column;
 }
+
+.avatar-buttons {
+  border-color: red;
+}
+
+.avatar {
+  max-width: 80px;
+  margin: 5px
+}
+
+.avatar-clicked {
+  max-width: 80px;
+  margin: 5px;
+  outline-style: solid;
+  outline-color: lightseagreen;
+  outline-width: medium
+}
+
+h2 {
+  color: black;
+  font-size: 100px
+}
+
+h3 {
+  color: black
+}
