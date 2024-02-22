@@ -80,6 +80,7 @@ input {
   margin-bottom: 10px;
   border-color: lightseagreen;
 }
+
 form {
   background-color: rgb(245, 245, 220, 0.3);
   border-radius: 4px;
@@ -104,8 +105,8 @@ form {
 .room-scroll-parent {
   align-self: flex-start;
   justify-content: center;
-  max-width: 90vh;
-  max-height: 30vh;
+  max-width: 120vh;
+  max-height: 40vh;
   position: relative;
   color: black;
   
@@ -116,7 +117,7 @@ form {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 20px;
+  font-size: 3vh;
 }
 
 .room-button-container{
