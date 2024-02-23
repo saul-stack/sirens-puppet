@@ -5,7 +5,7 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app, origins="*")
 
-avatarURLs = ['https://i.postimg.cc/gJBSJp8v/1.jpg', 'https://i.postimg.cc/mkVB5tHQ/2.png', 'https://i.postimg.cc/MHzdGGr3/3.png', 'https://i.postimg.cc/9MLqGFQn/4.png', 'https://i.postimg.cc/fW5694jS/5.png', 'https://i.postimg.cc/mrHPPNvh/6.png']
+avatarURLs = ['https://i.postimg.cc/25nzRzbX/1.png', 'https://i.postimg.cc/mkVB5tHQ/2.png', 'https://i.postimg.cc/MHzdGGr3/3.png', 'https://i.postimg.cc/9MLqGFQn/4.png', 'https://i.postimg.cc/fW5694jS/5.png', 'https://i.postimg.cc/mrHPPNvh/6.png']
 
 @app.route("/avatars", methods=["GET"])
 def avatars():
