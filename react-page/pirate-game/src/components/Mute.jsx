@@ -1,4 +1,4 @@
-export default function Mute({setIsMute, stop}){
+export default function Mute({setIsMute, stop, isMute}){
 
     function handleClick(){
             setIsMute(true)
@@ -6,8 +6,15 @@ export default function Mute({setIsMute, stop}){
         } 
          
     return (
-     <button onClick={handleClick} className='mute'>
-    Mute
-    </button>
-    )
-}
+        <>
+        <button onClick={handleClick} className='mute'>
+          Mute
+        </button>
+        {isMute && (
+          <button onClick={() => setIsMute(false)} className='unmute'>
+            Unmute
+          </button>
+        )}
+      </>
+    );
+  }

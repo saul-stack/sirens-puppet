@@ -28,7 +28,7 @@ function App() {
   
   return (
     <>
-     <Mute setIsMute={setIsMute} stop={stop}  />
+     <Mute isMute={isMute} setIsMute={setIsMute} stop={stop}  />
      <Routes>
       <Route path="/" element={<TitlePage playMusic={playMusic}/>}/>
       <Route path="/story" element={<StoryPage/>}/>
