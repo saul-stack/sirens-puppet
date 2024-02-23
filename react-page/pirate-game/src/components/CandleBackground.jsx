@@ -12,13 +12,13 @@ export default function CandleBackground() {
           width: "0%",
           height: "0%",
         }}
-        class="holder"
+        className="holder"
       >
-        <div class="candle">
-          <div class="blinking-glow"></div>
-          <div class="thread"></div>
-          <div class="glow"></div>
-          <div class="flame"></div>
+        <div className="candle">
+          <div className="blinking-glow"></div>
+          <div className="thread"></div>
+          <div className="glow"></div>
+          <div className="flame"></div>
         </div>
       </div>
 
@@ -31,13 +31,13 @@ export default function CandleBackground() {
           width: "0%",
           height: "0%",
         }}
-        class="holder"
+        className="holder"
       >
-        <div class="candle">
-          <div class="blinking-glow"></div>
-          <div class="thread"></div>
-          <div class="glow"></div>
-          <div class="flame"></div>
+        <div className="candle">
+          <div className="blinking-glow"></div>
+          <div className="thread"></div>
+          <div className="glow"></div>
+          <div className="flame"></div>
         </div>
       </div>
 
@@ -50,13 +50,13 @@ export default function CandleBackground() {
           width: "%",
           height: "1%",
         }}
-        class="holder"
+        className="holder"
       >
-        <div class="candle">
-          <div class="blinking-glow"></div>
-          <div class="thread"></div>
-          <div class="glow"></div>
-          <div class="flame"></div>
+        <div className="candle">
+          <div className="blinking-glow"></div>
+          <div className="thread"></div>
+          <div className="glow"></div>
+          <div className="flame"></div>
         </div>
       </div>
 
@@ -69,13 +69,13 @@ export default function CandleBackground() {
           width: "10%",
           height: "1%",
         }}
-        class="holder"
+        className="holder"
       >
-        <div class="candle">
-          <div class="blinking-glow"></div>
-          <div class="thread"></div>
-          <div class="glow"></div>
-          <div class="flame"></div>
+        <div className="candle">
+          <div className="blinking-glow"></div>
+          <div className="thread"></div>
+          <div className="glow"></div>
+          <div className="flame"></div>
         </div>
       </div>
     </>
