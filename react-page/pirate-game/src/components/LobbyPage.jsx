@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
-import { getAvatars } from "../utils";
+import { getAvatars } from "../utils/utils";
 import PlayerCard from "./PlayerCard";
 import AvatarButton from "./AvatarButton";
 
