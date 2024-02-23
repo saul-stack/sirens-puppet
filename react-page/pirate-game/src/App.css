@@ -33,7 +33,7 @@ body {
 
 .title-scroll {
   vertical-align: 100%;
-  max-width: 90%;
+  max-width: 70%;
   height: auto;
 }
 
@@ -229,13 +229,11 @@ h3 {
 }
 
 .room-container {
-  display: flex;
   height: 100vh;
-  flex-direction: column;
 }
 
 .room-scroll-parent {
-  align-self: flex-start;
+  display: flex;
   justify-content: center;
   max-width: 120vh;
   max-height: 40vh;
@@ -250,6 +248,8 @@ h3 {
   transform: translate(-50%, -50%);
   font-size: 3vh;
 }
+
+
 
 .room-button-container {
   display: flex;
