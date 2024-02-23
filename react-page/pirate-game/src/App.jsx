@@ -9,6 +9,7 @@ import useSound from "use-sound";
 import BattleShip from "../music/BattleShip.mp3";
 import Mute from "./components/Mute";
 import CandleBackground from "./components/CandleBackground";
+import PlayerDesingation from "./components/PlayerDesignation"
 
 function App() {
   const [musicPlaying, setMusicPlaying] = useState(false);
@@ -39,6 +40,7 @@ function App() {
         <Route path="/story" element={<StoryPage />} />
         <Route path="/rooms/:room_code" element={<LobbyPage />} />
         <Route path="/rooms" element={<JoinRoom />} />
+        <Route path="/testing" element={<PlayerDesingation />} />
       </Routes>
     </>
   );

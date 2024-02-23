@@ -9,16 +9,21 @@ export default function TitlePage({playMusic, setMusicPlaying}) {
     playMusic()
   }
 
+  function handleTesting(){
+    navigate("/testing")
+  }
+
   return (
     <>
     <center>
       <div className="parent">
         <img src={"../../images/scroll2.png"} className="title-scroll"/>
-        <div className="child">
-          <h1>(Game Title)</h1>
+        <div className="scroll-child">
+          <h1>The Sirens Wrath</h1>
         </div>
       </div>
       <button onClick={handleClick}>Start Game</button>
+      <button onClick={handleTesting}>Testing</button>
     </center>
     </>
   );
