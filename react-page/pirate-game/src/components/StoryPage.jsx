@@ -1,14 +1,18 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { UserContext } from "../contexts/UserContext";
 
 export default function StoryPage() {
+  const {user} = useContext(UserContext)
   let navigate = useNavigate();
   const [username, setUsername] = useState("");
 
   function handleJoin() {
+    user.username = username
     navigate("/rooms");
   }
   function handleCreate() {
+    user.username = username
     navigate("/newRoom");
   }
   function handleInput(value) {
