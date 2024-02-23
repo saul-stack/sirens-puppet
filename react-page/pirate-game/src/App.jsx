@@ -18,17 +18,16 @@ function App() {
   const [play, { stop }] = useSound(BattleShip, {volume: 0.05})
 
   const playMusic = () => {
-    if (musicPlaying || isMute){
-      stop()
-  } else{
-    play()
+    if (!musicPlaying && !isMute) {
+      play();
+    } else {
+      stop();
+    }
   }
-  setMusicPlaying((previousState) => !previousState);
-}
   
   return (
     <>
-     <Mute isMute={isMute} setIsMute={setIsMute} stop={stop}  />
+     <Mute isMute={isMute} setIsMute={setIsMute} stop={stop} playMusic={playMusic} setMusicPlaying={setMusicPlaying}/>
      <Routes>
       <Route path="/" element={<TitlePage playMusic={playMusic}/>}/>
       <Route path="/story" element={<StoryPage/>}/>
