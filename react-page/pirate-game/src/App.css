@@ -33,11 +33,11 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: rgba(255, 255, 255, 0.2);
-  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 1;
   color: black;
-  width: 100vw;
-  height: 100vw;
+  width: 36vw;
+  height: 30vw;
   max-width: 45vw;
   max-height: 30vw;
   min-height: 20vw;
@@ -75,9 +75,10 @@ body {
 .story-scroll {
   /* width: 100% */
 
-  width: 70vh;
-  height: 35vh;
+  width: 50vw;
+  height: 35vw;
   position: relative;
+  overflow: hidden;
   left: 50%;
   transform: translateX(-50%);
   border-radius: 10px;
@@ -203,7 +204,7 @@ input {
 }
 
 form {
-  background-color: rgb(245, 245, 220, 0.3);
+  background-color: rgb(245, 245, 220, 0.1);
   border-radius: 4px;
 }
 
