@@ -8,6 +8,7 @@ import JoinRoom from './components/JoinRoom'
 import useSound from 'use-sound'
 import BattleShip from '../music/BattleShip.mp3'
 import Mute from './components/Mute'
+import CanvasTestPage from './components/CanvasTestPage'
 
 
 function App() {
@@ -34,6 +35,7 @@ function App() {
       <Route path="/story" element={<StoryPage/>}/>
       <Route path="/rooms/:room_code" element={<LobbyPage/>}/>
       <Route path="/rooms" element={<JoinRoom/>}/>
+      <Route path="/canvas" element={<CanvasTestPage/>}/>
      </Routes>
     </>
   )
