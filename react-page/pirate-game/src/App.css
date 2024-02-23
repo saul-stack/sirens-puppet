@@ -277,6 +277,7 @@ h3 {
 .mute{
   position: absolute;
   bottom: 5%;
-  right: 20%;
+  right: 10%;
+  color: white;
 }
 
