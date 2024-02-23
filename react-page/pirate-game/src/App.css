@@ -267,6 +267,7 @@ h3 {
 }
 
 .player-title{
+  white-space: nowrap;
   position: absolute;
   top: 0%;
   left: 35%;
