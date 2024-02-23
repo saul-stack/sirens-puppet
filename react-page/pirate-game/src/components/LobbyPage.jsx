@@ -1,11 +1,12 @@
 import { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
 import { getAvatars } from "../utils";
 import PlayerCard from "./PlayerCard";
 import AvatarButton from "./AvatarButton";
 
 export default function LobbyPage() {
+  const navigate = useNavigate()
   const [chosenAvatar, setChosenAvatar] = useState(null)
   const { user } = useContext(UserContext);
   const { room_code } = useParams();
@@ -25,6 +26,9 @@ export default function LobbyPage() {
     });
   }, []);
 
+  function handleStart(){
+    navigate(`/rooms/${room_code}/play`)
+  }
 
   return (
     <>
@@ -42,7 +46,7 @@ export default function LobbyPage() {
         })}
         <br/>
       </div>
-      <button>Start Game!</button>
+      <button onClick={handleStart}>Start Game!</button>
     </>
   );
 }

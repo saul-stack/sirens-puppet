@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 export default function JoinRoom(){
     let navigate = useNavigate();
 
-    function handleClick(code){
-        navigate(`/rooms/${code}`);
+    function handleClick(room_code){
+        navigate(`/rooms/${room_code}`);
     }
 
     return (
@@ -17,10 +17,10 @@ export default function JoinRoom(){
             </div>
             <div className = 'room-button-container'>
             <li>
-                <button>Ship 1</button>
+                <button onClick={() => handleClick(room_code)}>Ship 1</button>
             </li>
             <li>
-                <button>Ship 2</button>
+                <button onClick={() => handleClick(room_code)}>Ship 2</button>
             </li>
             </div>
         </main>

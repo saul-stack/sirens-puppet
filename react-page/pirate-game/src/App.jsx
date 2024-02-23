@@ -40,7 +40,7 @@ function App() {
         <Route path="/story" element={<StoryPage />} />
         <Route path="/rooms/:room_code" element={<LobbyPage />} />
         <Route path="/rooms" element={<JoinRoom />} />
-        <Route path="/testing" element={<PlayerDesignation />} />
+        <Route path="/rooms/:room_code/play" element={<PlayerDesignation />} />
       </Routes>
     </>
   );
