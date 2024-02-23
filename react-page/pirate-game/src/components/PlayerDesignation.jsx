@@ -5,9 +5,23 @@ export default function PlayerDesignation(){
     const { user } = useContext(UserContext)
     return (
         <main>
-            <h2>You are...</h2>
-            {user.isSaboteur && (<h1>The Siren's Thrall</h1>)}
-            {!user.isSaboteur && (<h1> Part of the crew</h1>)}
+            <h1 className="player-title">You are...</h1>
+            <div className="parent">
+                <img src={"../../images/scroll2.png"} className="title-scroll"/>
+                    <div className="scroll-child">
+                        {user.isSaboteur && (
+                        <><h1>The Siren's Thrall</h1>
+                        <p> Sink the ship </p>
+                        </>)}
+                        {!user.isSaboteur && (
+                        <>
+                            <h1> Part of the crew</h1> 
+                            <p>Find the Thrall</p>
+                        </>
+                        )}
+
+                    </div>
+            </div>
         </main>
     )
 }
