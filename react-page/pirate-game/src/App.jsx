@@ -25,18 +25,20 @@ function App() {
     }
   };
 
+  console.log(musicPlaying, 'musicPlaying')
+  console.log(isMute, 'isMute')
+
   return (
     <>
       <CandleBackground />
       <Mute
         isMute={isMute}
         setIsMute={setIsMute}
-        stop={stop}
         playMusic={playMusic}
         setMusicPlaying={setMusicPlaying}
       />
       <Routes>
-        <Route path="/" element={<TitlePage playMusic={playMusic} />} />
+        <Route path="/" element={<TitlePage playMusic={playMusic} setMusicPlaying={setMusicPlaying} />} />
         <Route path="/story" element={<StoryPage />} />
         <Route path="/rooms/:room_code" element={<LobbyPage />} />
         <Route path="/rooms" element={<JoinRoom />} />
