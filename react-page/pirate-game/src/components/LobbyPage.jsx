@@ -6,7 +6,8 @@ import PlayerCard from "./PlayerCard";
 import AvatarButton from "./AvatarButton";
 
 export default function LobbyPage() {
-  const { user, setUser } = useContext(UserContext);
+  const [chosenAvatar, setChosenAvatar] = useState(null)
+  const { user } = useContext(UserContext);
   const { room_code } = useParams();
   const [players, setPlayers] = useState([
     { username: "player1" },
@@ -28,16 +29,20 @@ export default function LobbyPage() {
   return (
     <>
       <h2>{room_code}</h2>
+      <PlayerCard key={user.username} player={user}/>
       {players.map((player) => {
-        return <PlayerCard key={player.username} player={player} />;
+        if(player.username !== user.username){
+          return <PlayerCard key={player.username} player={player} />;
+        }
       })}
       <div className="avatar-buttons">
         <h3>Choose an avatar:</h3>
         {avatars.map((avatar, index) => {
-           return <AvatarButton key={index} avatar={avatar} setPlayers={setPlayers} setUser={setUser}/>
+           return <AvatarButton key={index} avatar={avatar} setPlayers={setPlayers} user={user} setChosenAvatar={setChosenAvatar} chosenAvatar={chosenAvatar}/>
         })}
         <br/>
-        </div>
+      </div>
+      <button>Start Game!</button>
     </>
   );
 }
