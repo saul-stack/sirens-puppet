@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
@@ -10,6 +11,8 @@ import BattleShip from "../music/BattleShip.mp3";
 import Mute from "./components/Mute";
 import CandleBackground from "./components/CandleBackground";
 import PlayerDesignation from "./components/PlayerDesignation"
+import CanvasTestPage from './components/CanvasTestPage'
+
 
 function App() {
   const [musicPlaying, setMusicPlaying] = useState(false);
@@ -28,6 +31,7 @@ function App() {
   
   return (
     <>
+
       <CandleBackground />
       <Mute
         isMute={isMute}
@@ -42,6 +46,7 @@ function App() {
         <Route path="/rooms/:room_code" element={<LobbyPage />} />
         <Route path="/rooms" element={<JoinRoom />} />
         <Route path="/rooms/:room_code/play" element={<PlayerDesignation />} />
+        <Route path="/canvas" element={<CanvasTestPage/>}/>
       </Routes>
     </>
   );
