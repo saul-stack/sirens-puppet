@@ -273,40 +273,9 @@ h3 {
   list-style: none;
 }
 
-@keyframes light {
-  0% {
-    box-shadow: 0 0 5px #9f9791, 2px 2px 5px #9f9791, -2px -2px 5px #9f9791;
-  }
 
-  100% {
-    box-shadow: 0 0 5px #ede7e1, 2px 2px 5px #e3dcd6, -2px -2px 5px #e6e0db;
-  }
-}
+.mute{
+  position: absolute;
+  bottom: 5%;
+  right: 20%;
 
-@keyframes shine {
-  0% {
-    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #dfab1b,
-      0 0 40px #dfab1b, 0 0 50px #dfab1b, 0 0 60px #dfab1b, 0 0 70px #dfab1b,
-      0 0 80px #dfab1b;
-  }
-  50% {
-    text-shadow: none;
-  }
-  100% {
-    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #098b6f,
-      0 0 40px #098b6f, 0 0 50px #098b6f, 0 0 60px, 0 0 70px #ff00de,
-      0 0 80px #ff00de;
-  }
-}
-
-@keyframes lightMargin {
-  0% {
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.9);
-  }
-  50% {
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.9);
-  }
-  100% {
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.9);
-  }
-}
