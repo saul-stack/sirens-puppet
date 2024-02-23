@@ -1,0 +1,30 @@
+{% extends 'base.html' %} {% block content %}
+
+<form method="post">
+  <h3>Enter chat room</h3>
+  <div>
+    <label>Name:</label>
+    <input type="text" name="name" value="{{ name }}" placeholder="Jim" />
+  </div>
+  <div class="join">
+    <label> Room Code:</label>
+    <input type="text" placeholder="SwordBoat" name="code" value="{{code}}" />
+    <button type="submit" name="join">Join Room</button>
+  </div>
+  <button type="submit" name="create">Create Room</button>
+
+  <h2>Existing rooms:</h2>
+  <ul>
+    {% for room in existing_rooms %}
+    <li>{{ room }}</li>
+    {% endfor %}
+  </ul>
+
+  {% if error%}
+  <ul>
+    <li>{{error}}</li>
+  </ul>
+  {%endif%}
+</form>
+
+{% endblock %}

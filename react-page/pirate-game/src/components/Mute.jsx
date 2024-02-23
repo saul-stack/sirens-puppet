@@ -1,26 +1,24 @@
-export default function Mute({setIsMute, stop, isMute, playMusic, setMusicPlaying}){
+import { MdMusicOff } from "react-icons/md"
+import { MdMusicNote } from "react-icons/md"
 
-    function handleMute(){
-            setMusicPlaying(false)
-            setIsMute(true)
-            stop()
-        } 
+export default function Mute({ setIsMute, isMute, stopMusic, musicPlaying, playMusic}) {
 
-    function handleUnmute(){
-        setIsMute(false)
-        playMusic()
+  function handleClick() {
+    setIsMute((prevIsMute) => !prevIsMute);  
+    if (!isMute){
+    stopMusic()
+    } else if (musicPlaying){
+      playMusic()
     }
-         
-    return (
-        <>
-        <button onClick={handleMute} className='mute'>
-          Mute
-        </button>
-        {isMute && (
-          <button onClick={(handleUnmute)} className='mute'>
-            Unmute
-          </button>
-        )}
-      </>
-    );
   }
+
+  return (
+    <>
+      {isMute ? (
+        <MdMusicOff size={30}onClick={handleClick} className='mute' />
+      ) : (
+        <MdMusicNote size={30}onClick={handleClick} className='mute' />
+      )}
+    </>
+  );
+}

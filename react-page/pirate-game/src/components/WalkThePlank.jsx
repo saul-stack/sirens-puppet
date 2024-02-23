@@ -4,8 +4,12 @@ import { useContext } from "react"
 export default function WalkThePlank(){
     const { user } = useContext(UserContext)
     return(
-        <main>
-            <h1>{user.userName}, you must walk the plank...</h1>
-        </main>
+        <div className="parent">
+        <img src={"../../images/scroll2.png"} className="title-scroll"/>
+        <div className="scroll-child">   
+          <h2>(player) <br/>
+          must walk the plank...</h2>
+        </div>
+        </div>
     )
 }

@@ -7,18 +7,18 @@ export default function CandleBackground() {
         style={{
           // on the top left corner of the screen
           position: "absolute",
-          top: "0vw",
-          left: "1vw",
-          width: "10vw",
-          height: "5vw",
+          top: "1%",
+          left: "1%",
+          width: "0%",
+          height: "0%",
         }}
-        class="holder"
+        className="holder"
       >
-        <div class="candle">
-          <div class="blinking-glow"></div>
-          <div class="thread"></div>
-          <div class="glow"></div>
-          <div class="flame"></div>
+        <div className="candle">
+          <div className="blinking-glow"></div>
+          <div className="thread"></div>
+          <div className="glow"></div>
+          <div className="flame"></div>
         </div>
       </div>
 
@@ -26,18 +26,18 @@ export default function CandleBackground() {
         style={{
           // on the top right corner of the screen when screen is resized
           position: "absolute",
-          top: "0vw",
-          right: "1vw",
-          width: "10vw",
-          height: "5vw",
+          top: "1%",
+          right: "8%",
+          width: "0%",
+          height: "0%",
         }}
-        class="holder"
+        className="holder"
       >
-        <div class="candle">
-          <div class="blinking-glow"></div>
-          <div class="thread"></div>
-          <div class="glow"></div>
-          <div class="flame"></div>
+        <div className="candle">
+          <div className="blinking-glow"></div>
+          <div className="thread"></div>
+          <div className="glow"></div>
+          <div className="flame"></div>
         </div>
       </div>
 
@@ -45,18 +45,18 @@ export default function CandleBackground() {
         style={{
           // on the bottom left corner of the screen
           position: "absolute",
-          bottom: "5vw",
-          left: "1vw",
-          width: "10vw",
-          height: "5vw",
+          bottom: "-13%",
+          left: "1%",
+          width: "%",
+          height: "1%",
         }}
-        class="holder"
+        className="holder"
       >
-        <div class="candle">
-          <div class="blinking-glow"></div>
-          <div class="thread"></div>
-          <div class="glow"></div>
-          <div class="flame"></div>
+        <div className="candle">
+          <div className="blinking-glow"></div>
+          <div className="thread"></div>
+          <div className="glow"></div>
+          <div className="flame"></div>
         </div>
       </div>
 
@@ -64,18 +64,18 @@ export default function CandleBackground() {
         style={{
           // on the right bottom corner of the screen
           position: "absolute",
-          bottom: "5vw",
-          right: "1vw",
-          width: "10vw",
-          height: "100px",
+          bottom: "-13%",
+          right: "-2%",
+          width: "10%",
+          height: "1%",
         }}
-        class="holder"
+        className="holder"
       >
-        <div class="candle">
-          <div class="blinking-glow"></div>
-          <div class="thread"></div>
-          <div class="glow"></div>
-          <div class="flame"></div>
+        <div className="candle">
+          <div className="blinking-glow"></div>
+          <div className="thread"></div>
+          <div className="glow"></div>
+          <div className="flame"></div>
         </div>
       </div>
     </>

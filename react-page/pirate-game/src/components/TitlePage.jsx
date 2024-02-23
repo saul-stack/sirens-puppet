@@ -1,11 +1,18 @@
 import { useNavigate } from "react-router-dom";
 
-export default function TitlePage({playMusic}) {
+export default function TitlePage({isMute, playMusic, setMusicPlaying}) {
   const navigate = useNavigate()
 
   function handleClick(){
     navigate("/story")
+    setMusicPlaying(true)
+    if (!isMute){
     playMusic()
+    }
+  }
+
+  function handleTesting(){
+    navigate("/testing")
   }
 
   return (
@@ -13,11 +20,12 @@ export default function TitlePage({playMusic}) {
     <center>
       <div className="parent">
         <img src={"../../images/scroll2.png"} className="title-scroll"/>
-        <div className="child">
-          <h1>(Game Title)</h1>
+        <div className="scroll-child">
+          <h1>The Sirens Wrath</h1>
         </div>
       </div>
       <button onClick={handleClick}>Start Game</button>
+      <button onClick={handleTesting}>Testing</button>
     </center>
     </>
   );
