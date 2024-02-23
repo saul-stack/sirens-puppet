@@ -207,16 +207,17 @@ form {
 }
 
 .avatar {
-  max-width: 120px;
+  width: 120px;
   margin: 5px;
 }
 
 .avatar-clicked {
-  max-width: 80px;
+  width: 150px;
   margin: 5px;
+  border-radius: 100px;
   outline-style: solid;
   outline-color: lightseagreen;
-  outline-width: medium;
+  outline-width: thick;
 }
 
 h2 {
