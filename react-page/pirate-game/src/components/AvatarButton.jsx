@@ -1,10 +1,12 @@
 import { useState } from "react"
 
-export default function AvatarButton({avatar, setPlayers, user}) {
+export default function AvatarButton({avatar, setPlayers, setUser}) {
     const [chosenAvatar, setChosenAvatar] = useState(null)
 
     function handleAvatarClick(avatar){
-        setChosenAvatar(null)
+        setUser((currentUser) => {
+            return {...currentUser, avatarUrl: avatar}
+        })
         setChosenAvatar(avatar)
         setPlayers((currentPlayers) => {
             const updatedPlayers = currentPlayers.map((player) => {

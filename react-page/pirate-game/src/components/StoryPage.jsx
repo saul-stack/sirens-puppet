@@ -14,7 +14,7 @@ export default function StoryPage() {
   }
   function handleCreate() {
     user.username = username;
-    navigate("/newRoom");
+    navigate("/rooms/ABCD");
   }
   function handleInput(value) {
     setUsername(value);
@@ -54,7 +54,6 @@ export default function StoryPage() {
       <button onClick={handleJoin}>Join Room</button>
       <button onClick={handleCreate}>Create Room</button>
     </form>
-    <CandleBackground />
   </div>
   );
 }
