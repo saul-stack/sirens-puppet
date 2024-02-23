@@ -23,7 +23,6 @@ function Canvas() {
     img.src = "../images/gridPaper.png";
     img.onload = () => {
       setBackgroundImage(img);
-    
     };
   }, []);
 
@@ -110,14 +109,13 @@ function Canvas() {
         onMouseOut={finishDrawing}
         style={{
           backgroundColor: "white",
-          transform: `rotate(${rotationAngle}deg)`, // Apply rotation
-          border: "7px solid red", // Add red border
+          transform: `rotate(${rotationAngle}deg)`,
+          border: "7px solid red",
         }}
       />
       <div>
         <button onClick={handleReset}>Reset</button>
         <button onClick={rotateCanvas}>Rotate</button>{" "}
-        {/* Button to trigger rotation */}
       </div>
     </div>
   );
