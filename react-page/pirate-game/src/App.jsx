@@ -14,18 +14,18 @@ import PlayerDesignation from "./components/PlayerDesignation"
 function App() {
   const [musicPlaying, setMusicPlaying] = useState(false);
 
-  const [isMute, setIsMute] = useState(true);
+  const [isMute, setIsMute] = useState(false);
 
   const [play, { stop }] = useSound(BattleShip, { volume: 0.05 });
 
   const playMusic = () => {
-    if (musicPlaying && !isMute) {
       play();
-    } else {
-      stop();
-    }
   };
 
+  const stopMusic = () => {
+    stop()
+  }
+  
   return (
     <>
       <CandleBackground />
@@ -33,10 +33,11 @@ function App() {
         isMute={isMute}
         setIsMute={setIsMute}
         playMusic={playMusic}
-        setMusicPlaying={setMusicPlaying}
+        musicPlaying={musicPlaying} 
+        stopMusic={stopMusic}
       />
       <Routes>
-        <Route path="/" element={<TitlePage setIsMute={setIsMute} playMusic={playMusic} setMusicPlaying={setMusicPlaying} />} />
+        <Route path="/" element={<TitlePage isMute={isMute} playMusic={playMusic} musicPlaying={musicPlaying} setMusicPlaying={setMusicPlaying}/>} />
         <Route path="/story" element={<StoryPage />} />
         <Route path="/rooms/:room_code" element={<LobbyPage />} />
         <Route path="/rooms" element={<JoinRoom />} />
