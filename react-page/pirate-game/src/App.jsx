@@ -4,7 +4,8 @@ import { Route, Routes } from 'react-router-dom'
 import TitlePage from './components/TitlePage'
 import StoryPage from './components/StoryPage'
 import JoinRoom from './components/JoinRoom'
-import Sound from 'react-sound'
+import useSound from 'use-sound'
+import BattleShip from '../music/BattleShip.mp3'
 import Mute from './components/Mute'
 
 
@@ -12,17 +13,22 @@ function App() {
 
   const [musicPlaying, setMusicPlaying] = useState(false)
 
+  const[isMute, setIsMute] = useState(false)
+
+  const [play, { stop }] = useSound(BattleShip, {volume: 0.05})
+
   const playMusic = () => {
-    setMusicPlaying(true)
+    if (musicPlaying || isMute){
+      stop()
+  } else{
+    play()
   }
+  setMusicPlaying((previousState) => !previousState);
+}
   
   return (
     <>
-    <Sound url={'../music/BattleShip.mp3'}
-    playStatus={musicPlaying ? Sound.status.PLAYING : Sound.status.PAUSED}
-    autoLoad={true}
-    loop={true} />
-     <Mute musicPlaying={musicPlaying} setMusicPlaying={setMusicPlaying} />
+     <Mute setIsMute={setIsMute} stop={stop}  />
      <Routes>
       <Route path="/" element={<TitlePage playMusic={playMusic}/>}/>
       <Route path="/story" element={<StoryPage/>}/>

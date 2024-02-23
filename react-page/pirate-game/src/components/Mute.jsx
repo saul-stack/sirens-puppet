@@ -1,12 +1,13 @@
-export default function Mute({musicPlaying, setMusicPlaying}){
+export default function Mute({setIsMute, stop}){
 
     function handleClick(){
-        setMusicPlaying((prevMusicPlaying) => !prevMusicPlaying)
-    }
-
+            setIsMute(true)
+            stop()
+        } 
+         
     return (
      <button onClick={handleClick} className='mute'>
-    {musicPlaying ? 'Unmute' : 'Mute'}
+    Mute
     </button>
     )
 }
