@@ -1,11 +1,12 @@
 import { useNavigate } from "react-router-dom";
 
-export default function TitlePage({playMusic, setMusicPlaying}) {
+export default function TitlePage({setIsMute, playMusic, setMusicPlaying}) {
   const navigate = useNavigate()
 
   function handleClick(){
     navigate("/story")
     setMusicPlaying(true)
+    setIsMute(false)
     playMusic()
   }
 

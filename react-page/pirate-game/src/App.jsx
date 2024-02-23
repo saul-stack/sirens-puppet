@@ -9,17 +9,17 @@ import useSound from "use-sound";
 import BattleShip from "../music/BattleShip.mp3";
 import Mute from "./components/Mute";
 import CandleBackground from "./components/CandleBackground";
-import PlayerDesingation from "./components/PlayerDesignation"
+import PlayerDesignation from "./components/PlayerDesignation"
 
 function App() {
   const [musicPlaying, setMusicPlaying] = useState(false);
 
-  const [isMute, setIsMute] = useState(false);
+  const [isMute, setIsMute] = useState(true);
 
   const [play, { stop }] = useSound(BattleShip, { volume: 0.05 });
 
   const playMusic = () => {
-    if (!musicPlaying && !isMute) {
+    if (musicPlaying && !isMute) {
       play();
     } else {
       stop();
@@ -36,11 +36,11 @@ function App() {
         setMusicPlaying={setMusicPlaying}
       />
       <Routes>
-        <Route path="/" element={<TitlePage playMusic={playMusic} setMusicPlaying={setMusicPlaying} />} />
+        <Route path="/" element={<TitlePage setIsMute={setIsMute} playMusic={playMusic} setMusicPlaying={setMusicPlaying} />} />
         <Route path="/story" element={<StoryPage />} />
         <Route path="/rooms/:room_code" element={<LobbyPage />} />
         <Route path="/rooms" element={<JoinRoom />} />
-        <Route path="/testing" element={<PlayerDesingation />} />
+        <Route path="/testing" element={<PlayerDesignation />} />
       </Routes>
     </>
   );

@@ -9,7 +9,7 @@ export default function Mute({ setIsMute, isMute, playMusic, setMusicPlaying }) 
       setMusicPlaying(false)
     }
     else{
-      setMusicPlaying((prevMusicPlaying) => !prevMusicPlaying)
+      setMusicPlaying(true)
     }
     playMusic()
   }
