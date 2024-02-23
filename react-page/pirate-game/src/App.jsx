@@ -25,9 +25,6 @@ function App() {
     }
   };
 
-  console.log(musicPlaying, 'musicPlaying')
-  console.log(isMute, 'isMute')
-
   return (
     <>
       <CandleBackground />
