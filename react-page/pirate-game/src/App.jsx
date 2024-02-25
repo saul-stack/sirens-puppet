@@ -19,9 +19,15 @@ function App() {
 
   const [play, { stop }] = useSound(BattleShip, { volume: 0.05 });
 
-  const [roomName, setRoomName] = useState('')
+  const [roomName, setRoomName] = useState("");
 
   const [username, setUsername] = useState("");
+
+  const [users, setUsers] = useState([]);
+
+  const [messages, setMessages] = useState([]);
+
+  let needsEmit = false;
 
   const playMusic = () => {
     if (musicPlaying && !isMute) {
@@ -32,11 +38,18 @@ function App() {
   };
 
   // const [roomsArr, setRoomsArr] = useState([]);
-  const roomsArr = []
+  const [roomArr, setRoomArr] = useState([]);
 
   return (
     <>
-      <SocketFunctions roomName={roomName} setRoomName={setRoomName} roomsArr={roomsArr} />
+      <SocketFunctions
+        roomName={roomName}
+        setRoomName={setRoomName}
+        setUsers={setUsers}
+        needsEmit={needsEmit}
+        setMessages={setMessages}
+      />
+      {console.log(users)}
       <CandleBackground />
       <Mute
         isMute={isMute}
@@ -55,9 +68,29 @@ function App() {
             />
           }
         />
-        <Route path="/story" element={<StoryPage roomName={roomName} username={username} setUsername={setUsername} />} />
-        <Route path="/rooms/:room_code" element={<LobbyPage />} />
-        <Route path="/rooms" element={<JoinRoom username={username} />} />
+        <Route
+          path="/story"
+          element={
+            <StoryPage
+              roomName={roomName}
+              username={username}
+              setUsername={setUsername}
+            />
+          }
+        />
+        <Route path="/rooms/:room_code" element={<LobbyPage users={users} roomName={roomName} />} />
+        <Route
+          path="/rooms"
+          element={
+            <JoinRoom
+              username={username}
+              needsEmit={needsEmit}
+              roomArr={roomArr}
+              setRoomArr={setRoomArr}
+              users={users}
+            />
+          }
+        />
         <Route path="/rooms/:room_code/play" element={<PlayerDesignation />} />
       </Routes>
     </>

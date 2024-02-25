@@ -9,8 +9,10 @@ export default function StoryPage({roomName, username, setUsername}) {
   const { user } = useContext(UserContext);
   let navigate = useNavigate();
   
-
+  
   function handleJoin() {
+    event.preventDefault()
+    socket.emit("frontend_request_existing_rooms_list");
     user.username = username;
     navigate("/rooms");
   }
