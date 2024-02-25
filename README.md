@@ -38,12 +38,24 @@ To embark on your own voyage, visit [https://pirate-game-react.onrender.com](htt
 
 Alternatively, to run the game from a local server:
 
-1. **Clone the Repository**: Clone the game repository to your local machine.
+1. **Clone the Repository**: Clone the repository to your local machine and navigate to the directory. 
+        
+        $ git clone https://github.com/saul-stack/team-pirate-game
+        $ cd team-pirate-game
 
-2. **Install Dependencies**: Navigate to the project directory and install dependencies for both the frontend and backend.
 
-3. **Run the Server**: Start the Flask server to run the backend of the game.
+1. **Install Dependencies**: Navigate to the project directory and install dependencies for both the frontend and backend. 
+   
+        $ pip install -r requirements.txt
+        $ npm install
 
-4. **Launch the Frontend**: Open another terminal window/tab, navigate to the project directory, and start the frontend server.
+2. **Run the Server**: Start the Flask server to run the backend of the game. 
+   
+        $ python3 app.py
 
-5. **Access the Game**: Visit `http://localhost:5000` in your web browser to access the game and begin playing.
+3. **Launch the Frontend**: Open another terminal window/tab, navigate to the project directory, and start the frontend server.
+
+        $ cd Frontend
+        $ npm run dev
+
+4. **Access the Game**: Visit `http://localhost:5000` in your web browser to access the game and begin playing.
