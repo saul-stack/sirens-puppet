@@ -8,7 +8,7 @@ if lsof -Pi :$PORT -sTCP:LISTEN -t >/dev/null ; then
 fi
 
 python3 ./Backend/app.py &
-cd react-page/pirate-game
+cd Frontend
 npm run dev &
 sleep 5
 xdg-open http://localhost:5173
