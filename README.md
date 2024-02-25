@@ -24,6 +24,9 @@ We utilized a variety of front and back-end technologies to build the game, incl
 
 - **HTML/CSS**: Used for frontend styling.
 
+
+- **Docker** *why did we use docker? for deployment purposes*
+
 ## Development Process
 
 - **Trello**: *mention planning tasks, minimum viable product, blockers*
@@ -36,7 +39,9 @@ We utilized a variety of front and back-end technologies to build the game, incl
 
 To embark on your own voyage, visit [https://pirate-game-react.onrender.com](https://pirate-game-react.onrender.com)
 
-Alternatively, to run the game from a local server:
+Alternatively, the game can be run from a local server, and be accessed by other devices on the same network (LAN party).
+
+To run the game from a local server:
 
 1. **Clone the Repository**: Clone the repository to your local machine and navigate to the directory. 
         
@@ -58,4 +63,24 @@ Alternatively, to run the game from a local server:
         $ cd Frontend
         $ npm run dev
 
-4. **Access the Game**: Visit `http://localhost:5000` in your web browser to access the game and begin playing.
+4. **Access the Game**: Visit `http://localhost:5173` in your web browser to access the game and begin playing.
+5. **Join with another device**
+The front and back end are accessible through local area network. 
+Visit the address labelled "Network" in the browser of another device to access the game.
+
+
+
+## Advanced: Quick-start- Ubuntu Linux only
+
+ *start_game.sh* and *end_game.sh*, are shell scripts to manage these operations and handle port closure. Proceed with caution when utilizing these scripts to prevent disturbing other processes which may be running on the port.
+
+
+        $ chmod +x start_game.sh end_game.sh
+
+To start the game:
+
+        $ ./start_game.sh
+
+To end the game:
+
+        $ ./end_game.sh
