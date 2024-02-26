@@ -7,6 +7,7 @@ function Canvas() {
   const [drawingCommands, setDrawingCommands] = useState([]);
   const [backgroundImage, setBackgroundImage] = useState(null);
   const [rotationAngle, setRotationAngle] = useState(0); // State for rotation angle
+  const [mousePos, setMousePos] = useState({})
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -49,6 +50,30 @@ function Canvas() {
       mouseY: offsetY,
     });
   };
+
+  useEffect(() => {
+
+    function onCavasMove(data){
+      console.log(data);
+      setMousePos(data)
+      mirrorDraw()
+    }
+
+    socket.on("backend_canvas_mouse_move", onCavasMove)
+
+    return () => {
+      socket.off("backend_canvas_mouse_move", onCavasMove)
+    }
+
+  }, [])
+
+  const mirrorDraw = () => {
+    const canvas = canvasRef.current;
+    const context = canvas.getContext("2d");
+    context.lineTo(mousePos.mouseX, mousePos.mouseY);
+    console.log('in mirrorDraw');
+    context.stroke();
+  }
 
   const finishDrawing = () => {
     if (isDrawing) {

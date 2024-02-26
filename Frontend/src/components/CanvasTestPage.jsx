@@ -1,6 +1,6 @@
 import Canvas from "../Canvas";
 
-function CanvasTestPage() {
+function CanvasTestPage({mousePos}) {
   return (
     <div>
       <h1 className="canvas">

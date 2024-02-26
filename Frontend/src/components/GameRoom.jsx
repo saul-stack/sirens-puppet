@@ -6,7 +6,7 @@ import CanvasTestPage from "./CanvasTestPage";
 import ChatBox from "./ChatBox";
 
 
-export default function GameRoom() {
+export default function GameRoom({mousePos}) {
     const { component: componentOne, useTrigger: firstComponent } = ComponentTimer({
       defaultState: false,
     });
@@ -72,7 +72,7 @@ export default function GameRoom() {
         {componentFour && <RoundPage round={round} setRound={setRound}/>}
         {componentFive && <CanvasTestPage />}
         {componentSix && <RoundPage round={round} setRound={setRound}/>}
-        {componentSeven && <CanvasTestPage />}
+        {componentSeven && <CanvasTestPage mousePos={mousePos} />}
         {/* <ChatBox /> */}
       </main>
     );

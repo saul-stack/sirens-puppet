@@ -17,6 +17,9 @@ import GameRoom from "./components/GameRoom"
 
 
 function App() {
+
+  const [mousePos, setMousePos] = useState({})
+
   const [musicPlaying, setMusicPlaying] = useState(false);
 
   const [isMute, setIsMute] = useState(false);
@@ -51,6 +54,7 @@ function App() {
         setUsers={setUsers}
         needsEmit={needsEmit}
         setMessages={setMessages}
+        setMousePos={setMousePos}
       />
       {console.log(users)}
 
@@ -97,7 +101,7 @@ function App() {
             />
           }
         />
-        <Route path="/rooms/:room_code/role" element={<GameRoom />} />
+        <Route path="/rooms/:room_code/role" element={<GameRoom mousePos={mousePos} />} />
         <Route path="/rooms/:room_code/play" element={<ChatBox messages={messages} roomName={roomName}/>} />
       </Routes>
     </>

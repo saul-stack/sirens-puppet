@@ -7,7 +7,8 @@ export default function SocketFunctions({
   setRoomName,
   setUsers,
   needsEmit,
-  setMessages
+  setMessages,
+  setMousePos
 }) {
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [left, setLeft] = useState([]);
@@ -70,6 +71,8 @@ export default function SocketFunctions({
     
     function onCavasMove(data){
       console.log(data);
+      setMousePos(data)
+
     }
 
     socket.on("connect", onConnect);
@@ -81,7 +84,7 @@ export default function SocketFunctions({
     socket.on("send-message", onMessage);
     socket.on("backend_send_message", onMessage);
     socket.on("backend_canvas_mouse_click", onCanvasClick)
-    socket.on("backend_canvas_mouse_move", onCavasMove)
+    // socket.on("backend_canvas_mouse_move", onCavasMove)
     socket.on("backend_canvas_mouse_release", onCanvasRelease)
 
     return () => {
