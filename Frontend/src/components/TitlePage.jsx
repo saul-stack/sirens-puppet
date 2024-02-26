@@ -25,7 +25,6 @@ export default function TitlePage({isMute, playMusic, setMusicPlaying}) {
         </div>
       </div>
       <button onClick={handleClick}>Start Game</button>
-      <button onClick={handleTesting}>Testing</button>
     </center>
     </>
   );
