@@ -11,7 +11,6 @@ export default function StoryPage({roomName, username, setUsername}) {
   
   
   function handleJoin() {
-    event.preventDefault()
     socket.emit("frontend_request_existing_rooms_list");
     user.username = username;
     navigate("/rooms");
@@ -21,7 +20,6 @@ export default function StoryPage({roomName, username, setUsername}) {
     user.username = username
     event.preventDefault();
     socket.emit("frontend_create_room", {name: username})
-    console.log(roomName);
     if(roomName !== ''){
       navigate(`/rooms/${roomName}`);
     }
