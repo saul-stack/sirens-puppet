@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import PlayerDesignation from "./PlayerDesignation";
 import RoundPage from "./RoundPage";
 import CanvasTestPage from "./CanvasTestPage";
+import ChatWindow from "./ChatWindow";
 
 function GameRoom() {
   const [showPlayerDesignation, setShowPlayerDesignation] = useState(true);
@@ -49,6 +50,7 @@ function GameRoom() {
       {showPlayerDesignation && <PlayerDesignation />}
       {showRoundPage && <RoundPage round={round} setRound={setRound} />}
       {showCanvasTestPage && <CanvasTestPage />}
+      <ChatWindow />
     </div>
   );
 }
