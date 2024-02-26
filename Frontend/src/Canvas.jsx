@@ -64,8 +64,14 @@ function Canvas() {
     };
   }, []);
 
+  function onCanvasRotate(data){
+    console.log(data);
+  }
+
+  socket.on("backend_canvas_rotate", onCanvasRotate)
+
   const mirrorDraw = (data) => {
-    if (!isDrawing) return;
+    // if (!isDrawing) return;
       const canvas = canvasRef.current;
       const context = canvas.getContext("2d");
       context.lineTo(data.mouseX, data.mouseY);
@@ -129,6 +135,7 @@ function Canvas() {
       }
     };
     requestAnimationFrame(animate);
+    socket.emit("frontend_canvas_rotate")
   };
 
   return (

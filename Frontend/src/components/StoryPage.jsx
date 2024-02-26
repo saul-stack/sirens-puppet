@@ -15,6 +15,7 @@ export default function StoryPage({roomName, username, setUsername}) {
     socket.emit("frontend_request_existing_rooms_list");
     user.username = username;
     navigate("/rooms");
+    // window.location.reload()
   }
   
   const handleCreate = (event) => {
