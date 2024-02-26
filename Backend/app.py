@@ -197,7 +197,7 @@ def message(data):
     "message": data["data"],
     "room": room
     }
-    # send(content, to=room)
+    send(content, to=room)
     existing_rooms[room]["messages"].append(content)
     print(f"Room {room} - {session.get('name')} said *** {data['data']} ***")
 
@@ -324,7 +324,7 @@ def message(data):
     "room": room
     }
     
-    # send(message_content, to=room)
+    send(message_content, to=room)
 
     existing_rooms[room]["messages"].append(message_content)
     print(f"Room {room} - {name} said *** {message} ***")
@@ -364,7 +364,7 @@ def frontend_canvas_mouse_release(data):
 def frontend_canvas_mouse_move(data):
     print("mouse moved", data)
     sys.stdout.flush() 
-    socketio.emit('backend_canvas_mouse_move', "mouse coordinates:", data["mouseX"], data["mouseY"])
+    socketio.emit('backend_canvas_mouse_move', data)
 
 
 
