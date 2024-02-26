@@ -55,8 +55,7 @@ function Canvas() {
 
     function onCavasMove(data){
       console.log(data);
-      setMousePos(data)
-      mirrorDraw()
+      mirrorDraw(data)
     }
 
     socket.on("backend_canvas_mouse_move", onCavasMove)
@@ -67,10 +66,10 @@ function Canvas() {
 
   }, [])
 
-  const mirrorDraw = () => {
+  const mirrorDraw = (data) => {
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
-    context.lineTo(mousePos.mouseX, mousePos.mouseY);
+    context.lineTo(data.mouseX, data.mouseY);
     console.log('in mirrorDraw');
     context.stroke();
   }
