@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
+import socket from "./components/Utils/Socket";
 
 function Canvas() {
   const canvasRef = useRef(null);
@@ -33,6 +34,7 @@ function Canvas() {
     context.beginPath();
     context.moveTo(offsetX, offsetY);
     setIsDrawing(true);
+    socket.emit("frontend_canvas_mouse_click", "hey from canvas fe");
   };
 
   const draw = ({ nativeEvent }) => {
@@ -42,6 +44,10 @@ function Canvas() {
     const context = canvas.getContext("2d");
     context.lineTo(offsetX, offsetY);
     context.stroke();
+    socket.emit("frontend_canvas_mouse_move", {
+      mouseX: offsetX,
+      mouseY: offsetY,
+    });
   };
 
   const finishDrawing = () => {
@@ -49,6 +55,10 @@ function Canvas() {
       setIsDrawing(false);
       const canvas = canvasRef.current;
       setDrawingCommands([...drawingCommands, canvas.toDataURL()]);
+      socket.emit(
+        "frontend_canvas_mouse_release",
+        "canvas mouse release from fe"
+      );
     }
   };
 
