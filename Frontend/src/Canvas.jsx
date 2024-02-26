@@ -32,8 +32,8 @@ function Canvas() {
     const { offsetX, offsetY } = nativeEvent;
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
-    context.beginPath();
     context.moveTo(offsetX, offsetY);
+    context.beginPath();
     setIsDrawing(true);
     socket.emit("frontend_canvas_mouse_click", "hey from canvas fe");
   };
