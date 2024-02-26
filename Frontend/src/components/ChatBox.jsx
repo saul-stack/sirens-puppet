@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { UserContext } from "../contexts/UserContext";
 import { useState } from "react";
-import socket from "../utils/Socket";
+import socket from "./Utils/Socket";
 
 export default function ChatBox({messages, roomName}){
     const [inputMessage, setInputMessage] = useState("");

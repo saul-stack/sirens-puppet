@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import ComponentTimer from "./Utils.js/ComponentTimer";
+import ComponentTimer from "./Utils/ComponentTimer";
 import PlayerDesignation from "./PlayerDesignation";
 import RoundPage from "./RoundPage";
 import CanvasTestPage from "./CanvasTestPage";
+import ChatBox from "./ChatBox";
 
 
 export default function GameRoom() {
@@ -55,7 +56,7 @@ export default function GameRoom() {
                         setTimeout(() => {
                             triggerSeventh()
                         }, 3000)
-                    }, 3000)
+                    }, 8000)
                 }, 3000)
             }, 3000)
           }, 3000)
@@ -72,6 +73,7 @@ export default function GameRoom() {
         {componentFive && <CanvasTestPage />}
         {componentSix && <RoundPage round={round} setRound={setRound}/>}
         {componentSeven && <CanvasTestPage />}
+        {/* <ChatBox /> */}
       </main>
     );
   }

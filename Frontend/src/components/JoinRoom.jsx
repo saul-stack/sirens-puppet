@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
 import { useContext } from "react";
 import { useState } from "react";
-import socket from "../utils/Socket";
+import socket from "./Utils/Socket";
 import { useEffect } from "react";
 
 export default function JoinRoom({username, needsEmit, roomArr, setRoomArr, users}) {

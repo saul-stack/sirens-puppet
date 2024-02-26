@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../contexts/UserContext";
 import CandleBackground from "./CandleBackground";
-import socket from "../utils/Socket";
+import socket from "./Utils/Socket";
 
 
 export default function StoryPage({roomName, username, setUsername}) {
@@ -31,22 +31,22 @@ export default function StoryPage({roomName, username, setUsername}) {
     setUsername(value);
   }
 
-  function setUserRole(){
-    const totalPlayers = users.length;
-    if (totalPlayers > 0){
-      const randomIndex = Math.floor(Math.random() * totalPlayers)
-      console.log(randomIndex);
-     setUsers((prevUsers) => 
-     prevUsers.map((user, index) =>
-     index === randomIndex ? { ...user, isSaboteur: true} : user
-     )
-     )
-    }
-  }
+  // function setUserRole(){
+  //   const totalPlayers = users.length;
+  //   if (totalPlayers > 0){
+  //     const randomIndex = Math.floor(Math.random() * totalPlayers)
+  //     console.log(randomIndex);
+  //    setUsers((prevUsers) => 
+  //    prevUsers.map((user, index) =>
+  //    index === randomIndex ? { ...user, isSaboteur: true} : user
+  //    )
+  //    )
+  //   }
+  // }
 
-  useEffect(() => {
-    setUserRole()
-  }, [users])
+  // useEffect(() => {
+  //   setUserRole()
+  // }, [users])
     
 
   return (

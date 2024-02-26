@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import socket from "../utils/Socket";
+import socket from "./Utils/Socket";
 import StoryPage from "./StoryPage";
 
 export default function SocketFunctions({

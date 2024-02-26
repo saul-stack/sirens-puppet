@@ -1,15 +1,15 @@
 import { useContext, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
-import { getAvatars } from "../utils/utils";
+import { getAvatars } from "./Utils/utils";
 import PlayerCard from "./PlayerCard";
 import AvatarButton from "./AvatarButton";
-import socket from "../utils/Socket";
+import socket from "./Utils/Socket";
 
 export default function LobbyPage({ users, roomName }) {
   const navigate = useNavigate();
   const [chosenAvatar, setChosenAvatar] = useState(null);
-  const { users, user } = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const { room_code } = useParams();
 
   const playerList = []
