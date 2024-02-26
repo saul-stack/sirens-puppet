@@ -61,18 +61,19 @@ function Canvas() {
       mirrorDraw(data);
     }
 
+    function onCanvasRotate(data) {
+      console.log(data);
+    }
+  
+    socket.on("backend_canvas_rotate", onCanvasRotate);
     socket.on("backend_canvas_mouse_move", onCavasMove);
 
     return () => {
       socket.off("backend_canvas_mouse_move", onCavasMove);
+      socket.off("backend_canvas_rotate", onCanvasRotate)
     };
   }, []);
 
-  function onCanvasRotate(data) {
-    console.log(data);
-  }
-
-  socket.on("backend_canvas_rotate", onCanvasRotate);
 
   const mirrorDraw = (data) => {
     // if (!isDrawing) return;
