@@ -39,7 +39,7 @@ export default function LobbyPage({ users, roomName }) {
   }, []);
 
   function handleStart() {
-    navigate(`/rooms/${room_code}/play`);
+    navigate(`/rooms/${room_code}/role`);
   }
 
   return (
