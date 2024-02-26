@@ -1,80 +1,56 @@
-import { useEffect, useState } from "react";
-import ComponentTimer from "./Utils/ComponentTimer";
+import React, { useState, useEffect } from "react";
 import PlayerDesignation from "./PlayerDesignation";
 import RoundPage from "./RoundPage";
 import CanvasTestPage from "./CanvasTestPage";
-import ChatBox from "./ChatBox";
 
+function GameRoom() {
+  const [showPlayerDesignation, setShowPlayerDesignation] = useState(true);
+  const [showRoundPage, setShowRoundPage] = useState(false);
+  const [showCanvasTestPage, setShowCanvasTestPage] = useState(false);
+  const [round, setRound] = useState(0);
 
-export default function GameRoom() {
-    const { component: componentOne, useTrigger: firstComponent } = ComponentTimer({
-      defaultState: false,
-    });
-    const { component: componentTwo, useTrigger: secondComponent } = ComponentTimer({
-      defaultState: false,
-    });
-    const { component: componentThree, useTrigger: thirdComponent } = ComponentTimer({
-      defaultState: false,
-    });
-    const { component: componentFour, useTrigger: fourthComponent} = ComponentTimer({
-        defaultState: false
-    })
-    const { component: componentFive, useTrigger: fifthComponent} = ComponentTimer({
-        defaultState: false
-    })
-    const { component: componentSix, useTrigger: sixthComponent} = ComponentTimer({
-        defaultState: false
-    }) 
-    const { component: componentSeven, useTrigger: seventhComponent} = ComponentTimer({
-        defaultState: false
-    }) 
+  let playerDesignationLength = 10000;
+  let roundLength = 20000;
+  let roundBreakLength = 5000;
 
+  useEffect(() => {
+    const playerDesignationTimer = setTimeout(() => {
+      setShowPlayerDesignation(false);
+      setShowRoundPage(true);
+    }, playerDesignationLength);
 
-    const [round, setRound] = useState(0);
+    return () => clearTimeout(playerDesignationTimer);
+  }, []);
 
-    const triggerFirst = firstComponent({ duration: 3000 });
-    const triggerSecond = secondComponent({ duration: 3000 });
-    const triggerThird = thirdComponent({ duration : 3000})
-    const triggerForth = fourthComponent({ duration: 3000})
-    const triggerFifth = fifthComponent({ duration: 3000})
-    const triggerSixth = sixthComponent({ duration: 3000 })
-    const triggerSeventh = seventhComponent({ duration: 3000 })
-  
-    useEffect(() => {
-      setTimeout(() => {
-        triggerFirst();
-        setTimeout(() => {
-          triggerSecond();
-          setTimeout(() => {
-            triggerThird()
-            setTimeout(() => {
-                triggerForth()
-                setTimeout(() => {
-                    triggerFifth()
-                    setTimeout(() => {
-                        triggerSixth()
-                        setTimeout(() => {
-                            triggerSeventh()
-                        }, 3000)
-                    }, 8000)
-                }, 3000)
-            }, 3000)
-          }, 3000)
-        }, 3000);
-      }, 0);
-    }, []);
+  useEffect(() => {
+    if (showRoundPage) {
+      const roundPageTimer = setTimeout(() => {
+        setShowRoundPage(false);
+        setShowCanvasTestPage(true);
+      }, roundBreakLength);
 
-    return (
-      <main>
-        {componentOne && <PlayerDesignation />}
-        {componentTwo && <RoundPage round={round} setRound={setRound}/>}
-        {componentThree && <CanvasTestPage />}
-        {componentFour && <RoundPage round={round} setRound={setRound}/>}
-        {componentFive && <CanvasTestPage />}
-        {componentSix && <RoundPage round={round} setRound={setRound}/>}
-        {componentSeven && <CanvasTestPage />}
-        {/* <ChatBox /> */}
-      </main>
-    );
-  }
+      return () => clearTimeout(roundPageTimer);
+    }
+  }, [showRoundPage]);
 
+  useEffect(() => {
+    if (showCanvasTestPage) {
+      const canvasTestPageTimer = setTimeout(() => {
+        setShowCanvasTestPage(false);
+        setShowRoundPage(true);
+      }, roundLength);
+
+      return () => clearTimeout(canvasTestPageTimer);
+    }
+  }, [showCanvasTestPage]);
+
+  return (
+    <div>
+      {showPlayerDesignation && <PlayerDesignation />}
+      {showRoundPage && <RoundPage round={round} setRound={setRound} />}
+      {showCanvasTestPage && <CanvasTestPage />}
+    </div>
+  );
+}
+
+export default GameRoom;
