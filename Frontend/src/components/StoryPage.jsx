@@ -5,6 +5,7 @@ import CandleBackground from "./CandleBackground";
 import socket from "./Utils/Socket";
 
 
+
 export default function StoryPage({roomName, username, setUsername}) {
   const { user } = useContext(UserContext);
   let navigate = useNavigate();
@@ -48,7 +49,7 @@ export default function StoryPage({roomName, username, setUsername}) {
     
 
   return (
-  <div className="container">
+   <div className="container">
     <div className="parent">
       <img src={"../../images/scroll.png"} className="story-scroll" />
       <div className="child">
@@ -82,7 +83,7 @@ export default function StoryPage({roomName, username, setUsername}) {
       <button onClick={handleCreate}>Create Room</button>
     </form>
   </div>
-  );
+   );
 }
 
 // (
