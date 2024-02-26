@@ -39,16 +39,20 @@ function Canvas() {
   };
 
   const draw = ({ nativeEvent }) => {
+    console.log(isDrawing, "<---is drawing");
     // if (!isDrawing) return;
     const { offsetX, offsetY } = nativeEvent;
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
     context.lineTo(offsetX, offsetY);
-    context.stroke();
-    socket.emit("frontend_canvas_mouse_move", {
-      mouseX: offsetX,
-      mouseY: offsetY,
-    });
+
+    if (isDrawing) {
+      context.stroke();
+      socket.emit("frontend_canvas_mouse_move", {
+        mouseX: offsetX,
+        mouseY: offsetY,
+      });
+    }
   };
 
   useEffect(() => {
@@ -64,20 +68,19 @@ function Canvas() {
     };
   }, []);
 
-  function onCanvasRotate(data){
+  function onCanvasRotate(data) {
     console.log(data);
   }
 
-  socket.on("backend_canvas_rotate", onCanvasRotate)
+  socket.on("backend_canvas_rotate", onCanvasRotate);
 
   const mirrorDraw = (data) => {
     // if (!isDrawing) return;
-      const canvas = canvasRef.current;
-      const context = canvas.getContext("2d");
-      context.lineTo(data.mouseX, data.mouseY);
-      console.log("in mirrorDraw");
-      context.stroke();
-    
+    const canvas = canvasRef.current;
+    const context = canvas.getContext("2d");
+    context.lineTo(data.mouseX, data.mouseY);
+    console.log("in mirrorDraw");
+    context.stroke();
   };
 
   const finishDrawing = () => {
@@ -135,7 +138,7 @@ function Canvas() {
       }
     };
     requestAnimationFrame(animate);
-    socket.emit("frontend_canvas_rotate")
+    socket.emit("frontend_canvas_rotate");
   };
 
   return (
