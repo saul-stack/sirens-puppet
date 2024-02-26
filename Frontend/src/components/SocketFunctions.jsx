@@ -69,11 +69,11 @@ export default function SocketFunctions({
       console.log(data);
     }
     
-    function onCavasMove(data){
-      console.log(data);
-      setMousePos(data)
+    // function onCavasMove(data){
+    //   console.log(data);
+    //   setMousePos(data)
 
-    }
+    // }
 
     socket.on("connect", onConnect);
     socket.on("disconnect", onDisconnect);
