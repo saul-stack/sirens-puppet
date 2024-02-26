@@ -34,11 +34,11 @@ export default function GameRoom({mousePos}) {
 
     const triggerFirst = firstComponent({ duration: 3000 });
     const triggerSecond = secondComponent({ duration: 3000 });
-    const triggerThird = thirdComponent({ duration : 3000})
+    const triggerThird = thirdComponent({ duration : 10000})
     const triggerForth = fourthComponent({ duration: 3000})
-    const triggerFifth = fifthComponent({ duration: 3000})
+    const triggerFifth = fifthComponent({ duration: 10000})
     const triggerSixth = sixthComponent({ duration: 3000 })
-    const triggerSeventh = seventhComponent({ duration: 3000 })
+    const triggerSeventh = seventhComponent({ duration: 10000 })
   
     useEffect(() => {
       setTimeout(() => {
@@ -55,12 +55,12 @@ export default function GameRoom({mousePos}) {
                         triggerSixth()
                         setTimeout(() => {
                             triggerSeventh()
-                        }, 20000)
-                    }, 20000)
-                }, 20000)
-            }, 20000)
-          }, 20000)
-        }, 20000);
+                        }, 3000)
+                    }, 8000)
+                }, 3000)
+            }, 3000)
+          }, 3000)
+        }, 3000);
       }, 0);
     }, []);
 
