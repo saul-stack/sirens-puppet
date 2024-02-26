@@ -1,26 +1,30 @@
 import { useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../contexts/UserContext";
+import CandleBackground from "./CandleBackground";
+import socket from "../utils/Socket";
 
-export default function StoryPage() {
-  const { users, setUsers, setUser } = useContext(UserContext);
+
+export default function StoryPage({roomName, username, setUsername}) {
+  const { user } = useContext(UserContext);
   let navigate = useNavigate();
-  const [username, setUsername] = useState("");
-
-  function handleJoin(e) {
-    e.preventDefault()
-
-    const newUser = { username, isSaboteur: false}
-    setUsers((currentUsers) => [...currentUsers, newUser])
-    setUser(newUser)
+  
+  
+  function handleJoin() {
+    event.preventDefault()
+    socket.emit("frontend_request_existing_rooms_list");
+    user.username = username;
     navigate("/rooms");
   }
-
-  function handleCreate() {
-    const newUser = { username, isSaboteur: false}
-    setUsers((currentUsers) => [...currentUsers, newUser])
-    setUser(newUser)
-    navigate("/rooms/ABCD");
+  
+  const handleCreate = (event) => {
+    user.username = username
+    event.preventDefault();
+    socket.emit("frontend_create_room", {name: username})
+    console.log(roomName);
+    if(roomName !== ''){
+      navigate(`/rooms/${roomName}`);
+    }
   }
 
   function handleInput(value) {

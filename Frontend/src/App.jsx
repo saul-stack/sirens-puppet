@@ -10,8 +10,10 @@ import useSound from "use-sound";
 import BattleShip from "../music/BattleShip.mp3";
 import Mute from "./components/Mute";
 import CandleBackground from "./components/CandleBackground";
+import SocketFunctions from "./components/SocketFunctions";
+import ChatBox from "./components/ChatBox"
 import GameRoom from "./components/GameRoom"
-import CanvasTestPage from './components/CanvasTestPage'
+// import CanvasTestPage from './components/CanvasTestPage'
 
 
 function App() {
@@ -21,16 +23,37 @@ function App() {
 
   const [play, { stop }] = useSound(BattleShip, { volume: 0.05 });
 
+  const [roomName, setRoomName] = useState("");
+
+  const [username, setUsername] = useState("");
+
+  const [users, setUsers] = useState([]);
+
+  const [messages, setMessages] = useState([]);
+
+  let needsEmit = false;
+
   const playMusic = () => {
       play();
   };
 
+  // const [roomsArr, setRoomsArr] = useState([]);
+  const [roomArr, setRoomArr] = useState([]);
+
   const stopMusic = () => {
     stop()
   }
-  
   return (
     <>
+      <SocketFunctions
+        roomName={roomName}
+        setRoomName={setRoomName}
+        setUsers={setUsers}
+        needsEmit={needsEmit}
+        setMessages={setMessages}
+      />
+      {console.log(users)}
+
 
       <CandleBackground />
       <Mute
@@ -41,12 +64,41 @@ function App() {
         stopMusic={stopMusic}
       />
       <Routes>
-        <Route path="/" element={<TitlePage isMute={isMute} playMusic={playMusic} musicPlaying={musicPlaying} setMusicPlaying={setMusicPlaying}/>} />
-        <Route path="/story" element={<StoryPage />} />
-        <Route path="/rooms/:room_code" element={<LobbyPage />} />
-        <Route path="/rooms" element={<JoinRoom />} />
-        <Route path="/rooms/:room_code/play" element={<GameRoom />} />
-        <Route path="/canvas" element={<CanvasTestPage/>}/>
+        <Route
+          path="/"
+          element={
+            <TitlePage
+              setIsMute={setIsMute}
+              playMusic={playMusic}
+              setMusicPlaying={setMusicPlaying}
+            />
+          }
+        />
+        <Route
+          path="/story"
+          element={
+            <StoryPage
+              roomName={roomName}
+              username={username}
+              setUsername={setUsername}
+            />
+          }
+        />
+        <Route path="/rooms/:room_code" element={<LobbyPage users={users} roomName={roomName} />} />
+        <Route
+          path="/rooms"
+          element={
+            <JoinRoom
+              username={username}
+              needsEmit={needsEmit}
+              roomArr={roomArr}
+              setRoomArr={setRoomArr}
+              users={users}
+            />
+          }
+        />
+        <Route path="/rooms/:room_code/role" element={<GameRoom />} />
+        <Route path="/rooms/:room_code/play" element={<ChatBox messages={messages} roomName={roomName}/>} />
       </Routes>
     </>
   );
