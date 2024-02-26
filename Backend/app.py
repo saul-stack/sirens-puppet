@@ -365,6 +365,8 @@ def frontend_canvas_mouse_move(data):
 
 @socketio.on('frontend_canvas_rotate')
 def rotate():
+    print("frontend is rotating canvas")
+    sys.stdout.flush() 
     socketio.emit('backend_canvas_rotate')
 
 
