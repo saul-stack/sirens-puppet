@@ -6,7 +6,7 @@ export default function TitlePage({isMute, playMusic, setMusicPlaying}) {
   function handleClick(){
     navigate("/story")
     setMusicPlaying(true)
-    if (!isMute){
+    if (isMute){
     playMusic()
     }
   }
