@@ -16,5 +16,8 @@ else
 fi
 
 
+# kill app.py and close port
 pkill -9 -f app.py
+
+#kill process on port 5173
 sudo kill -9 `sudo lsof -t -i:5173`
