@@ -39,7 +39,7 @@ function Canvas() {
   };
 
   const draw = ({ nativeEvent }) => {
-    if (!isDrawing) return;
+    // if (!isDrawing) return;
     const { offsetX, offsetY } = nativeEvent;
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
