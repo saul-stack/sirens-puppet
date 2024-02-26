@@ -55,12 +55,12 @@ export default function GameRoom({mousePos}) {
                         triggerSixth()
                         setTimeout(() => {
                             triggerSeventh()
-                        }, 3000)
-                    }, 15000)
-                }, 3000)
-            }, 3000)
-          }, 3000)
-        }, 3000);
+                        }, 20000)
+                    }, 20000)
+                }, 20000)
+            }, 20000)
+          }, 20000)
+        }, 20000);
       }, 0);
     }, []);
 
