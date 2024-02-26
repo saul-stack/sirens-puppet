@@ -13,7 +13,7 @@ body {
   width: 100%;
   max-width: 1000%;
   margin-bottom: 20px;
-  display: flex; 
+  display: flex;
   justify-content: center;
 }
 
@@ -112,14 +112,14 @@ body {
   text-align: center;
   white-space: nowrap;
   font-size: 6vw;
-  color: black
+  color: black;
 }
 
-.parent h2{
+.parent h2 {
   text-align: center;
   white-space: nowrap;
   font-size: 5vw;
-  color: black
+  color: black;
 }
 
 .scroll-child {
@@ -250,8 +250,6 @@ h3 {
   font-size: 3vh;
 }
 
-
-
 .room-button-container {
   display: flex;
   justify-content: space-around;
@@ -264,7 +262,6 @@ h3 {
   right: 10%;
   color: white;
 }
-
 
 .canvas {
   position: relative;
@@ -279,11 +276,9 @@ h3 {
   border: lightseagreen 3px solid;
   background-color: rgba(246, 220, 191, 0.5);
   padding: 10px;
-
 }
 
-
-.player-title{
+.player-title {
   white-space: nowrap;
   position: absolute;
   top: 0%;
@@ -291,10 +286,72 @@ h3 {
   color: rgb(215, 215, 215);
   font-size: 10vh;
   font-weight: 900;
-  text-shadow:
-  3px 3px 0 #0c0c0c,
-  -3px 3px 0 #000,
-  -3px -3px 0 #000,
-  3px -3px 0 #000;
+  text-shadow: 3px 3px 0 #0c0c0c, -3px 3px 0 #000, -3px -3px 0 #000,
+    3px -3px 0 #000;
 }
 
+.chat-window-container {
+  background-color: lightseagreen;
+  margin: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.7);
+  max-width: 50%;
+  overflow: hidden;
+}
+
+.chat-window {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.7);
+}
+
+.chat-message-container {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.chat-message {
+  margin-bottom: 10px;
+  color: black;
+}
+
+.chat-message-details {
+  font-size: 0.8em;
+  color: #666;
+  padding: 5px;
+}
+
+.chat-message-sender {
+  font-weight: bold;
+  color: rgb(21, 2, 127);
+}
+
+.chat-input-container {
+  margin-top: 10px;
+}
+
+.chat-input-text {
+  width: calc(100% - 70px);
+  padding: 5px;
+  margin-right: 5px;
+  border-radius: 5px;
+  border-color: lightseagreen;
+  border-width: 2px;
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.7);
+}
+
+.chat-send-button {
+  padding: 5px 5px;
+  font-size: 1.5vw;
+  background-color: #075d73;
+  color: white;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.7);
+}
+
+.chat-send-button:hover {
+  background-color: #08352e;
+}
