@@ -349,8 +349,8 @@ def purge_existing_rooms():
 
 #handle frontend canvas events
 @socketio.on("frontend_canvas_mouse_click")
-def frontend_canvas_mouse_click():
-    print("mouse clicked")
+def frontend_canvas_mouse_click(data):
+    print("mouse clicked", data)
     sys.stdout.flush() 
     socketio.emit('backend_canvas_mouse_click', "mouse clicked")
 
