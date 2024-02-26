@@ -62,20 +62,19 @@ function Canvas() {
     }
 
     socket.on("backend_canvas_mouse_move", onCavasMove);
-    
+
     return () => {
       socket.off("backend_canvas_mouse_move", onCavasMove);
       // socket.off("backend_canvas_rotate", onCanvasRotate)
     };
   }, []);
-  
+
   function onCanvasRotate(data) {
-    console.log('rotated');
+    console.log("rotated");
     console.log(data);
   }
 
   socket.on("backend_canvas_rotate", onCanvasRotate);
-
 
   const mirrorDraw = (data) => {
     // if (!isDrawing) return;
@@ -141,6 +140,10 @@ function Canvas() {
       }
     };
     requestAnimationFrame(animate);
+    socket.emit(
+      "frontend_canvas_mouse_release",
+      "canvas mouse release from fe"
+    );
     socket.emit("frontend_canvas_rotate");
   };
 
