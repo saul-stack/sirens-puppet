@@ -19,9 +19,13 @@ last_folder = os.path.basename(current_working_directory)
 # utility functions ########
 def fetch_random_pirate_word():
     folder_name = os.path.basename(os.getcwd())
+    print(folder_name)
+    sys.stdout.flush() 
+
+    
     file_path = (
         "./Backend/assets/pirate-vocab.txt"
-        if folder_name == "pirate-game-react"
+        if folder_name == "team-pirate-game"
         else "./assets/pirate-vocab.txt"
     )
 
@@ -342,5 +346,4 @@ def purge_existing_rooms():
 ############################
 
 if __name__ == '__main__':
-    socketio.run(app, debug=True)
-    serve(app, host="0.0.0.0", port=8080)
+    socketio.run(app, debug=True, host="0.0.0.0", port=8080, allow_unsafe_werkzeug=True)
