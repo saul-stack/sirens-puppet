@@ -39,7 +39,7 @@ function Canvas() {
   };
 
   const draw = ({ nativeEvent }) => {
-    if (!isDrawing) return;
+    // if (!isDrawing) return;
     const { offsetX, offsetY } = nativeEvent;
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
@@ -66,12 +66,11 @@ function Canvas() {
 
   const mirrorDraw = (data) => {
     if (!isDrawing) return;
-      const canvas = canvasRef.current;
-      const context = canvas.getContext("2d");
-      context.lineTo(data.mouseX, data.mouseY);
-      console.log("in mirrorDraw");
-      context.stroke();
-    
+    const canvas = canvasRef.current;
+    const context = canvas.getContext("2d");
+    context.lineTo(data.mouseX, data.mouseY);
+    console.log("in mirrorDraw");
+    context.stroke();
   };
 
   const finishDrawing = () => {

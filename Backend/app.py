@@ -48,7 +48,6 @@ def generate_room_code():
 def home():
 
     # when user is at home page, their session credentials are purged
-    sys.stdout.flush() 
     session.clear()
 
     if request.method == 'POST':
@@ -175,10 +174,7 @@ def message(data):
 
 
 
-
-
 # frontend event listeners
-# when frontend sends create_room message
 @socketio.on("frontend_create_room")
 def frontend_create_room(data):
 
@@ -202,9 +198,9 @@ def frontend_create_room(data):
     existing_rooms[new_room]['members'] += 1
     existing_rooms[new_room]['users'].append(name)
     print(name, "has joined room: ", new_room)
+    sys.stdout.flush() 
 
     usersList = existing_rooms[new_room]['users']
-    sys.stdout.flush() 
 
 # send to frontend toyshe
     data={"name":name, "room":new_room, "users": usersList}
@@ -212,10 +208,6 @@ def frontend_create_room(data):
     socketio.emit('join-room', data)
 
     list_existing_rooms()
-
-
-
-# clear the session!!!????
 
     socketio.emit('backend_terminal_message', new_room)
 
@@ -352,7 +344,6 @@ def list_existing_rooms():
     socketio.emit("backend_list_existing_rooms", existing_rooms)
 
 
-
 #handle frontend canvas events
 @socketio.on("frontend_canvas_mouse_click")
 def frontend_canvas_mouse_click(data):
@@ -372,7 +363,9 @@ def frontend_canvas_mouse_move(data):
     sys.stdout.flush() 
     socketio.emit('backend_canvas_mouse_move', data)
 
-
+@socketio.on('frontend_canvas_rotate')
+def rotate():
+    socketio.emit('backend_canvas_rotate')
 
 
 if __name__ == '__main__':
