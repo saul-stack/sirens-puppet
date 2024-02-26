@@ -1,19 +1,27 @@
-import { useState } from "react"
+import { useState, useContext } from "react"
+import { UserContext } from "../contexts/UserContext"
 
-export default function AvatarButton({avatar, setPlayers, user, setChosenAvatar, chosenAvatar}) {
+export default function AvatarButton({avatar, user, setChosenAvatar, chosenAvatar}) {
+    const { users, setUsers } = useContext(UserContext)
     
-    function handleAvatarClick(avatar){
-        user.avatarURL = avatar
-        setChosenAvatar(avatar)
-        setPlayers((currentPlayers) => {
-            const updatedPlayers = currentPlayers.map((player) => {
-               if(player.username === user.username){
-                player.avatarURL = avatar
-                } else return player
-            })
-            return [...updatedPlayers]
-        })
+    function handleAvatarClick(avatar) {
+        setChosenAvatar(avatar);
+        setUsers((currentUsers) => {
+          const updatedUsers = currentUsers.map((player) =>
+            player.username === user.username
+              ? { ...player, avatarURL: avatar }
+              : player
+          );
+          return updatedUsers;
+        });
+      }
+    
+      return (
+        <img
+          className={chosenAvatar === avatar ? "avatar-clicked" : "avatar"}
+          src={avatar}
+          alt="pirate avatar"
+          onClick={() => handleAvatarClick(avatar)}
+        />
+      );
     }
-
-    return <img className={chosenAvatar===avatar ? "avatar-clicked" : "avatar"} src={avatar} alt="pirate avatar" onClick={() => handleAvatarClick(avatar)}/>
-}

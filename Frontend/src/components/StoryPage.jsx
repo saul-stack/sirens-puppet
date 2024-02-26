@@ -1,24 +1,49 @@
 import { useNavigate } from "react-router-dom";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../contexts/UserContext";
-import CandleBackground from "./CandleBackground";
 
 export default function StoryPage() {
-  const { user } = useContext(UserContext);
+  const { users, setUsers, setUser } = useContext(UserContext);
   let navigate = useNavigate();
   const [username, setUsername] = useState("");
 
-  function handleJoin() {
-    user.username = username;
+  function handleJoin(e) {
+    e.preventDefault()
+
+    const newUser = { username, isSaboteur: false}
+    setUsers((currentUsers) => [...currentUsers, newUser])
+    setUser(newUser)
     navigate("/rooms");
   }
+
   function handleCreate() {
-    user.username = username;
+    const newUser = { username, isSaboteur: false}
+    setUsers((currentUsers) => [...currentUsers, newUser])
+    setUser(newUser)
     navigate("/rooms/ABCD");
   }
+
   function handleInput(value) {
     setUsername(value);
   }
+
+  function setUserRole(){
+    const totalPlayers = users.length;
+    if (totalPlayers > 0){
+      const randomIndex = Math.floor(Math.random() * totalPlayers)
+      console.log(randomIndex);
+     setUsers((prevUsers) => 
+     prevUsers.map((user, index) =>
+     index === randomIndex ? { ...user, isSaboteur: true} : user
+     )
+     )
+    }
+  }
+
+  useEffect(() => {
+    setUserRole()
+  }, [users])
+    
 
   return (
   <div className="container">

@@ -10,7 +10,7 @@ import useSound from "use-sound";
 import BattleShip from "../music/BattleShip.mp3";
 import Mute from "./components/Mute";
 import CandleBackground from "./components/CandleBackground";
-import PlayerDesignation from "./components/PlayerDesignation"
+import GameRoom from "./components/GameRoom"
 import CanvasTestPage from './components/CanvasTestPage'
 
 
@@ -45,7 +45,7 @@ function App() {
         <Route path="/story" element={<StoryPage />} />
         <Route path="/rooms/:room_code" element={<LobbyPage />} />
         <Route path="/rooms" element={<JoinRoom />} />
-        <Route path="/rooms/:room_code/play" element={<PlayerDesignation />} />
+        <Route path="/rooms/:room_code/play" element={<GameRoom />} />
         <Route path="/canvas" element={<CanvasTestPage/>}/>
       </Routes>
     </>

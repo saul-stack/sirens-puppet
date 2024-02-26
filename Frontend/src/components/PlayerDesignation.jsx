@@ -2,8 +2,9 @@ import { UserContext } from "../contexts/UserContext"
 import { useContext } from "react"
 
 export default function PlayerDesignation(){
-    const { user } = useContext(UserContext)
+    const { user } = useContext(UserContext);
     return (
+        <>
         <main>
             <h1 className="player-title">You are...</h1>
             <div className="parent">
@@ -19,9 +20,10 @@ export default function PlayerDesignation(){
                             <p>Find the Thrall</p>
                         </>
                         )}
-
                     </div>
             </div>
         </main>
+        </>
     )
 }
+
