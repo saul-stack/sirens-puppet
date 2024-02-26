@@ -354,6 +354,20 @@ def frontend_canvas_mouse_click(data):
     sys.stdout.flush() 
     socketio.emit('backend_canvas_mouse_click', "mouse clicked from backend")
 
+@socketio.on("frontend_canvas_mouse_release")
+def frontend_canvas_mouse_release(data):
+    print("mouse released", data)
+    sys.stdout.flush() 
+    socketio.emit('backend_canvas_mouse_release', "mouse released from backend")
+
+@socketio.on("frontend_canvas_mouse_move")
+def frontend_canvas_mouse_move(data):
+    print("mouse moved", data)
+    sys.stdout.flush() 
+    socketio.emit('backend_canvas_mouse_move', "mouse move from backend")
+
+
+
 
 if __name__ == '__main__':
     socketio.run(app, debug=True, host="0.0.0.0", port=8080, allow_unsafe_werkzeug=True)
