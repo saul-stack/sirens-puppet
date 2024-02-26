@@ -4,12 +4,6 @@ import { useContext } from "react"
 
 export default function PlayerDesignation(){
     const { user } = useContext(UserContext)
-    const navigate = useNavigate()
-
-    const handleClick = () => {
-        navigate('/rooms/:room_code/play')
-    }
-
     return (
         <>
         <main>
@@ -29,7 +23,6 @@ export default function PlayerDesignation(){
                         )}
                     </div>
             </div>
-            <button onClick={handleClick}>Continue</button>
         </main>
         </>
     )
