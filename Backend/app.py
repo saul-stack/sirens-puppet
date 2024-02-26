@@ -352,7 +352,7 @@ def purge_existing_rooms():
 def frontend_canvas_mouse_click(data):
     print("mouse clicked", data)
     sys.stdout.flush() 
-    socketio.emit('backend_canvas_mouse_click', "mouse clicked")
+    socketio.emit('backend_canvas_mouse_click', "mouse clicked from backend")
 
 
 if __name__ == '__main__':
