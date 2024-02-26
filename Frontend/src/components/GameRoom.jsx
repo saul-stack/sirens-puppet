@@ -56,7 +56,7 @@ export default function GameRoom({mousePos}) {
                         setTimeout(() => {
                             triggerSeventh()
                         }, 3000)
-                    }, 8000)
+                    }, 15000)
                 }, 3000)
             }, 3000)
           }, 3000)
