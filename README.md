@@ -2,7 +2,7 @@
 
 Welcome to Siren's Wrath! In this game, the crew of a pirate ship finds themselves navigating a storm in treacherous waters, working together to safely reach shore.
 
-However, there's a twist - among the crew members lurks a traitor, seduced by a siren's call to bring the ship crashing to the ocean floor, damning the crew to a watery grave.
+However, there's a twist - among the crew members lurks a traitor, seduced by a siren's call to bring the ship crashing to the ocean floor, damning the crew to a watery grave. This is the Siren's Puppet.
 
 ## Gameplay
 
