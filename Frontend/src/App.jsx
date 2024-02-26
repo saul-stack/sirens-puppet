@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
@@ -9,14 +10,16 @@ import useSound from "use-sound";
 import BattleShip from "../music/BattleShip.mp3";
 import Mute from "./components/Mute";
 import CandleBackground from "./components/CandleBackground";
-import PlayerDesignation from "./components/PlayerDesignation";
 import SocketFunctions from "./components/SocketFunctions";
 import ChatBox from "./components/ChatBox"
+import GameRoom from "./components/GameRoom"
+// import CanvasTestPage from './components/CanvasTestPage'
+
 
 function App() {
   const [musicPlaying, setMusicPlaying] = useState(false);
 
-  const [isMute, setIsMute] = useState(true);
+  const [isMute, setIsMute] = useState(false);
 
   const [play, { stop }] = useSound(BattleShip, { volume: 0.05 });
 
@@ -31,16 +34,15 @@ function App() {
   let needsEmit = false;
 
   const playMusic = () => {
-    if (musicPlaying && !isMute) {
       play();
-    } else {
-      stop();
-    }
   };
 
   // const [roomsArr, setRoomsArr] = useState([]);
   const [roomArr, setRoomArr] = useState([]);
 
+  const stopMusic = () => {
+    stop()
+  }
   return (
     <>
       <SocketFunctions
@@ -51,12 +53,15 @@ function App() {
         setMessages={setMessages}
       />
       {console.log(users)}
+
+
       <CandleBackground />
       <Mute
         isMute={isMute}
         setIsMute={setIsMute}
         playMusic={playMusic}
-        setMusicPlaying={setMusicPlaying}
+        musicPlaying={musicPlaying} 
+        stopMusic={stopMusic}
       />
       <Routes>
         <Route
@@ -92,7 +97,7 @@ function App() {
             />
           }
         />
-        <Route path="/rooms/:room_code/role" element={<PlayerDesignation />} />
+        <Route path="/rooms/:room_code/role" element={<GameRoom />} />
         <Route path="/rooms/:room_code/play" element={<ChatBox messages={messages} roomName={roomName}/>} />
       </Routes>
     </>

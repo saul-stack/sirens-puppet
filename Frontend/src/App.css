@@ -258,13 +258,30 @@ h3 {
   list-style: none;
 }
 
-
-.mute{
+.mute {
   position: absolute;
   bottom: 5%;
   right: 10%;
   color: white;
 }
+
+
+.canvas {
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 10px;
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 1);
+  color: rgb(14, 248, 154);
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease;
+  border: lightseagreen 3px solid;
+  background-color: rgba(246, 220, 191, 0.5);
+  padding: 10px;
+
+}
+
 
 .player-title{
   white-space: nowrap;
@@ -280,3 +297,4 @@ h3 {
   -3px -3px 0 #000,
   3px -3px 0 #000;
 }
+

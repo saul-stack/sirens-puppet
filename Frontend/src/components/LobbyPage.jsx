@@ -9,7 +9,7 @@ import socket from "../utils/Socket";
 export default function LobbyPage({ users, roomName }) {
   const navigate = useNavigate();
   const [chosenAvatar, setChosenAvatar] = useState(null);
-  const { user } = useContext(UserContext);
+  const { users, user } = useContext(UserContext);
   const { room_code } = useParams();
 
   const playerList = []
@@ -44,6 +44,7 @@ export default function LobbyPage({ users, roomName }) {
 
   return (
     <>
+    <main>
       <h2>{room_code}</h2>
       <PlayerCard key={user.username} player={user} />
       {playerList.map((player) => {
@@ -69,6 +70,7 @@ export default function LobbyPage({ users, roomName }) {
         <br />
       </div>
       <button onClick={handleStart}>Start Game!</button>
+    </main>
     </>
   );
 }

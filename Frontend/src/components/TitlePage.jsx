@@ -1,13 +1,14 @@
 import { useNavigate } from "react-router-dom";
 
-export default function TitlePage({setIsMute, playMusic, setMusicPlaying}) {
+export default function TitlePage({isMute, playMusic, setMusicPlaying}) {
   const navigate = useNavigate()
 
   function handleClick(){
     navigate("/story")
     setMusicPlaying(true)
-    setIsMute(false)
+    if (!isMute){
     playMusic()
+    }
   }
 
   function handleTesting(){
@@ -24,7 +25,6 @@ export default function TitlePage({setIsMute, playMusic, setMusicPlaying}) {
         </div>
       </div>
       <button onClick={handleClick}>Start Game</button>
-      <button onClick={handleTesting}>Testing</button>
     </center>
     </>
   );

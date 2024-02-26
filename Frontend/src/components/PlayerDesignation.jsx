@@ -11,6 +11,7 @@ export default function PlayerDesignation(){
     }
 
     return (
+        <>
         <main>
             <h1 className="player-title">You are...</h1>
             <div className="parent">
@@ -26,10 +27,11 @@ export default function PlayerDesignation(){
                             <p>Find the Thrall</p>
                         </>
                         )}
-
                     </div>
             </div>
             <button onClick={handleClick}>Continue</button>
         </main>
+        </>
     )
 }
+
