@@ -198,11 +198,6 @@ function Canvas({ users }) {
         width={1000}
         height={800}
 
-        onMouseDown={startDrawing}
-        onMouseMove={drawFE}
-        onMouseUp={finishDrawing}
-        onMouseOut={finishDrawing}
-
         onMouseDown={(e) => currentDrawer && startDrawing(e)}
         onMouseMove={(e) => currentDrawer && drawFE(e)}
         onMouseUp={() => currentDrawer && finishDrawing()}
