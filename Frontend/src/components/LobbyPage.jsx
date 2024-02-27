@@ -7,6 +7,7 @@ import AvatarButton from "./AvatarButton";
 import socket from "./Utils/Socket";
 
 export default function LobbyPage({ users, setUsers, roomName }) {
+  //set this to 0 on your local machine to test the game components
   const minimumPlayers = 4;
 
   const navigate = useNavigate();
