@@ -2,8 +2,9 @@ import React, { useRef, useEffect, useState, useContext } from "react";
 import socket from "./components/Utils/Socket";
 import { getPictonaryPrompts } from "./components/Utils/utils";
 import CandleBackground from "./components/CandleBackground";
+import Timer from "./components/Timer";
 
-function Canvas({ users }) {
+function Canvas({ users, timerCountdownSeconds }) {
   const canvasRef = useRef(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [drawingCommands, setDrawingCommands] = useState([]);
@@ -183,6 +184,7 @@ function Canvas({ users }) {
         {" "}
         {currentDrawer[0]} is Drawing... {currentGuesser[0]} is Guessing...
       </h1>
+      <Timer timerCountdownSeconds={timerCountdownSeconds} />
       <CandleBackground />
 
       <canvas
