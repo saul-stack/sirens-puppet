@@ -30,7 +30,10 @@ export default function LobbyPage({ users, setUsers, roomName }) {
     getAvatars().then((data) => {
       const { Avatars } = data;
       setAvatars(Avatars);
-    });
+    }).catch((err) => {
+      setIsError(true)
+      setError(err)
+    })
   }, []);
 
   function handleStart() {

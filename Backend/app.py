@@ -346,29 +346,28 @@ def list_existing_rooms():
 
 #handle frontend canvas events
 @socketio.on("frontend_canvas_mouse_click")
-def frontend_canvas_mouse_click(data):
-    print("mouse clicked", data)
-    sys.stdout.flush() 
-    socketio.emit('backend_canvas_mouse_click', "mouse clicked from backend")
+def frontend_canvas_mouse_click():
+    # print("mouse clicked", data)
+    # sys.stdout.flush() 
+    socketio.emit('backend_canvas_mouse_click')
 
 @socketio.on("frontend_canvas_mouse_release")
-def frontend_canvas_mouse_release(data):
-    print("mouse released", data)
-    sys.stdout.flush() 
-    socketio.emit('backend_canvas_mouse_release', "mouse released from backend")
+def frontend_canvas_mouse_release():
+    # print("mouse released", data)
+    # sys.stdout.flush() 
+    socketio.emit('backend_canvas_mouse_release')
 
 @socketio.on("frontend_canvas_mouse_move")
 def frontend_canvas_mouse_move(data):
-    print("mouse moved", data)
-    sys.stdout.flush() 
+    # print("mouse moved", data)
+    # sys.stdout.flush() 
     socketio.emit('backend_canvas_mouse_move', data)
 
 @socketio.on('frontend_canvas_rotate')
 def rotate():
     print("frontend is rotating canvas")
-    sys.stdout.flush() 
+    # sys.stdout.flush() 
     socketio.emit('backend_canvas_rotate')
-
 
 if __name__ == '__main__':
     socketio.run(app, debug=True, host="0.0.0.0", port=8080, allow_unsafe_werkzeug=True)
