@@ -1,7 +1,11 @@
 import React, { useState } from "react";
+import Timer from "./Timer";
+
+//timer countdown length
+let timerCountdownSeconds = 30;
 
 // Sample object for testing purposes
-const samplePersons = [
+const players = [
   {
     name: "John Doe",
     profileImage: "../../images/gold coin image.png",
@@ -26,8 +30,7 @@ function VotingPage() {
     }
   };
 
-  // Get the voted person's information
-  const votedPerson = votedIndex !== null ? samplePersons[votedIndex] : null;
+  const votedPerson = votedIndex !== null ? players[votedIndex] : null;
 
   return (
     <div
@@ -37,12 +40,12 @@ function VotingPage() {
         borderRadius: "10px",
         color: "black",
         fontSize: "50px",
-        // need to add a box shadow to the voting page
         boxShadow: "1px 1px 50px black",
       }}
     >
       <h2>Arrr! Hunt Down the Scallywag Saboteur!</h2>
-      {samplePersons.map((person, index) => (
+      <Timer timerCountdownSeconds={timerCountdownSeconds} />
+      {players.map((person, index) => (
         <div
           key={index}
           style={{
@@ -60,7 +63,7 @@ function VotingPage() {
           {/* Button for voting */}
           <button
             onClick={() => handleVote(index)}
-            disabled={votedIndex !== null} // Disable button if already voted
+            disabled={votedIndex !== null}
             style={{
               marginLeft: "10px",
               padding: "5px 10px",
@@ -71,7 +74,6 @@ function VotingPage() {
           </button>
         </div>
       ))}
-      {/* Display the voted person if there's a vote */}
       {votedPerson && (
         <div style={{ marginTop: "20px" }}>
           <h3>{votedPerson.name} is about to walk the plank!:</h3>
