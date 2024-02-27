@@ -160,7 +160,7 @@ function Canvas() {
         style={{
           backgroundColor: "white",
           transform: `rotate(${rotationAngle}deg)`,
-          border: "7px solid red",
+          border: "7px solid lightseagreen",
         }}
       />
       <div>
