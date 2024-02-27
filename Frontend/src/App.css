@@ -391,3 +391,8 @@ h3 {
 .timer-buttons button:hover {
   background-color: #2a95d9;
 }
+
+.error-message{
+  color: #b30000;
+  font-weight: bold;
+}
