@@ -367,7 +367,7 @@ def frontend_canvas_mouse_move(data):
 def rotate():
     print("frontend is rotating canvas")
     sys.stdout.flush() 
-    socketio.emit('backend_canvas_rotate')
+    socketio.emit('backend_canvas_rotate', "backend is trying to rotate canvas")
 
 
 if __name__ == '__main__':
