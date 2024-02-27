@@ -1,13 +1,18 @@
 import React, { useRef, useEffect, useState } from "react";
 import socket from "./components/Utils/Socket";
 
-function Canvas() {
+function Canvas(users, setUsers) {
   const canvasRef = useRef(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [drawingCommands, setDrawingCommands] = useState([]);
   const [backgroundImage, setBackgroundImage] = useState(null);
-  const [rotationAngle, setRotationAngle] = useState(0); // State for rotation angle
-  const [mousePos, setMousePos] = useState({});
+  const [rotationAngle, setRotationAngle] = useState(0);
+  const [mousePos, setMousePos] = useState({})
+
+
+  const currentDrawer = users.find((player) => player.draw)
+
+  console.log(currentDrawer);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -28,6 +33,7 @@ function Canvas() {
     };
   }, []);
 
+ 
   const startDrawing = ({ nativeEvent }) => {
     const { offsetX, offsetY } = nativeEvent;
     const canvas = canvasRef.current;
@@ -85,6 +91,7 @@ function Canvas() {
     context.stroke();
   };
 
+
   const finishDrawing = () => {
     if (isDrawing) {
       setIsDrawing(false);
@@ -96,6 +103,15 @@ function Canvas() {
       );
     }
   };
+
+  // useEffect(() => {
+  //   getPicturePrompts().then((data) => {
+  //     prompts = data
+  //   })
+  // }, [])
+
+  // console.log(data);
+
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -115,6 +131,8 @@ function Canvas() {
       };
     });
   }, [drawingCommands, backgroundImage]);
+
+
 
   const handleReset = () => {
     const canvas = canvasRef.current;
@@ -147,16 +165,18 @@ function Canvas() {
     socket.emit("frontend_canvas_rotate");
   };
 
+
   return (
     <div>
+       <h1> {currentDrawer.username} is Drawing</h1> 
       <canvas
         ref={canvasRef}
         width={1000}
         height={800}
-        onMouseDown={startDrawing}
-        onMouseMove={draw}
-        onMouseUp={finishDrawing}
-        onMouseOut={finishDrawing}
+        onMouseDown={(e) => currentDrawer && startDrawing(e)}
+        onMouseMove={(e) => currentDrawer && draw(e)}
+        onMouseUp={() => currentDrawer && finishDrawing()}
+        onMouseOut={() => currentDrawer && finishDrawing()}
         style={{
           backgroundColor: "white",
           transform: `rotate(${rotationAngle}deg)`,
@@ -164,11 +184,22 @@ function Canvas() {
         }}
       />
       <div>
-        <button onClick={handleReset}>Reset</button>
-        <button onClick={rotateCanvas}>Rotate</button>{" "}
+        {users.map((player) => {
+          return (
+         <div key={player.id}>
+         {player.draw && <button onClick={handleReset}>Reset</button>}
+         {player.isSaboteur && (
+           <button onClick={rotateCanvas}>Rotate</button>
+         )}
+       </div>
+         )
+        })
+        }
       </div>
     </div>
   );
 }
+
+
 
 export default Canvas;

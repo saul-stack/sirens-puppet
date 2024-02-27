@@ -6,24 +6,21 @@ import PlayerCard from "./PlayerCard";
 import AvatarButton from "./AvatarButton";
 import socket from "./Utils/Socket";
 
-export default function LobbyPage({ users, roomName }) {
+export default function LobbyPage({ users, setUsers, roomName }) {
   const navigate = useNavigate();
   const [chosenAvatar, setChosenAvatar] = useState(null);
-  const { user, setIsSaboteur } = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const { room_code } = useParams();
 
   const playerList = []
     users.map((user) => {
       if(!playerList.includes(user)){
-
         playerList.push( {username: user})
       }
     })
 
   const [players, setPlayers] = useState(() => [...playerList]);
 
-
-  // const players = users
   const [avatars, setAvatars] = useState([]);
 
   useEffect(() => {
@@ -35,16 +32,17 @@ export default function LobbyPage({ users, roomName }) {
   }, []);
 
   function handleStart() {
-    const totalPlayers = players.length;
+    const totalPlayers = users.length;
     if (totalPlayers > 0) {
       const randomIndex = Math.floor(Math.random() * totalPlayers);
-      setPlayers((prevUsers) =>
+      setUsers((prevUsers) =>
         prevUsers.map((prevUser, index) =>
           index === randomIndex ? { ...prevUser, isSaboteur: true } : prevUser
         )
       );
-  
-      setIsSaboteur(true);
+      if (users[randomIndex].username === user.username){
+            user.isSaboteur = true
+      }
     }
     navigate(`/rooms/${room_code}/role`);
   }

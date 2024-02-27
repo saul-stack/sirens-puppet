@@ -88,7 +88,7 @@ function App() {
             />
           }
         />
-        <Route path="/rooms/:room_code" element={<LobbyPage users={users} roomName={roomName} />} />
+        <Route path="/rooms/:room_code" element={<LobbyPage users={users} roomName={roomName}  setUsers={setUsers} />} />
         <Route
           path="/rooms"
           element={
@@ -101,7 +101,7 @@ function App() {
             />
           }
         />
-        <Route path="/rooms/:room_code/role" element={<GameRoom mousePos={mousePos} />} />
+        <Route path="/rooms/:room_code/role" element={<GameRoom mousePos={mousePos} users={users} setUsers={setUsers} />} />
         <Route path="/rooms/:room_code/play" element={<ChatBox messages={messages} roomName={roomName}/>} />
       </Routes>
       </UserProvider>
