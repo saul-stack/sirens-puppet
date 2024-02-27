@@ -56,8 +56,16 @@ export default function LobbyPage({ users, setUsers, roomName }) {
 
   return (
     <>
-      <main>
-        <h2>{room_code}</h2>
+      <main
+        style={{
+          // backgroundColor: "rgba(32, 178, 170, 0.2)",
+          backgroundColor: "rgba(255, 255, 255, 0.3)",
+          padding: "20px",
+          borderRadius: "8px",
+          boxShadow: "0 0 10px 0 rgba(0, 0, 0, 0.9)",
+        }}
+      >
+        <h2 style={{ fontSize: "5vw" }}>{room_code}</h2>
         <PlayerCard key={user.username} player={user} />
         {playerList.map((player) => {
           if (player.username !== user.username) {
@@ -65,7 +73,7 @@ export default function LobbyPage({ users, setUsers, roomName }) {
           }
         })}
         <div className="avatar-buttons">
-          <h3>Choose an avatar:</h3>
+          <h3 style={{ fontSize: "2vw" }}>Choose an avatar:</h3>
           {avatars.map((avatar, index) => {
             return (
               <AvatarButton
