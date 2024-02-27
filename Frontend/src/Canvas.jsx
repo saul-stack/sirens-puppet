@@ -72,6 +72,21 @@ function Canvas() {
   function onCanvasRotate(data) {
     console.log("rotated");
     console.log(data);
+
+    let start = null;
+    const animate = (timestamp) => {
+      if (!start) start = timestamp;
+      const progress = timestamp - start;
+      const angle = (progress / 2000) * 360; // Rotate over 2 seconds
+      setRotationAngle(angle);
+      if (progress < 2000) {
+        requestAnimationFrame(animate);
+      } else {
+        // Reset rotation angle to 0 after rotation completes
+        setRotationAngle(0);
+      }
+    };
+    requestAnimationFrame(animate);
   }
 
   socket.on("backend_canvas_rotate", onCanvasRotate);
