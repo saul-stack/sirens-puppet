@@ -37,9 +37,9 @@ function Canvas({ users }) {
     context.moveTo(offsetX, offsetY);
     context.beginPath();
     setIsDrawing(true);
-    // if (user.username === currentDrawer) {
+    if (user.username === currentDrawer) {
       socket.emit("frontend_canvas_mouse_click");
-    // }
+    }
   };
 
   const drawFE = ({ nativeEvent }) => {
@@ -51,13 +51,13 @@ function Canvas({ users }) {
     context.lineTo(offsetX, offsetY);
 
     if (isDrawing) {
-      // if (user.username === currentDrawer) {
+      if (user.username === currentDrawer) {
         context.stroke();
         socket.emit("frontend_canvas_mouse_move", {
           mouseX: offsetX,
           mouseY: offsetY,
         });
-      // }
+      }
     }
   };
 
