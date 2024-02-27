@@ -218,7 +218,7 @@ function Canvas({ users }) {
          {player.guess && 
          <form method="post">
          <div>
-           <input type="text" placeholder="SwordBoat" name="guess" ref="guessInput"/>
+           <input type="text" placeholder="SwordBoat" name="guess" ref={guessInput}/>
            <button onClick={handleGuess} type="submit" name="guess">Guess</button>
           </div>
           </form>}
