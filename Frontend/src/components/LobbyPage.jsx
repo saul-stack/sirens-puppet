@@ -7,6 +7,8 @@ import AvatarButton from "./AvatarButton";
 import socket from "./Utils/Socket";
 
 export default function LobbyPage({ users, setUsers, roomName }) {
+  const minimumPlayers = 4;
+
   const navigate = useNavigate();
   const [chosenAvatar, setChosenAvatar] = useState(null);
   const { user } = useContext(UserContext);
@@ -15,24 +17,26 @@ export default function LobbyPage({ users, setUsers, roomName }) {
   const totalPlayers = users.length;
   console.log(roomName);
 
-  const playerList = []
-    users.map((user) => {
-      if(!playerList.includes(user)){
-        playerList.push( {username: user})
-      }
-    })
+  const playerList = [];
+  users.map((user) => {
+    if (!playerList.includes(user)) {
+      playerList.push({ username: user });
+    }
+  });
 
   const [players, setPlayers] = useState(() => [...playerList]);
-  
+
   useEffect(() => {
-    socket.emit("frontend_send_users", {room: roomName})
-    getAvatars().then((data) => {
-      const { Avatars } = data;
-      setAvatars(Avatars);
-    }).catch((err) => {
-      setIsError(true)
-      setError(err)
-    })
+    socket.emit("frontend_send_users", { room: roomName });
+    getAvatars()
+      .then((data) => {
+        const { Avatars } = data;
+        setAvatars(Avatars);
+      })
+      .catch((err) => {
+        setIsError(true);
+        setError(err);
+      });
   }, []);
 
   function handleStart() {
@@ -43,42 +47,46 @@ export default function LobbyPage({ users, setUsers, roomName }) {
           index === randomIndex ? { ...prevUser, isSaboteur: true } : prevUser
         )
       );
-      if (users[randomIndex].username === user.username){
-            user.isSaboteur = true
+      if (users[randomIndex].username === user.username) {
+        user.isSaboteur = true;
       }
     }
-    navigate(`/rooms/${room_code}/role`);     
+    navigate(`/rooms/${room_code}/role`);
   }
 
   return (
     <>
-    <main>
-      <h2>{room_code}</h2>
-      <PlayerCard key={user.username} player={user} />
-      {playerList.map((player) => {
-        if (player.username !== user.username) {
-          return <PlayerCard key={player.username} player={player} />;
-        }
-      })}
-      <div className="avatar-buttons">
-        <h3>Choose an avatar:</h3>
-        {avatars.map((avatar, index) => {
-          return (
-            <AvatarButton
-              key={index}
-              avatar={avatar}
-              setPlayers={setPlayers}
-              user={user}
-              setChosenAvatar={setChosenAvatar}
-              chosenAvatar={chosenAvatar}
-            />
-          );
+      <main>
+        <h2>{room_code}</h2>
+        <PlayerCard key={user.username} player={user} />
+        {playerList.map((player) => {
+          if (player.username !== user.username) {
+            return <PlayerCard key={player.username} player={player} />;
+          }
         })}
-        <br />
-      </div>
-      {totalPlayers<4 && <p className="error-message">Not enough players</p>}
-      <button onClick={handleStart} disabled={totalPlayers < 4}>Start Game!</button>
-    </main>
+        <div className="avatar-buttons">
+          <h3>Choose an avatar:</h3>
+          {avatars.map((avatar, index) => {
+            return (
+              <AvatarButton
+                key={index}
+                avatar={avatar}
+                setPlayers={setPlayers}
+                user={user}
+                setChosenAvatar={setChosenAvatar}
+                chosenAvatar={chosenAvatar}
+              />
+            );
+          })}
+          <br />
+        </div>
+        {totalPlayers < minimumPlayers && (
+          <p className="error-message">Not enough players</p>
+        )}
+        <button onClick={handleStart} disabled={totalPlayers < 4}>
+          Start Game!
+        </button>
+      </main>
     </>
   );
 }
