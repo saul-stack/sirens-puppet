@@ -1,31 +1,29 @@
-from flask import Flask, render_template, request, session, redirect, url_for, jsonify
+from flask import Flask, render_template, request, session, redirect, url_for
 from flask_socketio import join_room, leave_room, send, SocketIO
 import random
 from waitress import serve
 import os
 import sys
 
+# 
 async_mode = None
+# 
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app, cors_allowed_origins="*", async_mode=async_mode)
 
-avatarURLs = ['https://i.postimg.cc/25nzRzbX/1.png', 'https://i.postimg.cc/mkVB5tHQ/2.png', 'https://i.postimg.cc/MHzdGGr3/3.png', 'https://i.postimg.cc/9MLqGFQn/4.png', 'https://i.postimg.cc/fW5694jS/5.png', 'https://i.postimg.cc/mrHPPNvh/6.png']
+# dictionary of exisiting rooms
 existing_rooms = {}
+
 current_working_directory = os.getcwd()
 last_folder = os.path.basename(current_working_directory)      
 
-
-# utility functions ########
 def fetch_random_pirate_word():
     folder_name = os.path.basename(os.getcwd())
-    print(folder_name)
-    sys.stdout.flush() 
-
-    
     file_path = (
         "./Backend/assets/pirate-vocab.txt"
-        if folder_name == "team-pirate-game"
+        if folder_name == "pirate-game-react"
         else "./assets/pirate-vocab.txt"
     )
 
@@ -36,9 +34,8 @@ def fetch_random_pirate_word():
     except FileNotFoundError:
         print(f"File '{file_path}' not found.")
 
+# need to make it so it doesn't use the same word twice\
 def generate_room_code():
-    # need to make it so it doesn't use the same word twice\
-
     while True:
         code = ""
         code_first_word = fetch_random_pirate_word()
@@ -47,39 +44,10 @@ def generate_room_code():
         code = f"{fetch_random_pirate_word()}{fetch_random_pirate_word()}"
         return code
 
-def list_existing_rooms():
-    print("\n******************** \navailable rooms:\n" + "\n".join([f"{room} -> members: {existing_rooms[room]['members']}" for room in existing_rooms]) + "\n********************\n")
-    sys.stdout.flush() 
-    socketio.emit("backend_list_existing_rooms", existing_rooms)
-############################
-    
-
-# routes ###################
-@app.route("/avatars", methods=["GET"])
-def avatars():
-    return jsonify(Avatars = avatarURLs)
-
-@app.route("/hangmanPrompts", methods=["GET"])
-def hangman():
-    with open("./Back-end-Prompts/hangman-prompts.txt") as f:
-        wordList = []
-        for line in f:
-            wordList.append(line.strip())
-        return jsonify(HangmanPrompts = wordList)
-    
-@app.route("/pictionaryPrompts", methods=["GET"])
-def pictionary():
-    with open("./Back-end-Prompts/pictionary-prompts.txt") as f:
-        wordList = []
-        for line in f:
-            wordList.append(line.strip())
-        return jsonify(PictionaryPrompts = wordList)
-    
 @app.route('/', methods = ["POST", "GET"])
 def home():
 
     # when user is at home page, their session credentials are purged
-    sys.stdout.flush() 
     session.clear()
 
     if request.method == 'POST':
@@ -102,7 +70,7 @@ def home():
         # if creating room
         if create != False:
             new_room = generate_room_code()
-            existing_rooms[new_room] = {"members": 0, "messages": []}
+            existing_rooms[new_room] = {"members": 0, "messages": [], "users": []}
             list_existing_rooms()
 
         # else user must be joining a room
@@ -127,12 +95,12 @@ def room():
     if room is None or session.get("name") is None or room not in existing_rooms: return redirect(url_for("home"))
 
     return render_template("room.html", room_code=room, room_data = existing_rooms[room], async_mode=socketio.async_mode)
-############################
 
-
-# event handlers ###########
 @socketio.on("connect")
+# # currently not using auth variable
+# def connect(auth):
 def connect():
+    list_existing_rooms()
 
 # get room and name from client session
     room = session.get("room")
@@ -203,7 +171,7 @@ def message(data):
 
     sys.stdout.flush() 
     socketio.emit('send-message', content)
-############################
+
 
 
 # frontend event listeners
@@ -212,7 +180,7 @@ def frontend_create_room(data):
 
     # add new room_code to dictionary
     new_room = generate_room_code()
-    existing_rooms[new_room] = {"members": 0, "messages": []}
+    existing_rooms[new_room] = {"members": 0, "messages": [], "users": []}
     
     # add room and name to session data
     name = data["name"]
@@ -228,18 +196,18 @@ def frontend_create_room(data):
 
     # a user has joined the room
     existing_rooms[new_room]['members'] += 1
+    existing_rooms[new_room]['users'].append(name)
     print(name, "has joined room: ", new_room)
     sys.stdout.flush() 
 
+    usersList = existing_rooms[new_room]['users']
+
 # send to frontend toyshe
-    data={"name":name, "room":new_room}
+    data={"name":name, "room":new_room, "users": usersList}
+    print(data)
     socketio.emit('join-room', data)
 
     list_existing_rooms()
-
-
-
-# clear the session!!!????
 
     socketio.emit('backend_terminal_message', new_room)
 
@@ -265,15 +233,26 @@ def fronted_join_room(data):
         leave_room(room)
         return
     
+    if name in existing_rooms[room]['users']:
+        send({'name is already taken'}, to=room)
+        return
+
     join_room(room)
     send({'name': name, 'message': 'has joined the room'}, to=room)
 
     # a user has joined the room
     existing_rooms[room]['members'] += 1
+    existing_rooms[room]['users'].append(name)
+
+    usersList = existing_rooms[room]['users']
     print(name, "has joined room: ", room)
     sys.stdout.flush() 
 
-    data={"name":name, "room":room}
+    print(existing_rooms[room])
+    sys.stdout.flush() 
+
+
+    data={"name":name, "room":room, 'users': usersList}
     socketio.emit('join-room', data)
 
     list_existing_rooms()
@@ -332,6 +311,7 @@ def message(data):
     sys.stdout.flush() 
     socketio.emit('backend_send_message', message_content)
 
+
 @socketio.on("frontend_purge_existing_rooms")
 def purge_existing_rooms():
 
@@ -343,7 +323,52 @@ def purge_existing_rooms():
     print("rooms purged")
     sys.stdout.flush() 
     list_existing_rooms() 
-############################
+
+
+@socketio.on("frontend_send_users")
+def send_users_in_room(data):
+
+    print("backend is trying to send the users in the room")
+    sys.stdout.flush()
+
+    room = data['room']
+    socketio.emit("backend_send_users", existing_rooms[room]['users'])
+
+    print(existing_rooms[room]['users'])
+    sys.stdout.flush()
+    
+
+def list_existing_rooms():
+    print("\n******************** \navailable rooms:\n" + "\n".join([f"{room} -> members: {existing_rooms[room]['members']}" for room in existing_rooms]) + "\n********************\n")
+    sys.stdout.flush() 
+    socketio.emit("backend_list_existing_rooms", existing_rooms)
+
+
+#handle frontend canvas events
+@socketio.on("frontend_canvas_mouse_click")
+def frontend_canvas_mouse_click(data):
+    print("mouse clicked", data)
+    sys.stdout.flush() 
+    socketio.emit('backend_canvas_mouse_click', "mouse clicked from backend")
+
+@socketio.on("frontend_canvas_mouse_release")
+def frontend_canvas_mouse_release(data):
+    print("mouse released", data)
+    sys.stdout.flush() 
+    socketio.emit('backend_canvas_mouse_release', "mouse released from backend")
+
+@socketio.on("frontend_canvas_mouse_move")
+def frontend_canvas_mouse_move(data):
+    print("mouse moved", data)
+    sys.stdout.flush() 
+    socketio.emit('backend_canvas_mouse_move', data)
+
+@socketio.on('frontend_canvas_rotate')
+def rotate():
+    print("frontend is rotating canvas")
+    sys.stdout.flush() 
+    socketio.emit('backend_canvas_rotate')
+
 
 if __name__ == '__main__':
     socketio.run(app, debug=True, host="0.0.0.0", port=8080, allow_unsafe_werkzeug=True)

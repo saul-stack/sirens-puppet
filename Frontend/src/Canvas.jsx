@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
+import socket from "./components/Utils/Socket";
 
 function Canvas() {
   const canvasRef = useRef(null);
@@ -6,6 +7,7 @@ function Canvas() {
   const [drawingCommands, setDrawingCommands] = useState([]);
   const [backgroundImage, setBackgroundImage] = useState(null);
   const [rotationAngle, setRotationAngle] = useState(0); // State for rotation angle
+  const [mousePos, setMousePos] = useState({});
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -30,17 +32,56 @@ function Canvas() {
     const { offsetX, offsetY } = nativeEvent;
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
-    context.beginPath();
     context.moveTo(offsetX, offsetY);
+    context.beginPath();
     setIsDrawing(true);
+    socket.emit("frontend_canvas_mouse_click", "hey from canvas fe");
   };
 
   const draw = ({ nativeEvent }) => {
-    if (!isDrawing) return;
+    console.log(isDrawing, "<---is drawing");
+    // if (!isDrawing) return;
     const { offsetX, offsetY } = nativeEvent;
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
     context.lineTo(offsetX, offsetY);
+
+    if (isDrawing) {
+      context.stroke();
+      socket.emit("frontend_canvas_mouse_move", {
+        mouseX: offsetX,
+        mouseY: offsetY,
+      });
+    }
+  };
+
+  useEffect(() => {
+    function onCavasMove(data) {
+      console.log(data);
+      mirrorDraw(data);
+    }
+
+    socket.on("backend_canvas_mouse_move", onCavasMove);
+
+    return () => {
+      socket.off("backend_canvas_mouse_move", onCavasMove);
+      // socket.off("backend_canvas_rotate", onCanvasRotate)
+    };
+  }, []);
+
+  function onCanvasRotate(data) {
+    console.log("rotated");
+    console.log(data);
+  }
+
+  socket.on("backend_canvas_rotate", onCanvasRotate);
+
+  const mirrorDraw = (data) => {
+    // if (!isDrawing) return;
+    const canvas = canvasRef.current;
+    const context = canvas.getContext("2d");
+    context.lineTo(data.mouseX, data.mouseY);
+    console.log("in mirrorDraw");
     context.stroke();
   };
 
@@ -49,6 +90,10 @@ function Canvas() {
       setIsDrawing(false);
       const canvas = canvasRef.current;
       setDrawingCommands([...drawingCommands, canvas.toDataURL()]);
+      socket.emit(
+        "frontend_canvas_mouse_release",
+        "canvas mouse release from fe"
+      );
     }
   };
 
@@ -95,6 +140,11 @@ function Canvas() {
       }
     };
     requestAnimationFrame(animate);
+    socket.emit(
+      "frontend_canvas_mouse_release",
+      "canvas mouse release from fe"
+    );
+    socket.emit("frontend_canvas_rotate");
   };
 
   return (
