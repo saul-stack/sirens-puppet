@@ -2,8 +2,8 @@ import Canvas from "../Canvas";
 
 function CanvasTestPage({mousePos, users, setUsers}) {
   return (
-    <div>
-      <h1 className="canvas">
+    <div className="canvas-container">
+      <h1 className="canvas-title">
         "Ready, set, doodle! Let's see if your masterpiece speaks louder than
         words
       </h1>

@@ -42,22 +42,20 @@ function Canvas({ users }) {
     const context = canvas.getContext("2d");
     context.moveTo(offsetX, offsetY);
     context.beginPath();
-    if (user.username === currentDrawer) {
+    if (currentDrawer) {
       setIsDrawing(true);
       socket.emit("frontend_canvas_mouse_click");
     }
   };
 
   const drawFE = ({ nativeEvent }) => {
-    console.log(user.username);
     if (isDrawing) {
-
     const { offsetX, offsetY } = nativeEvent;
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
     context.lineTo(offsetX, offsetY);
 
-      if (user.username === currentDrawer) {
+      if (currentDrawer) {
         context.stroke();
         socket.emit("frontend_canvas_mouse_move", {
           mouseX: offsetX,
@@ -190,7 +188,7 @@ function Canvas({ users }) {
     <div>
        <h1> {currentDrawer[0]} is Drawing...  {currentGuesser[0]} is Guessing...</h1> 
 
-      <canvas
+      <canvas className="draw-canvas"
         ref={canvasRef}
         width={1000}
         height={800}
