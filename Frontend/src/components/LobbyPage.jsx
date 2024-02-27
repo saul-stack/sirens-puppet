@@ -11,8 +11,6 @@ export default function LobbyPage({ users, setUsers, roomName }) {
   const [chosenAvatar, setChosenAvatar] = useState(null);
   const { user } = useContext(UserContext);
   const { room_code } = useParams();
-  const [isEnoughPlayers, setIsEnoughPlayers] = useState(false)
-  const [isHovered, setIsHovered] = useState(false)
   const [avatars, setAvatars] = useState([]);
   const totalPlayers = users.length;
   console.log(roomName);
@@ -36,12 +34,6 @@ export default function LobbyPage({ users, setUsers, roomName }) {
       setError(err)
     })
   }, []);
-
-  if(totalPlayers < 4){
-    setIsEnoughPlayers(false)
-  }else{
-    setIsEnoughPlayers(true)
-  }
 
   function handleStart() {
     if (totalPlayers > 0) {
@@ -84,8 +76,8 @@ export default function LobbyPage({ users, setUsers, roomName }) {
         })}
         <br />
       </div>
-      {!isEnoughPlayers && isHovered ? <p>Not enough players!</p> : null}
-      <button onClick={handleStart} onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => {setIsHovered(false)}} disabled={totalPlayers < 4}>Start Game!</button>
+      {totalPlayers<4 && <p className="error-message">Not enough players</p>}
+      <button onClick={handleStart} disabled={totalPlayers < 4}>Start Game!</button>
     </main>
     </>
   );

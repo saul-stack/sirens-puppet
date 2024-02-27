@@ -397,8 +397,14 @@ h3 {
   background-color: #2a95d9;
 }
 
+.error-message{
+  color: #b30000;
+  font-weight: bold;
+}
+
 .drawPrompt{
   position: absolute;
   top: 3%;
   right: 40%;
 }
+
