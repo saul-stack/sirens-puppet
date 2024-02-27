@@ -37,22 +37,27 @@ function Canvas({ users }) {
     context.moveTo(offsetX, offsetY);
     context.beginPath();
     setIsDrawing(true);
-    socket.emit("frontend_canvas_mouse_click");
+    if (user.username === currentDrawer) {
+      socket.emit("frontend_canvas_mouse_click");
+    }
   };
 
   const drawFE = ({ nativeEvent }) => {
     console.log(user.username);
-    if (user.username === currentDrawer) {
-      const { offsetX, offsetY } = nativeEvent;
-      const canvas = canvasRef.current;
-      const context = canvas.getContext("2d");
-      context.lineTo(offsetX, offsetY);
 
-      context.stroke();
-      socket.emit("frontend_canvas_mouse_move", {
-        mouseX: offsetX,
-        mouseY: offsetY,
-      });
+    const { offsetX, offsetY } = nativeEvent;
+    const canvas = canvasRef.current;
+    const context = canvas.getContext("2d");
+    context.lineTo(offsetX, offsetY);
+
+    if (isDrawing) {
+      if (user.username === currentDrawer) {
+        context.stroke();
+        socket.emit("frontend_canvas_mouse_move", {
+          mouseX: offsetX,
+          mouseY: offsetY,
+        });
+      }
     }
   };
 
@@ -95,6 +100,7 @@ function Canvas({ users }) {
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
     context.lineTo(data.mouseX, data.mouseY);
+    // console.log("in mirrorDrawBE");
     context.stroke();
   };
 
