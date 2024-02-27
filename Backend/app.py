@@ -358,7 +358,7 @@ def frontend_canvas_mouse_release():
     socketio.emit('backend_canvas_mouse_release')
 
 @socketio.on("frontend_canvas_mouse_move")
-def frontend_canvas_mouse_move():
+def frontend_canvas_mouse_move(data):
     # print("mouse moved", data)
     # sys.stdout.flush() 
     socketio.emit('backend_canvas_mouse_move', data)
