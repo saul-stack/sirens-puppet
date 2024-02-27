@@ -24,7 +24,7 @@ export default function SocketFunctions({
     }
 
     function onJoin(data) {
-      // room = data.room;
+      const room = data.room;
       console.log(data.name + " has joined the room " + data.room);
       console.log(room);
       needsEmit = true;

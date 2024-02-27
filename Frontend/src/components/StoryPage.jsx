@@ -29,7 +29,7 @@ export default function StoryPage({ roomName, username, setUsername, setRoomName
 
   useEffect(() => {
     if (roomName !== null) {
-      navigate(`/rooms/${room}`);
+      navigate(`/rooms/${roomName}`);
     }
   }, [room, navigate]);
 
