@@ -57,7 +57,7 @@ function Canvas() {
 
   useEffect(() => {
     function onCavasMove(data) {
-      console.log(data);
+      // console.log(data);
       mirrorDraw(data);
     }
 
@@ -96,7 +96,7 @@ function Canvas() {
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
     context.lineTo(data.mouseX, data.mouseY);
-    console.log("in mirrorDraw");
+    // console.log("in mirrorDraw");
     context.stroke();
   };
 
