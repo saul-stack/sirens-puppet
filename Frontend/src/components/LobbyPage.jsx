@@ -83,7 +83,7 @@ export default function LobbyPage({ users, setUsers, roomName }) {
         {totalPlayers < minimumPlayers && (
           <p className="error-message">Not enough players</p>
         )}
-        <button onClick={handleStart} disabled={totalPlayers < 4}>
+        <button onClick={handleStart} disabled={totalPlayers < minimumPlayers}>
           Start Game!
         </button>
       </main>
