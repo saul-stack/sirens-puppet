@@ -1,16 +1,20 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, useContext } from "react";
 import socket from "./components/Utils/Socket";
+import { UserContext } from "./contexts/UserContext";
 
-function Canvas({users}, setUsers) {
+
+function Canvas({ users }) {
+
   const canvasRef = useRef(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [drawingCommands, setDrawingCommands] = useState([]);
   const [backgroundImage, setBackgroundImage] = useState(null);
+
   const [rotationAngle, setRotationAngle] = useState(0);
-  const [mousePos, setMousePos] = useState({})
 
 
   const currentDrawer = users.users.find((player) => player.draw)
+
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -38,54 +42,71 @@ function Canvas({users}, setUsers) {
     const context = canvas.getContext("2d");
     context.moveTo(offsetX, offsetY);
     context.beginPath();
-    setIsDrawing(true);
-    socket.emit("frontend_canvas_mouse_click", "hey from canvas fe");
+    if (user.username === currentDrawer) {
+      setIsDrawing(true);
+      socket.emit("frontend_canvas_mouse_click");
+    }
   };
 
-  const draw = ({ nativeEvent }) => {
-    console.log(isDrawing, "<---is drawing");
-    // if (!isDrawing) return;
+  const drawFE = ({ nativeEvent }) => {
+    console.log(user.username);
+    if (isDrawing) {
+
     const { offsetX, offsetY } = nativeEvent;
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
     context.lineTo(offsetX, offsetY);
 
-    if (isDrawing) {
-      context.stroke();
-      socket.emit("frontend_canvas_mouse_move", {
-        mouseX: offsetX,
-        mouseY: offsetY,
-      });
+      if (user.username === currentDrawer) {
+        context.stroke();
+        socket.emit("frontend_canvas_mouse_move", {
+          mouseX: offsetX,
+          mouseY: offsetY,
+        });
+      }
     }
   };
 
   useEffect(() => {
     function onCavasMove(data) {
-      console.log(data);
-      mirrorDraw(data);
+      // console.log(data);
+      mirrorDrawBE(data);
     }
+
+    function onCanvasRotate() {
+      let start = null;
+      const animate = (timestamp) => {
+        if (!start) start = timestamp;
+        const progress = timestamp - start;
+        const angle = (progress / 2000) * 360; // Rotate over 2 seconds
+        setRotationAngle(angle);
+        if (progress < 2000) {
+          requestAnimationFrame(animate);
+        } else {
+          // Reset rotation angle to 0 after rotation completes
+          setRotationAngle(0);
+        }
+      };
+      requestAnimationFrame(animate);
+    }
+
+    socket.on("backend_canvas_rotate", onCanvasRotate);
 
     socket.on("backend_canvas_mouse_move", onCavasMove);
 
     return () => {
       socket.off("backend_canvas_mouse_move", onCavasMove);
-      // socket.off("backend_canvas_rotate", onCanvasRotate)
+      socket.off("backend_canvas_rotate", onCanvasRotate);
     };
   }, []);
 
-  function onCanvasRotate(data) {
-    console.log("rotated");
-    console.log(data);
-  }
-
-  socket.on("backend_canvas_rotate", onCanvasRotate);
-
-  const mirrorDraw = (data) => {
+  const mirrorDrawBE = (data) => {
+    console.log("inside mirror draw");
     // if (!isDrawing) return;
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
     context.lineTo(data.mouseX, data.mouseY);
-    console.log("in mirrorDraw");
+    // console.log("in mirrorDrawBE");
     context.stroke();
   };
 
@@ -95,10 +116,7 @@ function Canvas({users}, setUsers) {
       setIsDrawing(false);
       const canvas = canvasRef.current;
       setDrawingCommands([...drawingCommands, canvas.toDataURL()]);
-      socket.emit(
-        "frontend_canvas_mouse_release",
-        "canvas mouse release from fe"
-      );
+      socket.emit("frontend_canvas_mouse_release");
     }
   };
 
@@ -156,10 +174,6 @@ function Canvas({users}, setUsers) {
       }
     };
     requestAnimationFrame(animate);
-    socket.emit(
-      "frontend_canvas_mouse_release",
-      "canvas mouse release from fe"
-    );
     socket.emit("frontend_canvas_rotate");
   };
 
@@ -171,10 +185,17 @@ function Canvas({users}, setUsers) {
         ref={canvasRef}
         width={1000}
         height={800}
+
+        onMouseDown={startDrawing}
+        onMouseMove={drawFE}
+        onMouseUp={finishDrawing}
+        onMouseOut={finishDrawing}
+
         onMouseDown={(e) => currentDrawer && startDrawing(e)}
-        onMouseMove={(e) => currentDrawer && draw(e)}
+        onMouseMove={(e) => currentDrawer && drawFE(e)}
         onMouseUp={() => currentDrawer && finishDrawing()}
         onMouseOut={() => currentDrawer && finishDrawing()}
+
         style={{
           backgroundColor: "white",
           transform: `rotate(${rotationAngle}deg)`,
