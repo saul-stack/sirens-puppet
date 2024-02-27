@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import socket from "./components/Utils/Socket";
+import { getPictonaryPrompts } from "./components/Utils/utils";
 
 function Canvas({users}, setUsers) {
   const canvasRef = useRef(null);
@@ -8,9 +9,11 @@ function Canvas({users}, setUsers) {
   const [backgroundImage, setBackgroundImage] = useState(null);
   const [rotationAngle, setRotationAngle] = useState(0);
   const [mousePos, setMousePos] = useState({})
-
+  const [picturePrompts, setpicturePrompts] = useState([]);
 
   const currentDrawer = users.users.find((player) => player.draw)
+  const currentGuesser = users.users.find((player) => player.guess)
+
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -102,14 +105,13 @@ function Canvas({users}, setUsers) {
     }
   };
 
-  // useEffect(() => {
-  //   getPicturePrompts().then((data) => {
-  //     prompts = data
-  //   })
-  // }, [])
 
-  // console.log(data);
-
+  useEffect(() => {
+    getPictonaryPrompts().then((data) => {
+      const { PictionaryPrompts } = data
+      setpicturePrompts(PictionaryPrompts)
+    })
+  }, [])
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -129,8 +131,6 @@ function Canvas({users}, setUsers) {
       };
     });
   }, [drawingCommands, backgroundImage]);
-
-
 
   const handleReset = () => {
     const canvas = canvasRef.current;
@@ -163,10 +163,25 @@ function Canvas({users}, setUsers) {
     socket.emit("frontend_canvas_rotate");
   };
 
+  function getRandomPrompt() {
+    const randomIndex = Math.floor(Math.random() * picturePrompts.length);
+    return picturePrompts[randomIndex];
+  }
+
+  const randomPrompt = getRandomPrompt()
+
+
+  const handleGuess = ((e) => {
+    console.log(e)
+    if (randomPrompt.toLowerCase() === guessInput.current.value.toLowerCase()){
+    }
+
+  }) 
 
   return (
     <div>
-       <h1> {currentDrawer.username} is Drawing</h1> 
+       <h1> {currentDrawer[0]} is Drawing...  {currentGuesser[0]} is Guessing...</h1> 
+
       <canvas
         ref={canvasRef}
         width={1000}
@@ -185,7 +200,15 @@ function Canvas({users}, setUsers) {
         {users.users.map((player) => {
           return (
          <div key={player.id}>
+         {player.draw && <h1 className = 'drawPrompt'>Draw a {randomPrompt}</h1>}
          {player.draw && <button onClick={handleReset}>Reset</button>}
+         {player.guess && 
+         <form method="post">
+         <div>
+           <input type="text" placeholder="SwordBoat" name="guess" ref="guessInput"/>
+           <button onClick={handleGuess} type="submit" name="guess">Guess</button>
+          </div>
+          </form>}
          {player.isSaboteur && (
            <button onClick={rotateCanvas}>Rotate</button>
          )}

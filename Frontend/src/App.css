@@ -391,3 +391,9 @@ h3 {
 .timer-buttons button:hover {
   background-color: #2a95d9;
 }
+
+.drawPrompt{
+  position: absolute;
+  top: 3%;
+  right: 40%;
+}
