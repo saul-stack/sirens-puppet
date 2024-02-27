@@ -402,3 +402,14 @@ h3 {
   top: 3%;
   right: 40%;
 }
+
+
+@keyframes spinImage {
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(360deg);
+  }
+}
+
