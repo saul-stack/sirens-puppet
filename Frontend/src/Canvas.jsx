@@ -183,11 +183,8 @@ function Canvas({ users }) {
 
 
   const handleGuess = ((e) => {
-    console.log(e)
-    if (randomPrompt.toLowerCase() === guessInput.current.value.toLowerCase()){
-    }
+})
 
-  }) 
 
   return (
     <div>
@@ -218,7 +215,7 @@ function Canvas({ users }) {
          {player.guess && 
          <form method="post">
          <div>
-           <input type="text" placeholder="SwordBoat" name="guess" ref={guessInput}/>
+           <input type="text" placeholder="SwordBoat" name="guess"/>
            <button onClick={handleGuess} type="submit" name="guess">Guess</button>
           </div>
           </form>}
