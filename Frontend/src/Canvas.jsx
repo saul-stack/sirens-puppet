@@ -35,12 +35,13 @@ function Canvas() {
     context.moveTo(offsetX, offsetY);
     context.beginPath();
     setIsDrawing(true);
-    socket.emit("frontend_canvas_mouse_click", "hey from canvas fe");
+    socket.emit("frontend_canvas_mouse_click");
   };
 
-  const draw = ({ nativeEvent }) => {
+  const drawFE = ({ nativeEvent }) => {
     console.log(isDrawing, "<---is drawing");
     // if (!isDrawing) return;
+
     const { offsetX, offsetY } = nativeEvent;
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
@@ -58,45 +59,45 @@ function Canvas() {
   useEffect(() => {
     function onCavasMove(data) {
       // console.log(data);
-      mirrorDraw(data);
+      mirrorDrawBE(data);
     }
+
+    function onCanvasRotate() {
+  
+      let start = null;
+      const animate = (timestamp) => {
+        if (!start) start = timestamp;
+        const progress = timestamp - start;
+        const angle = (progress / 2000) * 360; // Rotate over 2 seconds
+        setRotationAngle(angle);
+        if (progress < 2000) {
+          requestAnimationFrame(animate);
+        } else {
+          // Reset rotation angle to 0 after rotation completes
+          setRotationAngle(0);
+        }
+      };
+      requestAnimationFrame(animate);
+    }
+  
+    socket.on("backend_canvas_rotate", onCanvasRotate);
 
     socket.on("backend_canvas_mouse_move", onCavasMove);
 
     return () => {
       socket.off("backend_canvas_mouse_move", onCavasMove);
-      // socket.off("backend_canvas_rotate", onCanvasRotate)
+      socket.off("backend_canvas_rotate", onCanvasRotate)
     };
   }, []);
 
-  function onCanvasRotate(data) {
-    console.log("rotated");
-    console.log(data);
 
-    let start = null;
-    const animate = (timestamp) => {
-      if (!start) start = timestamp;
-      const progress = timestamp - start;
-      const angle = (progress / 2000) * 360; // Rotate over 2 seconds
-      setRotationAngle(angle);
-      if (progress < 2000) {
-        requestAnimationFrame(animate);
-      } else {
-        // Reset rotation angle to 0 after rotation completes
-        setRotationAngle(0);
-      }
-    };
-    requestAnimationFrame(animate);
-  }
 
-  socket.on("backend_canvas_rotate", onCanvasRotate);
-
-  const mirrorDraw = (data) => {
+  const mirrorDrawBE = (data) => {
     // if (!isDrawing) return;
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
     context.lineTo(data.mouseX, data.mouseY);
-    // console.log("in mirrorDraw");
+    // console.log("in mirrorDrawBE");
     context.stroke();
   };
 
@@ -106,8 +107,7 @@ function Canvas() {
       const canvas = canvasRef.current;
       setDrawingCommands([...drawingCommands, canvas.toDataURL()]);
       socket.emit(
-        "frontend_canvas_mouse_release",
-        "canvas mouse release from fe"
+        "frontend_canvas_mouse_release"
       );
     }
   };
@@ -155,10 +155,6 @@ function Canvas() {
       }
     };
     requestAnimationFrame(animate);
-    socket.emit(
-      "frontend_canvas_mouse_release",
-      "canvas mouse release from fe"
-    );
     socket.emit("frontend_canvas_rotate");
   };
 
@@ -169,7 +165,7 @@ function Canvas() {
         width={1000}
         height={800}
         onMouseDown={startDrawing}
-        onMouseMove={draw}
+        onMouseMove={drawFE}
         onMouseUp={finishDrawing}
         onMouseOut={finishDrawing}
         style={{
