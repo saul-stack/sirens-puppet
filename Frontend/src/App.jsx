@@ -104,7 +104,7 @@ function App() {
         />
         <Route path="/rooms/:room_code/role" element={<GameRoom mousePos={mousePos} users={users} setUsers={setUsers} />} />
         <Route path="/rooms/:room_code/play" element={<ChatBox messages={messages} roomName={roomName}/>} />
-        <Route path="*" element={<ErrorHandler/>} />
+        <Route path="*" element={<ErrorHandler code={404}/>} />
       </Routes>
       </UserProvider>
     </>
