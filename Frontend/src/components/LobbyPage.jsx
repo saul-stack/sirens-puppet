@@ -11,7 +11,10 @@ export default function LobbyPage({ users, setUsers, roomName }) {
   const [chosenAvatar, setChosenAvatar] = useState(null);
   const { user } = useContext(UserContext);
   const { room_code } = useParams();
-
+  const [isEnoughPlayers, setIsEnoughPlayers] = useState(false)
+  const [isHovered, setIsHovered] = useState(false)
+  const [avatars, setAvatars] = useState([]);
+  const totalPlayers = users.length;
   console.log(roomName);
 
   const playerList = []
@@ -22,9 +25,7 @@ export default function LobbyPage({ users, setUsers, roomName }) {
     })
 
   const [players, setPlayers] = useState(() => [...playerList]);
-
-  const [avatars, setAvatars] = useState([]);
-
+  
   useEffect(() => {
     socket.emit("frontend_send_users", {room: roomName})
     getAvatars().then((data) => {
@@ -36,8 +37,13 @@ export default function LobbyPage({ users, setUsers, roomName }) {
     })
   }, []);
 
+  if(totalPlayers < 4){
+    setIsEnoughPlayers(false)
+  }else{
+    setIsEnoughPlayers(true)
+  }
+
   function handleStart() {
-    const totalPlayers = users.length;
     if (totalPlayers > 0) {
       const randomIndex = Math.floor(Math.random() * totalPlayers);
       setUsers((prevUsers) =>
@@ -49,7 +55,7 @@ export default function LobbyPage({ users, setUsers, roomName }) {
             user.isSaboteur = true
       }
     }
-    navigate(`/rooms/${room_code}/role`);
+    navigate(`/rooms/${room_code}/role`);     
   }
 
   return (
@@ -78,7 +84,8 @@ export default function LobbyPage({ users, setUsers, roomName }) {
         })}
         <br />
       </div>
-      <button onClick={handleStart}>Start Game!</button>
+      {!isEnoughPlayers && isHovered ? <p>Not enough players!</p> : null}
+      <button onClick={handleStart} onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => {setIsHovered(false)}} disabled={totalPlayers < 4}>Start Game!</button>
     </main>
     </>
   );
