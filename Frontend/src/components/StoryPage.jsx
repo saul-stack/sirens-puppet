@@ -10,25 +10,6 @@ export default function StoryPage({ roomName, username, setUsername, setRoomName
   let navigate = useNavigate();
   const [room, setRoom] = useState(null)
 
-  useEffect(() => {
-    function onJoin(data) {
-      // room = data.room;
-      console.log(data.name + " has joined the room " + data.room);
-      console.log(room);
-      needsEmit = true;
-
-      setRoomName(data.room);
-      setRoom(data.room)
-      // setUsers(() => [...data.users]);
-
-    }
-    socket.on("join-room", onJoin);
-
-    return () => {
-      socket.off("join-room", onJoin);
-    }
-  }, [navigate])
-
   function handleJoin() {
     socket.emit("frontend_request_existing_rooms_list");
     // user.username = username;
@@ -47,7 +28,7 @@ export default function StoryPage({ roomName, username, setUsername, setRoomName
   };
 
   useEffect(() => {
-    if (room !== null) {
+    if (roomName !== null) {
       navigate(`/rooms/${room}`);
     }
   }, [room, navigate]);

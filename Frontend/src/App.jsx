@@ -25,7 +25,7 @@ function App() {
 
   const [play, { stop }] = useSound(BattleShip, { volume: 0.05 });
 
-  const [roomName, setRoomName] = useState("");
+  const [roomName, setRoomName] = useState(null);
 
   const [username, setUsername] = useState("");
 
