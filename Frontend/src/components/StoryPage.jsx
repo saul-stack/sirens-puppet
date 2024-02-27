@@ -6,26 +6,42 @@ import socket from "./Utils/Socket";
 import Timer from "./Timer";
 
 export default function StoryPage({ roomName, username, setUsername }) {
+  const [inputError, setInputError] = useState(false)
   const { user } = useContext(UserContext);
   let navigate = useNavigate();
 
-  function handleJoin() {
-    socket.emit("frontend_request_existing_rooms_list");
+  function handleJoin(event) {
+    if(!username.length){
+      setInputError(true)
+      event.preventDefault()
+    } else {
+      setInputError(false)
+      socket.emit("frontend_request_existing_rooms_list");
     user.username = username;
     navigate("/rooms");
     // window.location.reload()
+    }
+    
   }
 
   const handleCreate = (event) => {
-    user.username = username;
-    event.preventDefault();
-    socket.emit("frontend_create_room", { name: username });
-    if (roomName !== "") {
+    if(!username.length){
+      setInputError(true)
+      event.preventDefault()
+    } else {
+      setInputError(false)
+      user.username = username;
+      event.preventDefault();
+      socket.emit("frontend_create_room", { name: username });
+      if (roomName !== "") {
       navigate(`/rooms/${roomName}`);
+      }
     }
+    
   };
 
   function handleInput(value) {
+    setInputError(false)
     setUsername(value);
   }
 
@@ -65,6 +81,7 @@ export default function StoryPage({ roomName, username, setUsername }) {
           </p>
         </div>
       </div>
+      {inputError ? <p className="error-message">Please enter a username</p> : null}
       <form>
         <label htmlFor="username">Enter Username</label>
         <br />

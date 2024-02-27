@@ -2,7 +2,6 @@ import { TfiFaceSad } from "react-icons/tfi";
 
 export default function ErrorHandler({code, msg}){
 
-
     return(
         <>
             <h2 className="error-message">Uh oh! <TfiFaceSad/></h2>
