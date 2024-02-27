@@ -5,25 +5,52 @@ import CandleBackground from "./CandleBackground";
 import socket from "./Utils/Socket";
 import Timer from "./Timer";
 
-export default function StoryPage({ roomName, username, setUsername }) {
+export default function StoryPage({ roomName, username, setUsername, setRoomName, needsEmit }) {
   const { user } = useContext(UserContext);
   let navigate = useNavigate();
+  const [room, setRoom] = useState(null)
+
+  useEffect(() => {
+    function onJoin(data) {
+      // room = data.room;
+      console.log(data.name + " has joined the room " + data.room);
+      console.log(room);
+      needsEmit = true;
+
+      setRoomName(data.room);
+      setRoom(data.room)
+      // setUsers(() => [...data.users]);
+
+    }
+    socket.on("join-room", onJoin);
+
+    return () => {
+      socket.off("join-room", onJoin);
+    }
+  }, [navigate])
 
   function handleJoin() {
     socket.emit("frontend_request_existing_rooms_list");
-    user.username = username;
+    // user.username = username;
     navigate("/rooms");
-    // window.location.reload()
+    window.location.reload()
   }
 
   const handleCreate = (event) => {
+    socket.emit("frontend_create_room", { name: username });
     user.username = username;
     event.preventDefault();
-    socket.emit("frontend_create_room", { name: username });
-    if (roomName !== "") {
-      navigate(`/rooms/${roomName}`);
-    }
+    console.log(room);
+    // if (room !== undefined) {
+    //   navigate(`/rooms/${room}`);
+    // }
   };
+
+  useEffect(() => {
+    if (room !== null) {
+      navigate(`/rooms/${room}`);
+    }
+  }, [room, navigate]);
 
   function handleInput(value) {
     setUsername(value);

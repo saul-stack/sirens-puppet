@@ -23,15 +23,15 @@ export default function SocketFunctions({
       setIsConnected(false);
     }
 
-    function onJoin(data) {
-      const room = data.room;
-      console.log(data.name + " has joined the room " + data.room);
+    // function onJoin(data) {
+    //   const room = data.room;
+    //   console.log(data.name + " has joined the room " + data.room);
 
-      needsEmit = true;
+    //   needsEmit = true;
 
-      setRoomName(data.room);
-      // setUsers(() => [...data.users]);
-    }
+    //   setRoomName(data.room);
+    //   // setUsers(() => [...data.users]);
+    // }
 
     function onLeave(data) {
       setLeft(data.name + " has left the room " + data.room);
@@ -76,7 +76,7 @@ export default function SocketFunctions({
 
     socket.on("connect", onConnect);
     socket.on("disconnect", onDisconnect);
-    socket.on("join-room", onJoin);
+    // socket.on("join-room", onJoin);
     socket.on("leave-room", onLeave);
     socket.on("backend_terminal_message", onCreate);
     socket.on("backend_send_users", onUsersList)
@@ -89,7 +89,7 @@ export default function SocketFunctions({
     return () => {
       socket.off("connect", onConnect);
       socket.off("disconnect", onDisconnect);
-      socket.off("join-room", onJoin);
+      // socket.off("join-room", onJoin);
       socket.off("leave-room", onLeave);
       socket.off("backend_terminal_message", onCreate);
       socket.off("send-message", onMessage);

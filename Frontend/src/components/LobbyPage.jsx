@@ -57,8 +57,10 @@ export default function LobbyPage({ users, setUsers, roomName }) {
     <main>
       <h2>{room_code}</h2>
       <PlayerCard key={user.username} player={user} />
-      {playerList.map((player) => {
-        if (player.username !== user.username) {
+      {console.log(users, '<<users')}
+      {console.log(playerList, '<<playerList')}
+      {users.map((player) => {
+        if (player !== user.username) {
           return <PlayerCard key={player.username} player={player} />;
         }
       })}

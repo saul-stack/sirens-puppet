@@ -5,12 +5,11 @@ import { useState } from "react";
 import socket from "./Utils/Socket";
 import { useEffect } from "react";
 
-export default function JoinRoom({username, needsEmit, roomArr, setRoomArr, users}) {
+export default function JoinRoom({username, needsEmit, roomArr, setRoomArr, users, setUsername}) {
     const { user } = useContext(UserContext);
   let navigate = useNavigate();
   const [roomCodeInput, setRoomCodeInput] = useState("");
   
-
   let rooms;
   useEffect(() => {
     function initialRooms(data) {
@@ -58,6 +57,10 @@ export default function JoinRoom({username, needsEmit, roomArr, setRoomArr, user
     navigate(`/rooms/${event.target.innerText}`)
   };
 
+  function handleInput(value) {
+    setUsername(value);
+  }
+
   return (
     <main className="room-container">
       {console.log(users)}
@@ -68,6 +71,17 @@ export default function JoinRoom({username, needsEmit, roomArr, setRoomArr, user
         </div>
       </div>
       <form className="room-button-container">
+
+      <label htmlFor="username">Enter Username</label>
+        <br />
+        <input
+          value={username}
+          onChange={(event) => handleInput(event.target.value)}
+          id="username"
+          type="text"
+          placeholder="Username"
+        />
+
         <label htmlFor="room-code"> Room Code: </label>
         <input
           id="room-code"
