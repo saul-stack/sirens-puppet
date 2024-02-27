@@ -47,8 +47,8 @@ function GameRoom(users, setUsers) {
   useEffect(() => {
     if (showRoundPage) {
       const roundPageTimer = setTimeout(() => {
-        pickTurn()
         setShowRoundPage(false);
+        pickTurn();
         setShowCanvasTestPage(true);
       }, roundBreakLength);
 
