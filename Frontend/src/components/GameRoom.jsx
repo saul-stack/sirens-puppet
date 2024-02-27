@@ -85,7 +85,11 @@ function GameRoom(users, setUsers) {
           {showPlayerDesignation && <PlayerDesignation />}
           {showRoundPage && <RoundPage round={round} setRound={setRound} />}
           {showCanvasTestPage && (
-            <CanvasTestPage users={users} setUsers={setUsers} />
+            <CanvasTestPage
+              timerCountdownSeconds={roundLength / 1000}
+              users={users}
+              setUsers={setUsers}
+            />
           )}
         </div>
       )}
