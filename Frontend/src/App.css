@@ -263,7 +263,12 @@ h3 {
   color: white;
 }
 
-.canvas {
+.canvas-container{
+  display: flex;
+  flex-direction: column;
+}
+
+.canvas-title {
   position: relative;
   top: 50%;
   left: 50%;
@@ -277,6 +282,7 @@ h3 {
   background-color: rgba(246, 220, 191, 0.5);
   padding: 10px;
 }
+
 
 .player-title {
   white-space: nowrap;
@@ -365,8 +371,7 @@ h3 {
   border: 5px solid lightseagreen;
   background-color: rgba(255, 255, 255, 0.2);
   box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.7);
-    margin: 10px; 
-
+  margin: 10px; 
 }
 
 .timer-display {
@@ -396,3 +401,10 @@ h3 {
   color: #b30000;
   font-weight: bold;
 }
+
+.drawPrompt{
+  position: absolute;
+  top: 3%;
+  right: 40%;
+}
+

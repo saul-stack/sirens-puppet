@@ -16,6 +16,7 @@ import GameRoom from "./components/GameRoom"
 import { UserProvider } from "./contexts/UserContext";
 import ErrorHandler from "./components/ErrorHandler";
 // import CanvasTestPage from './components/CanvasTestPage'
+import VotePage from "./components/VotePage";
 
 
 function App() {
@@ -105,6 +106,7 @@ function App() {
         <Route path="/rooms/:room_code/role" element={<GameRoom mousePos={mousePos} users={users} setUsers={setUsers} />} />
         <Route path="/rooms/:room_code/play" element={<ChatBox messages={messages} roomName={roomName}/>} />
         <Route path="*" element={<ErrorHandler code={404}/>} />
+        <Route path="/votePage" element={<VotePage />} />
       </Routes>
       </UserProvider>
     </>
