@@ -263,3 +263,16 @@ ul {
     opacity: 0.8;
   }
 }
+
+.blow-out {
+  animation: blowOut 1s forwards;
+}
+
+@keyframes blowOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}

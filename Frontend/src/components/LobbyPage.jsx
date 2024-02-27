@@ -9,7 +9,7 @@ import socket from "./Utils/Socket";
 export default function LobbyPage({ users, roomName }) {
   const navigate = useNavigate();
   const [chosenAvatar, setChosenAvatar] = useState(null);
-  const { user } = useContext(UserContext);
+  const { user, setIsSaboteur } = useContext(UserContext);
   const { room_code } = useParams();
 
   const playerList = []
@@ -20,12 +20,8 @@ export default function LobbyPage({ users, roomName }) {
       }
     })
 
-  console.log(users, '<<users');
-  console.log(playerList, '<<playerList');
-  console.log(roomName);
-
   const [players, setPlayers] = useState(() => [...playerList]);
-  console.log(players, '<<players');
+
 
   // const players = users
   const [avatars, setAvatars] = useState([]);
@@ -39,6 +35,17 @@ export default function LobbyPage({ users, roomName }) {
   }, []);
 
   function handleStart() {
+    const totalPlayers = players.length;
+    if (totalPlayers > 0) {
+      const randomIndex = Math.floor(Math.random() * totalPlayers);
+      setPlayers((prevUsers) =>
+        prevUsers.map((prevUser, index) =>
+          index === randomIndex ? { ...prevUser, isSaboteur: true } : prevUser
+        )
+      );
+  
+      setIsSaboteur(true);
+    }
     navigate(`/rooms/${room_code}/role`);
   }
 
@@ -48,7 +55,6 @@ export default function LobbyPage({ users, roomName }) {
       <h2>{room_code}</h2>
       <PlayerCard key={user.username} player={user} />
       {playerList.map((player) => {
-        {console.log(player, '<<player', user.username)}
         if (player.username !== user.username) {
           return <PlayerCard key={player.username} player={player} />;
         }

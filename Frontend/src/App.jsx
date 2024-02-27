@@ -13,6 +13,7 @@ import CandleBackground from "./components/CandleBackground";
 import SocketFunctions from "./components/SocketFunctions";
 import ChatBox from "./components/ChatBox"
 import GameRoom from "./components/GameRoom"
+import { UserProvider } from "./contexts/UserContext";
 // import CanvasTestPage from './components/CanvasTestPage'
 
 
@@ -48,6 +49,7 @@ function App() {
   }
   return (
     <>
+    <UserProvider>
       <SocketFunctions
         roomName={roomName}
         setRoomName={setRoomName}
@@ -56,8 +58,6 @@ function App() {
         setMessages={setMessages}
         setMousePos={setMousePos}
       />
-      {console.log(users)}
-
 
       <CandleBackground />
       <Mute
@@ -104,6 +104,7 @@ function App() {
         <Route path="/rooms/:room_code/role" element={<GameRoom mousePos={mousePos} />} />
         <Route path="/rooms/:room_code/play" element={<ChatBox messages={messages} roomName={roomName}/>} />
       </Routes>
+      </UserProvider>
     </>
   );
 }
