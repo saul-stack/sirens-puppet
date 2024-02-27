@@ -11,24 +11,24 @@ function GameRoom(users, setUsers) {
 
   const [round, setRound] = useState(0);
 
-  console.dir(users.users, 'users');
+  console.log(users, 'users');
 
   let drawTurn = -1
   let guessTurn = 0
   
-  const pickTurn = (users) => {
+  const pickTurn = () => {
     drawTurn++;
-    if (drawTurn === users.length) {
+    if (drawTurn === users.users.length) {
       drawTurn = 0;
     }
-    users.forEach((player, index) => {
+    users.users.forEach((player, index) => {
       index === drawTurn ? player.draw = true : player.draw = false;
     });
     guessTurn++;
-    if (guessTurn === users.length) {
+    if (guessTurn === users.users.length) {
       guessTurn = 0;
     }
-    users.forEach((player, index) => {
+    users.users.forEach((player, index) => {
       index === guessTurn ? player.guess = true : player.guess = false
     });
   };

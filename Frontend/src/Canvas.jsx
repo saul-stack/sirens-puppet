@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import socket from "./components/Utils/Socket";
 
-function Canvas(users, setUsers) {
+function Canvas({users}, setUsers) {
   const canvasRef = useRef(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [drawingCommands, setDrawingCommands] = useState([]);
@@ -10,9 +10,7 @@ function Canvas(users, setUsers) {
   const [mousePos, setMousePos] = useState({})
 
 
-  const currentDrawer = users.find((player) => player.draw)
-
-  console.log(currentDrawer);
+  const currentDrawer = users.users.find((player) => player.draw)
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -184,7 +182,7 @@ function Canvas(users, setUsers) {
         }}
       />
       <div>
-        {users.map((player) => {
+        {users.users.map((player) => {
           return (
          <div key={player.id}>
          {player.draw && <button onClick={handleReset}>Reset</button>}

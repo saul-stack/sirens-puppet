@@ -12,6 +12,8 @@ export default function LobbyPage({ users, setUsers, roomName }) {
   const { user } = useContext(UserContext);
   const { room_code } = useParams();
 
+  console.log(roomName);
+
   const playerList = []
     users.map((user) => {
       if(!playerList.includes(user)){
