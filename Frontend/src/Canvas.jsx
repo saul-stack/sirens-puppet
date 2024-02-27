@@ -96,11 +96,11 @@ function Canvas({users}) {
 
 
   const mirrorDrawBE = (data) => {
+    console.log('inside mirror draw');
     // if (!isDrawing) return;
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
     context.lineTo(data.mouseX, data.mouseY);
-    // console.log("in mirrorDrawBE");
     context.stroke();
   };
 
