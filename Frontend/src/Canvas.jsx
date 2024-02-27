@@ -1,13 +1,15 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, useContext } from "react";
 import socket from "./components/Utils/Socket";
+import { UserContext } from "./contexts/UserContext";
 
-function Canvas() {
+function Canvas({users}) {
   const canvasRef = useRef(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [drawingCommands, setDrawingCommands] = useState([]);
   const [backgroundImage, setBackgroundImage] = useState(null);
   const [rotationAngle, setRotationAngle] = useState(0); // State for rotation angle
-  const [mousePos, setMousePos] = useState({});
+  const {user} = useContext(UserContext)
+  const currentDrawer = "test"
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -39,20 +41,21 @@ function Canvas() {
   };
 
   const drawFE = ({ nativeEvent }) => {
-    console.log(isDrawing, "<---is drawing");
-    // if (!isDrawing) return;
-
-    const { offsetX, offsetY } = nativeEvent;
-    const canvas = canvasRef.current;
-    const context = canvas.getContext("2d");
-    context.lineTo(offsetX, offsetY);
-
-    if (isDrawing) {
-      context.stroke();
-      socket.emit("frontend_canvas_mouse_move", {
-        mouseX: offsetX,
-        mouseY: offsetY,
-      });
+    console.log(user.username);
+    if(user.username === currentDrawer){
+      
+      const { offsetX, offsetY } = nativeEvent;
+      const canvas = canvasRef.current;
+      const context = canvas.getContext("2d");
+      context.lineTo(offsetX, offsetY);
+      
+      if (isDrawing) {
+        context.stroke();
+        socket.emit("frontend_canvas_mouse_move", {
+          mouseX: offsetX,
+          mouseY: offsetY,
+        });
+      }
     }
   };
 
