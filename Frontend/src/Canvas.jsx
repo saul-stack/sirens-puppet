@@ -44,13 +44,13 @@ function Canvas({ users }) {
 
   const drawFE = ({ nativeEvent }) => {
     console.log(user.username);
+    if (isDrawing) {
 
     const { offsetX, offsetY } = nativeEvent;
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
     context.lineTo(offsetX, offsetY);
 
-    if (isDrawing) {
       if (user.username === currentDrawer) {
         context.stroke();
         socket.emit("frontend_canvas_mouse_move", {
