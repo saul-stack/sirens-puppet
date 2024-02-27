@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState, useContext } from "react";
 import socket from "./components/Utils/Socket";
 import { getPictonaryPrompts } from "./components/Utils/utils";
+import CandleBackground from "./components/CandleBackground";
 
 function Canvas({ users }) {
   const canvasRef = useRef(null);
@@ -11,10 +12,8 @@ function Canvas({ users }) {
   const [rotationAngle, setRotationAngle] = useState(0);
   const [picturePrompts, setpicturePrompts] = useState([]);
 
-
-  const currentDrawer = users.users.find((player) => player.draw)
-  const currentGuesser = users.users.find((player) => player.guess)
-
+  const currentDrawer = users.users.find((player) => player.draw);
+  const currentGuesser = users.users.find((player) => player.guess);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -35,7 +34,6 @@ function Canvas({ users }) {
     };
   }, []);
 
- 
   const startDrawing = ({ nativeEvent }) => {
     const { offsetX, offsetY } = nativeEvent;
     const canvas = canvasRef.current;
@@ -50,10 +48,10 @@ function Canvas({ users }) {
 
   const drawFE = ({ nativeEvent }) => {
     if (isDrawing) {
-    const { offsetX, offsetY } = nativeEvent;
-    const canvas = canvasRef.current;
-    const context = canvas.getContext("2d");
-    context.lineTo(offsetX, offsetY);
+      const { offsetX, offsetY } = nativeEvent;
+      const canvas = canvasRef.current;
+      const context = canvas.getContext("2d");
+      context.lineTo(offsetX, offsetY);
 
       if (currentDrawer) {
         context.stroke();
@@ -108,7 +106,6 @@ function Canvas({ users }) {
     context.stroke();
   };
 
-
   const finishDrawing = () => {
     if (isDrawing) {
       setIsDrawing(false);
@@ -118,13 +115,12 @@ function Canvas({ users }) {
     }
   };
 
-
   useEffect(() => {
     getPictonaryPrompts().then((data) => {
-      const { PictionaryPrompts } = data
-      setpicturePrompts(PictionaryPrompts)
-    })
-  }, [])
+      const { PictionaryPrompts } = data;
+      setpicturePrompts(PictionaryPrompts);
+    });
+  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -177,27 +173,27 @@ function Canvas({ users }) {
     return picturePrompts[randomIndex];
   }
 
-  const randomPrompt = getRandomPrompt()
+  const randomPrompt = getRandomPrompt();
 
-
-  const handleGuess = ((e) => {
-})
-
+  const handleGuess = (e) => {};
 
   return (
     <div>
-       <h1> {currentDrawer[0]} is Drawing...  {currentGuesser[0]} is Guessing...</h1> 
+      <h1>
+        {" "}
+        {currentDrawer[0]} is Drawing... {currentGuesser[0]} is Guessing...
+      </h1>
+      <CandleBackground />
 
-      <canvas className="draw-canvas"
+      <canvas
+        className="draw-canvas"
         ref={canvasRef}
         width={1000}
         height={800}
-
         onMouseDown={(e) => currentDrawer && startDrawing(e)}
         onMouseMove={(e) => currentDrawer && drawFE(e)}
         onMouseUp={() => currentDrawer && finishDrawing()}
         onMouseOut={() => currentDrawer && finishDrawing()}
-
         style={{
           backgroundColor: "white",
           transform: `rotate(${rotationAngle}deg)`,
@@ -207,28 +203,30 @@ function Canvas({ users }) {
       <div>
         {users.users.map((player) => {
           return (
-         <div key={player.id}>
-         {player.draw && <h1 className = 'drawPrompt'>Draw a {randomPrompt}</h1>}
-         {player.draw && <button onClick={handleReset}>Reset</button>}
-         {player.guess && 
-         <form method="post">
-         <div>
-           <input type="text" placeholder="SwordBoat" name="guess"/>
-           <button onClick={handleGuess} type="submit" name="guess">Guess</button>
-          </div>
-          </form>}
-         {player.isSaboteur && (
-           <button onClick={rotateCanvas}>Rotate</button>
-         )}
-       </div>
-         )
-        })
-        }
+            <div key={player.id}>
+              {player.draw && (
+                <h1 className="drawPrompt">Draw a {randomPrompt}</h1>
+              )}
+              {player.draw && <button onClick={handleReset}>Reset</button>}
+              {player.guess && (
+                <form method="post">
+                  <div>
+                    <input type="text" placeholder="SwordBoat" name="guess" />
+                    <button onClick={handleGuess} type="submit" name="guess">
+                      Guess
+                    </button>
+                  </div>
+                </form>
+              )}
+              {player.isSaboteur && (
+                <button onClick={rotateCanvas}>Rotate</button>
+              )}
+            </div>
+          );
+        })}
       </div>
     </div>
   );
 }
-
-
 
 export default Canvas;
