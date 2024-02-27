@@ -5,16 +5,50 @@ import CandleBackground from "./CandleBackground";
 import socket from "./Utils/Socket";
 import Timer from "./Timer";
 
-export default function StoryPage({ roomName, username, setUsername, setRoomName, needsEmit }) {
+export default function StoryPage({
+  roomName,
+  username,
+  setUsername,
+  setRoomName,
+  needsEmit,
+}) {
   const { user } = useContext(UserContext);
   let navigate = useNavigate();
-  const [room, setRoom] = useState(null)
+  const [room, setRoom] = useState(null);
 
+  
+  useEffect(() => {
+    function onJoin(data) {
+      const room = data.room;
+      console.log(data.name + " has joined the room " + data.room);
+      console.log(room);
+      needsEmit = true;
+
+      setRoomName(data.room);
+      // setRoom(data.room)
+      // setUsers(() => [...data.users]);
+    }
+
+    socket.on("join-room", onJoin);
+
+    return () => {
+      socket.off("join-room", onJoin);
+      
+    }
+  }, [])
+  
+  // useEffect(() => {
+  //   if (roomName !== null) {
+  //     navigate(`/rooms/${roomName}`);
+  //     window.location.reload()
+  //   }
+  // }, [room, navigate]);
+  
   function handleJoin() {
     socket.emit("frontend_request_existing_rooms_list");
     // user.username = username;
     navigate("/rooms");
-    window.location.reload()
+    window.location.reload();
   }
 
   const handleCreate = (event) => {
@@ -22,16 +56,19 @@ export default function StoryPage({ roomName, username, setUsername, setRoomName
     user.username = username;
     event.preventDefault();
     console.log(room);
-    // if (room !== undefined) {
-    //   navigate(`/rooms/${room}`);
-    // }
-  };
 
-  useEffect(() => {
-    if (roomName !== null) {
-      navigate(`/rooms/${roomName}`);
-    }
-  }, [room, navigate]);
+    // window.location.reload()
+    // if (roomName !== null) {
+    //   navigate(`/rooms/${roomName}`);
+    // }
+    // if (username !== "") {
+    //   localStorage.setItem("username", username);
+    //   console.log(localStorage.getItem("username"));
+    // }
+    // window.location.reload();
+    // navigate(`/rooms/${roomName}`);
+
+  };
 
   function handleInput(value) {
     setUsername(value);
@@ -56,6 +93,8 @@ export default function StoryPage({ roomName, username, setUsername, setRoomName
 
   return (
     <div className="container">
+      {console.log(roomName)}
+      {roomName ? navigate(`/rooms/${roomName}`) : null}
       <div className="parent">
         <img src={"../../images/scroll.png"} className="story-scroll" />
         <div className="child">
