@@ -36,8 +36,8 @@ function Canvas({ users }) {
     const context = canvas.getContext("2d");
     context.moveTo(offsetX, offsetY);
     context.beginPath();
-    setIsDrawing(true);
     if (user.username === currentDrawer) {
+      setIsDrawing(true);
       socket.emit("frontend_canvas_mouse_click");
     }
   };
