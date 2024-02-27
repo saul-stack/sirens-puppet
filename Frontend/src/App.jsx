@@ -14,6 +14,7 @@ import SocketFunctions from "./components/SocketFunctions";
 import ChatBox from "./components/ChatBox"
 import GameRoom from "./components/GameRoom"
 import { UserProvider } from "./contexts/UserContext";
+import ErrorHandler from "./components/ErrorHandler";
 // import CanvasTestPage from './components/CanvasTestPage'
 
 
@@ -88,7 +89,7 @@ function App() {
             />
           }
         />
-        <Route path="/rooms/:room_code" element={<LobbyPage users={users} roomName={roomName} />} />
+        <Route path="/rooms/:room_code" element={<LobbyPage users={users} roomName={roomName}  setUsers={setUsers} />} />
         <Route
           path="/rooms"
           element={
@@ -101,8 +102,9 @@ function App() {
             />
           }
         />
-        <Route path="/rooms/:room_code/role" element={<GameRoom mousePos={mousePos} />} />
+        <Route path="/rooms/:room_code/role" element={<GameRoom mousePos={mousePos} users={users} setUsers={setUsers} />} />
         <Route path="/rooms/:room_code/play" element={<ChatBox messages={messages} roomName={roomName}/>} />
+        <Route path="*" element={<ErrorHandler code={404}/>} />
       </Routes>
       </UserProvider>
     </>

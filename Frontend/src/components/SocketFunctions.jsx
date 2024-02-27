@@ -44,7 +44,7 @@ export default function SocketFunctions({
     }
 
     function onUsersList(data){
-      setUsers([...data])
+      setUsers((prevUsers) => [...prevUsers, data]);
     }
 
     function onMessage(data) {
