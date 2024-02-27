@@ -22,7 +22,7 @@ function VotingPage() {
   // Function to handle voting
   const handleVote = (index) => {
     if (votedIndex === null) {
-      setVotedIndex(index);
+      setVotedIndex(index); 
     }
   };
 
