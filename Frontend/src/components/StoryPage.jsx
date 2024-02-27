@@ -14,8 +14,6 @@ export default function StoryPage({
 }) {
   const { user } = useContext(UserContext);
   let navigate = useNavigate();
-  const [room, setRoom] = useState(null);
-
   
   useEffect(() => {
     function onJoin(data) {
@@ -33,7 +31,6 @@ export default function StoryPage({
 
     return () => {
       socket.off("join-room", onJoin);
-      
     }
   }, [])
   
@@ -55,19 +52,6 @@ export default function StoryPage({
     socket.emit("frontend_create_room", { name: username });
     user.username = username;
     event.preventDefault();
-    console.log(room);
-
-    // window.location.reload()
-    // if (roomName !== null) {
-    //   navigate(`/rooms/${roomName}`);
-    // }
-    // if (username !== "") {
-    //   localStorage.setItem("username", username);
-    //   console.log(localStorage.getItem("username"));
-    // }
-    // window.location.reload();
-    // navigate(`/rooms/${roomName}`);
-
   };
 
   function handleInput(value) {

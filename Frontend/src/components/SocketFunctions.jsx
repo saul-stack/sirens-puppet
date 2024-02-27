@@ -9,7 +9,7 @@ export default function SocketFunctions({
   setUsers,
   needsEmit,
   setMessages,
-  setMousePos,
+  users
 }) {
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [left, setLeft] = useState([]);
@@ -28,11 +28,10 @@ export default function SocketFunctions({
     // function onJoin(data) {
     //   const room = data.room;
     //   console.log(data.name + " has joined the room " + data.room);
-    //   console.log(room);
+
     //   needsEmit = true;
 
     //   setRoomName(data.room);
-    //   // setRoom(data.room)
     //   // setUsers(() => [...data.users]);
     // }
 
@@ -46,16 +45,9 @@ export default function SocketFunctions({
       setRoomName(data);
     }
 
-    function onUsersList(data) {
-      setUsers((prevUsers) => [...prevUsers, data])
-      // if (data === "") {
-      //   setUsers((prevUsers) => [
-      //     ...prevUsers,
-      //     localStorage.getItem("username"),
-      //   ]);
-      // } else {
-      //   setUsers((prevUsers) => [...prevUsers, data]);
-      // }
+    function onUsersList(data){
+      setUsers((prevUsers) => [...prevUsers, data]);
+      console.log(users);
     }
 
     function onMessage(data) {

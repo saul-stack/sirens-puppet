@@ -47,8 +47,8 @@ export default function JoinRoom({username, needsEmit, roomArr, setRoomArr, user
   const handleRoomClick = (event) => {
     event.preventDefault();
     user.username = username
-    // console.log(usernameInput);
-    console.log(event.target.value);
+    console.log(username);
+    console.log(event.target.innerText);
     console.log("clicked");
     socket.emit("frontend_join_room", {
       name: username,
@@ -94,7 +94,6 @@ export default function JoinRoom({username, needsEmit, roomArr, setRoomArr, user
         <ul>
         {roomArr !== 0 &&
           roomArr.map((room) => {
-            console.log(room, "<<room");
             return (
               <button onClick={handleRoomClick} key={room}>
                 {room}
