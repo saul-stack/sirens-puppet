@@ -10,7 +10,6 @@ import Timer from "./Timer";
 export default function LobbyPage({ users, setUsers, roomName }) {
 
   const {usersArray, setUsersArray} = useContext(UserContext)
-  
   const minimumPlayers = 1;
 
   const navigate = useNavigate();
@@ -63,6 +62,7 @@ export default function LobbyPage({ users, setUsers, roomName }) {
       if (playerList[randomIndex].username === user.username) {
         user.isSaboteur = true;
       }
+
     if(!usersArray.includes(user)){
     setUsersArray((currentUsersArray) => {
       return [...currentUsersArray, user]
