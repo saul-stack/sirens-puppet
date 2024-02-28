@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { UserContext } from "../contexts/UserContext";
 import PlayerDesignation from "./PlayerDesignation";
 import RoundPage from "./RoundPage";
 import CanvasTestPage from "./CanvasTestPage";
@@ -17,28 +18,34 @@ function GameRoom(users, setUsers) {
   const [showRoundPage, setShowRoundPage] = useState(false);
   const [showCanvasTestPage, setShowCanvasTestPage] = useState(false);
   const [gameOver, setGameOver] = useState(false);
+  const { user } = useContext(UserContext);
 
   const [round, setRound] = useState(0);
+
+  console.log(users.users, '<users')
 
   let drawTurn = -1;
   let guessTurn = 0;
 
   const pickTurn = () => {
     drawTurn++;
+    guessTurn++;
     if (drawTurn === users.users.length) {
       drawTurn = 0;
     }
-    users.users.forEach((player, index) => {
-      index === drawTurn ? (player.draw = true) : (player.draw = false);
-    });
-    guessTurn++;
+    const currentDraw = users.users[0][drawTurn]
+    console.log(currentDraw, 'currentDraw');
+    currentDraw === user.username ? user.draw = true : user.draw = false
     if (guessTurn === users.users.length) {
       guessTurn = 0;
     }
-    users.users.forEach((player, index) => {
-      index === guessTurn ? (player.guess = true) : (player.guess = false);
-    });
-  };
+    const currentGuess = users.users[0][guessTurn]
+    console.log(currentGuess, 'currentGuess');
+    currentGuess === user.username ? user.guess = true : user.guess = false
+  }; 
+
+
+  console.log(user, 'userUpdated ');
 
   let playerDesignationLength = 3000;
   let roundLength = 5000;
@@ -57,11 +64,7 @@ function GameRoom(users, setUsers) {
 
   useEffect(() => {
     if (showRoundPage) {
-      pickTurn();
-      console.log(round + 1, "<--currentRound");
-      console.log(numberOfRounds, "<--numberOfRounds");
-      console.log(gameOver, "<--gameOver, round > numberOfRounds");
-
+        pickTurn()
       if (round + 1 > numberOfRounds) setGameOver(true);
       else {
         const roundPageTimer = setTimeout(() => {

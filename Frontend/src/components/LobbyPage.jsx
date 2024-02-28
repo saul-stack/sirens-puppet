@@ -8,6 +8,7 @@ import socket from "./Utils/Socket";
 import Timer from "./Timer";
 
 export default function LobbyPage({ users, setUsers, roomName }) {
+  
   const minimumPlayers = 1;
 
   const navigate = useNavigate();
@@ -16,8 +17,6 @@ export default function LobbyPage({ users, setUsers, roomName }) {
   const { room_code } = useParams();
   const [avatars, setAvatars] = useState([]);
 
-  console.log(room_code);
-
   const playerList = [];
   
   users.flat().map((user) => {
@@ -25,9 +24,9 @@ export default function LobbyPage({ users, setUsers, roomName }) {
       playerList.push({ username: user });
     }
   });
-  console.log(users, '<<users');
 
-  console.log(playerList, '<<playerList');
+
+  console.log(users, '<<users');
 
   const totalPlayers = playerList.length;
 
@@ -55,21 +54,19 @@ export default function LobbyPage({ users, setUsers, roomName }) {
     socket.on('backend_start_game', onStartGame)
   }, []);
 
+  const [saboteur, setSaboteur] = useState()
+
   function handleStart() {
     if (totalPlayers > 0) {
       const randomIndex = Math.floor(Math.random() * totalPlayers);
-      setUsers((prevUsers) =>
-        prevUsers.map((prevUser, index) =>
-          index === randomIndex ? { ...prevUser, isSaboteur: true } : prevUser
-        )
-      );
-      if (users[randomIndex].username === user.username) {
+      setSaboteur(playerList[randomIndex].username); 
+      if (playerList[randomIndex] === user.username) {
         user.isSaboteur = true;
       }
     }
     socket.emit("frontend_start_game")
   }
-
+ 
   return (
     <>
       <main
