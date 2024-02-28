@@ -13,6 +13,7 @@ import ChatBox from "./components/ChatBox";
 import GameRoom from "./components/GameRoom";
 import { UserProvider } from "./contexts/UserContext";
 import ErrorHandler from "./components/ErrorHandler";
+import WalkThePlank from "./components/WalkThePlank";
 // import CanvasTestPage from './components/CanvasTestPage'
 
 function App() {
@@ -120,6 +121,8 @@ function App() {
             element={<ChatBox messages={messages} roomName={roomName} />}
           />
           <Route path="*" element={<ErrorHandler code={404} />} />
+
+          <Route path="/walkThePlankTest" element={<WalkThePlank />} />
         </Routes>
       </UserProvider>
     </>
