@@ -46,6 +46,7 @@ export default function StoryPage({
   };
 
   function handleInput(value) {
+    setInputError(false)
     setUsername(value);
   }
   function handleSubmit(event) {
