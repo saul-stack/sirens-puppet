@@ -23,6 +23,7 @@ function GameRoom(users, setUsers) {
 
   console.log(users.users, '<users')
 
+
   let drawTurn = -1;
   let guessTurn = 0;
 
@@ -32,13 +33,13 @@ function GameRoom(users, setUsers) {
     if (drawTurn === users.users.length) {
       drawTurn = 0;
     }
-    const currentDraw = users.users[0][drawTurn]
+    const currentDraw = users.users[drawTurn][drawTurn]
     console.log(currentDraw, 'currentDraw');
     currentDraw === user.username ? user.draw = true : user.draw = false
     if (guessTurn === users.users.length) {
       guessTurn = 0;
     }
-    const currentGuess = users.users[0][guessTurn]
+    const currentGuess = users.users[guessTurn][guessTurn]
     console.log(currentGuess, 'currentGuess');
     currentGuess === user.username ? user.guess = true : user.guess = false
   }; 
