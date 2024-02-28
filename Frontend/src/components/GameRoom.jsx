@@ -33,6 +33,7 @@ function GameRoom(users, setUsers) {
     if (drawTurn === users.users.length) {
       drawTurn = 0;
     }
+    console.log(users.users[drawTurn][drawTurn], 'drawturn');
     const currentDraw = users.users[drawTurn][drawTurn]
     console.log(currentDraw, 'currentDraw');
     currentDraw === user.username ? user.draw = true : user.draw = false
