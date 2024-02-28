@@ -1,13 +1,39 @@
 import Canvas from "../Canvas";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { getPictonaryPrompts } from "./Utils/utils";
+import { UserContext } from "../contexts/UserContext";
 
 function CanvasTestPage({ mousePos, users, setUsers, timerCountdownSeconds }) {
+
+  const { user } = useContext(UserContext)
+
+  let drawTurn = -1;
+  let guessTurn = 0;
+
+  const pickTurn = () => {
+    drawTurn++;
+    guessTurn++;
+    if (drawTurn === users.users.length) {
+      drawTurn = 0;
+    }
+    console.log(users.users[drawTurn][drawTurn], 'drawturn');
+    const currentDraw = users.users[drawTurn]
+    console.log(currentDraw, 'currentDraw');
+    currentDraw === user.username ? user.draw = true : user.draw = false
+    if (guessTurn === users.users.length) {
+      guessTurn = 0;
+    }
+    const currentGuess = users.users[guessTurn]
+    console.log(currentGuess, 'currentGuess');
+    currentGuess === user.username ? user.guess = true : user.guess = false
+  }; 
+
 
 
   const [picturePrompts, setpicturePrompts] = useState([]);
 
   useEffect(() => {
+    pickTurn()
     getPictonaryPrompts().then((data) => {
       const { PictionaryPrompts } = data
       setpicturePrompts(PictionaryPrompts)

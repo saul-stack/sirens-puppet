@@ -11,59 +11,65 @@ import { useNavigate } from "react-router-dom";
 function GameRoom(users, setUsers) {
   const navigate = useNavigate;
   let teamLives = useContext(LivesContext);
-  console.log(teamLives.lives, "<----team Lives");
+  // console.log(teamLives.lives, "<----team Lives");
 
   const [showPlayerDesignation, setShowPlayerDesignation] = useState(true);
   const [showRoundPage, setShowRoundPage] = useState(false);
   const [showCanvasTestPage, setShowCanvasTestPage] = useState(false);
   const [gameOver, setGameOver] = useState(false);
   const { user } = useContext(UserContext);
+  const {usersArray} = useContext(UserContext)
+  const [drawTurn, setDrawTurn] = useState(0)
+  const [guessTurn, setGuessTurn] = useState(1)
 
   const [round, setRound] = useState(0);
 
-  console.log(users.users, '<users')
 
-  let drawTurn = -1;
-  let guessTurn = 0;
+  console.log(usersArray, '!!!!!useersArr!!!!!!');
+
+  // let drawTurn = -1;
+  // let guessTurn = 0;
 
   const pickTurn = () => {
-    drawTurn++;
-    guessTurn++;
-    if (drawTurn === users.users.length) {
-      drawTurn = 0;
+    if (drawTurn > users.users.length) {
+      setDrawTurn(0)
     }
+    
+    console.log(drawTurn, '<<drawTurn');
     const currentDraw = users.users[0][drawTurn]
-    console.log(currentDraw, 'currentDraw');
+    
     currentDraw === user.username ? user.draw = true : user.draw = false
-    if (guessTurn === users.users.length) {
-      guessTurn = 0;
+    if (guessTurn > users.users.length) {
+      setGuessTurn(0)
     }
+    console.log(guessTurn, '<<guessturn');
     const currentGuess = users.users[0][guessTurn]
-    console.log(currentGuess, 'currentGuess');
     currentGuess === user.username ? user.guess = true : user.guess = false
   }; 
-
-
+  
+  
   console.log(user, 'userUpdated ');
-
+  
   let playerDesignationLength = 3000;
   let roundLength = 5000;
   let roundBreakLength = 2000;
-
+  
   let numberOfRounds = 3;
-
+  
   useEffect(() => {
     const playerDesignationTimer = setTimeout(() => {
       setShowPlayerDesignation(false);
       setShowRoundPage(true);
     }, playerDesignationLength);
-
+    
     return () => clearTimeout(playerDesignationTimer);
   }, []);
-
+  
   useEffect(() => {
     if (showRoundPage) {
-        pickTurn()
+      setDrawTurn((prevTurn) => (prevTurn + 1))
+      setGuessTurn((prevTurn) => (prevTurn + 1))
+      pickTurn()
       if (round + 1 > numberOfRounds) setGameOver(true);
       else {
         const roundPageTimer = setTimeout(() => {

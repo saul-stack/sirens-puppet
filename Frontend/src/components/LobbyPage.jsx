@@ -8,6 +8,7 @@ import socket from "./Utils/Socket";
 import Timer from "./Timer";
 
 export default function LobbyPage({ users, setUsers, roomName }) {
+
   const {usersArray, setUsersArray} = useContext(UserContext)
   const minimumPlayers = 1;
 
@@ -25,8 +26,6 @@ export default function LobbyPage({ users, setUsers, roomName }) {
     }
   });
 
-
-  console.log(users, '<<users');
 
   const totalPlayers = playerList.length;
 
@@ -63,12 +62,13 @@ export default function LobbyPage({ users, setUsers, roomName }) {
       if (playerList[randomIndex].username === user.username) {
         user.isSaboteur = true;
       }
-      if(!usersArray.includes(user)){
-      setUsersArray((currentUsersArray) => {
-        return [...currentUsersArray, user]
-      })
+
+    if(!usersArray.includes(user)){
+    setUsersArray((currentUsersArray) => {
+      return [...currentUsersArray, user]
+    })
     }
-    }
+  }
     socket.emit("frontend_start_game")
   }
  
@@ -88,7 +88,7 @@ export default function LobbyPage({ users, setUsers, roomName }) {
         <PlayerCard key={user.username} player={user} />
         {playerList.map((player) => {
           if (player.username !== user.username) {
-            return <PlayerCard key={player.username} player={player} />;
+            return <PlayerCard key={player.username} player={player}/>;
           }
         })}
         <div className="avatar-buttons">
