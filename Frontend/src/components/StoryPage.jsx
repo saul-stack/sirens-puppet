@@ -114,6 +114,7 @@ export default function StoryPage({
               type="text"
               placeholder="Username"
             />
+            {inputError && <p className="error-message">Please enter valid username</p>}
             <button onClick={handleSubmit}>Submit</button>
           </>
         ) }
