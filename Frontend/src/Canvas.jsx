@@ -43,7 +43,7 @@ function Canvas({ users, randomPrompt, hiddenWord, timerCountdownSeconds }) {
     const context = canvas.getContext("2d");
     context.moveTo(offsetX, offsetY);
     context.beginPath();
-    if (currentDrawer[0] === user.username) {
+    if (user.draw) {
       setIsDrawing(true);
       socket.emit("frontend_canvas_mouse_click");
     }
@@ -56,7 +56,7 @@ function Canvas({ users, randomPrompt, hiddenWord, timerCountdownSeconds }) {
       const context = canvas.getContext("2d");
       context.lineTo(offsetX, offsetY);
 
-      if (currentDrawer[0] === user.username) {
+      if (user.draw) {
         context.stroke();
         socket.emit("frontend_canvas_mouse_move", {
           mouseX: offsetX,
@@ -100,7 +100,7 @@ function Canvas({ users, randomPrompt, hiddenWord, timerCountdownSeconds }) {
   }, []);
 
   const mirrorDrawBE = (data) => {
-    if (user.username !== currentDrawer) {
+    if (!user.draw) {
       console.log("inside mirror draw");
       // if (!isDrawing) return;
       const canvas = canvasRef.current;
