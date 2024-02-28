@@ -59,8 +59,8 @@ export default function LobbyPage({ users, setUsers, roomName }) {
   function handleStart() {
     if (totalPlayers > 0) {
       const randomIndex = Math.floor(Math.random() * totalPlayers);
-      setSaboteur(playerList[randomIndex].username); 
-      if (playerList[randomIndex] === user.username) {
+      setSaboteur(playerList[randomIndex]); 
+      if (playerList[randomIndex].username === user.username) {
         user.isSaboteur = true;
       }
     }
