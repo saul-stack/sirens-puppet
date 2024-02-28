@@ -91,17 +91,24 @@ export default function JoinRoom({username, needsEmit, roomArr, setRoomArr, user
           onChange={(event) => setRoomCodeInput(event.target.value)}
         />
         <button onClick={handleJoin}>Join Room</button>
-        <ul>
-        {roomArr !== 0 &&
-          roomArr.map((room) => {
-            return (
-              <button onClick={handleRoomClick} key={room}>
-                {room}
-              </button>
-            );
-          })}
-      </ul>
-      </form>
+
+</form>
+<ul>
+  {roomArr !== 0 &&
+    roomArr.map((room) => {
+      console.log(room, "<<room");
+      return (
+        <li key={room}>
+          <span>{room}</span>
+          <button className="room-select-button" onClick={handleRoomClick}>
+            Select
+          </button>
+        </li>
+      );
+    })}
+</ul>
+      
+
     </main>
   );
 }
