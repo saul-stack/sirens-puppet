@@ -372,10 +372,12 @@ def rotate():
     # sys.stdout.flush() 
     socketio.emit('backend_canvas_rotate')
 
+
 @socketio.on('frontend_start_game')
 def start_game():
     print("start game from frontend")
     sys.stdout.flush()
+
     socketio.emit("backend_start_game")
 
 if __name__ == '__main__':
