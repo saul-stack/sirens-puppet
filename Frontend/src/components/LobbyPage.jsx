@@ -19,6 +19,7 @@ export default function LobbyPage({ users, setUsers, roomName }) {
   console.log(room_code);
 
   const playerList = [];
+  console.log(users);
   users.flat().map((user) => {
     if (!playerList.some((player) => player.username === user)) {
       playerList.push({ username: user });

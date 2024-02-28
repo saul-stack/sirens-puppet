@@ -107,6 +107,7 @@ function App() {
                 setRoomArr={setRoomArr}
                 users={users}
                 setUsername={setUsername}
+                setRoomName={setRoomName}
               />
             }
           />

@@ -21,7 +21,7 @@ export default function StoryPage({
     function onJoin(data) {
       const room = data.room;
       console.log(data.name + " has joined the room " + data.room);
-      console.log(room);
+      console.log(data);
       needsEmit = true;
 
       setRoomName(data.room);

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import socket from "./Utils/Socket";
 import StoryPage from "./StoryPage";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function SocketFunctions({
   roomName,
@@ -15,6 +15,7 @@ export default function SocketFunctions({
   const [left, setLeft] = useState([]);
   const [usernameInput, setUsernameInput] = useState("");
   const navigate = useNavigate();
+  const {room_code} = useParams()
 
   useEffect(() => {
     function onConnect() {
@@ -46,8 +47,17 @@ export default function SocketFunctions({
     }
 
     function onUsersList(data){
-      setUsers((prevUsers) => [...prevUsers, data]);
-      console.log(users);
+      console.log(data);
+      newData = {}
+      users.map((roomsAdUsers) => {
+        if(roomsAdUsers.room === data.room){
+          roomsAdUsers.users = 
+        }
+      })
+      setUsers((prevData) => [...prevData, data])
+      // console.log(users[users.length -1 ]);
+      // setUsers((prevUsers) => [...prevUsers, data.flat()]);
+      // console.log(users);
     }
 
     function onMessage(data) {
