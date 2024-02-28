@@ -5,7 +5,7 @@ import Timer from "./components/Timer";
 import { LivesContext } from "./contexts/LivesContext";
 import { UserContext } from "./contexts/UserContext";
 
-function Canvas({ users, randomPrompt, hiddenWord, timerCountdownSeconds }) {
+function Canvas({ users, randomPrompt, hiddenWord, timerCountdownSeconds, isDrawer, isGuesser }) {
   const canvasRef = useRef(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [drawingCommands, setDrawingCommands] = useState([]);
@@ -196,7 +196,7 @@ function Canvas({ users, randomPrompt, hiddenWord, timerCountdownSeconds }) {
     <div>
       <h1>
         {" "}
-        {user.draw} is Drawing... : null {user.guess} is Guessing...
+        {isDrawer} is Drawing... : {isGuesser} is Guessing...
       </h1>
       <Timer timerCountdownSeconds={timerCountdownSeconds} />
       {win && <h2> Correct Answer! Sail onto the next Round!</h2>}

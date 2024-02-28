@@ -20,6 +20,8 @@ function GameRoom(users, setUsers) {
   const { user, usersArray } = useContext(UserContext);
   const [drawTurn, setDrawTurn] = useState(0)
   const [guessTurn, setGuessTurn] = useState(1)
+  const [isDrawer, setIsDrawer] = useState()
+  const [isGuesser, setIsGuesser] = useState()
 
   const [round, setRound] = useState(0);
 
@@ -38,13 +40,14 @@ function GameRoom(users, setUsers) {
       setDrawTurn(0)
     }
     const currentDraw = users.users[0][drawTurn]
-    
+    setIsDrawer(currentDraw)
     currentDraw === user.username ? user.draw = true : user.draw = false
     console.log(currentDraw, '<<<<currentDaaw');
     if (guessTurn === users.users[0].length - 1) {
       setGuessTurn(0)
     }
     const currentGuess = users.users[0][guessTurn]
+    setIsGuesser(currentGuess)
     console.log(currentGuess, '<<<<currentGuess');
     currentGuess === user.username ? user.guess = true : user.guess = false
     console.log(user.guess, '<<<<user.guess');
@@ -115,6 +118,8 @@ function GameRoom(users, setUsers) {
               timerCountdownSeconds={roundLength / 1000}
               users={users}
               setUsers={setUsers}
+              isDrawer={isDrawer}
+              isGuesser={isGuesser}
             />
           )}
         </div>

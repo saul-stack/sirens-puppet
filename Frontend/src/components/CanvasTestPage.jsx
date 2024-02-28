@@ -3,7 +3,7 @@ import { useEffect, useState, useContext } from "react";
 import { getPictonaryPrompts } from "./Utils/utils";
 import { UserContext } from "../contexts/UserContext";
 
-function CanvasTestPage({ mousePos, users, setUsers, timerCountdownSeconds }) {
+function CanvasTestPage({ mousePos, users, setUsers, timerCountdownSeconds, isDrawer, isGuesser }) {
 
   // const { user } = useContext(UserContext)
 
@@ -64,7 +64,7 @@ function CanvasTestPage({ mousePos, users, setUsers, timerCountdownSeconds }) {
         "Ready, set, doodle! Let's see if your masterpiece speaks louder than
         words
       </h1>
-      <Canvas timerCountdownSeconds={timerCountdownSeconds} users={users} setUsers={setUsers} randomPrompt={randomPrompt} hiddenWord={hiddenWord}/>
+      <Canvas timerCountdownSeconds={timerCountdownSeconds} users={users} setUsers={setUsers} randomPrompt={randomPrompt} hiddenWord={hiddenWord} isDrawer={isDrawer} isGuesser={isGuesser}/>
       
     </div>
   );
