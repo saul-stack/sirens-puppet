@@ -15,7 +15,7 @@ export default function LobbyPage({ users, setUsers, roomName }) {
   const { user } = useContext(UserContext);
   const { room_code } = useParams();
   const [avatars, setAvatars] = useState([]);
-  const [totalPLayers, setTotalPlayers] = useState(0);
+  const [totalPlayers, setTotalPlayers] = useState(0);
 
   const playerList = [];
 
@@ -23,7 +23,7 @@ export default function LobbyPage({ users, setUsers, roomName }) {
     if (!playerList.some((player) => player.username === user)) {
       playerList.push({ username: user });
       setTotalPlayers(playerList.length);
-      console.log(totalPLayers, "<--- totalPLayers in flat");
+      console.log(totalPlayers, "<--- totalPlayers in flat");
       console.log(playerList, "<--- playerList");
     }
   });
