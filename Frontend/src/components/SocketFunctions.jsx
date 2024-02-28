@@ -46,18 +46,9 @@ export default function SocketFunctions({
       setRoomName(data);
     }
 
-    function onUsersList(data) {
-      console.log(data);
-      newData = {};
-      users.map((roomsAdUsers) => {
-        if (roomsAdUsers.room === data.room) {
-          roomsAdUsers.users = roomsAdUsers.users;
-        }
-      });
-      setUsers((prevData) => [...prevData, data]);
-      // console.log(users[users.length -1 ]);
-      // setUsers((prevUsers) => [...prevUsers, data.flat()]);
-      // console.log(users);
+
+    function onUsersList(data){
+      setUsers([data])
     }
 
     function onMessage(data) {

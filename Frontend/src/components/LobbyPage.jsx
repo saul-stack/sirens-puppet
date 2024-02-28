@@ -19,15 +19,22 @@ export default function LobbyPage({ users, setUsers, roomName }) {
   console.log(room_code);
 
   const playerList = [];
-  console.log(users);
+  
+  // const usersList = users.filter((roomObj) => roomObj.room === room_code)
+  // usersList.map((user) => {
+  //   if (!playerList.some((player) => player.username === user)) {
+  //     playerList.push({ username: user });
+  //   }
+  // })
+  
   users.flat().map((user) => {
     if (!playerList.some((player) => player.username === user)) {
       playerList.push({ username: user });
     }
   });
+  console.log(users, '<<users');
 
-  console.log(users, "<<users");
-  console.log(playerList);
+  console.log(playerList, '<<playerList');
 
   const totalPlayers = users.length;
 
