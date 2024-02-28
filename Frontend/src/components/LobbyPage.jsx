@@ -52,6 +52,13 @@ export default function LobbyPage({ users, setUsers, roomName }) {
         setIsError(true);
         setError(err);
       });
+
+    function onStartGame(){
+      //start a countdown of 5 secs and the navigate
+      navigate(`/rooms/${room_code}/role`);
+    }
+
+    socket.on('backend_start_game', onStartGame)
   }, []);
 
   function handleStart() {
@@ -66,7 +73,7 @@ export default function LobbyPage({ users, setUsers, roomName }) {
         user.isSaboteur = true;
       }
     }
-    navigate(`/rooms/${room_code}/role`);
+    socket.emit("frontend_start_game")
   }
 
   return (
