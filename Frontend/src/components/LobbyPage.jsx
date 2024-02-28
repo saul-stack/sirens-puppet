@@ -15,29 +15,24 @@ export default function LobbyPage({ users, setUsers, roomName }) {
   const { user } = useContext(UserContext);
   const { room_code } = useParams();
   const [avatars, setAvatars] = useState([]);
+  const [totalPLayers, setTotalPlayers] = useState(0);
 
   const playerList = [];
+
   users.flat().map((user) => {
     if (!playerList.some((player) => player.username === user)) {
       playerList.push({ username: user });
+      setTotalPlayers(playerList.length);
+      console.log(totalPLayers, "<--- totalPLayers in flat");
+      console.log(playerList, "<--- playerList");
     }
   });
 
-  let totalPlayers = users.length;
-
-  const [totalPLayers, setTotalPlayers] = useState(users.length);
-  console.log("in the beginning, totalPLayers = ", totalPlayers);
-  console.log("in the beginning, users.length = ", users.length);
+  // let totalPlayers = users.length;
 
   const [players, setPlayers] = useState(() => [...playerList]);
 
   //totalPlayers should refresh to reflect number of players in room
-
-  useEffect(() => {
-    setTotalPlayers(users.length);
-    console.log("inside useEffect, users.length =", users.length);
-    console.log("inside useEffect, totalPlayers=", totalPLayers);
-  }, [users.length]);
 
   useEffect(() => {
     socket.emit("frontend_send_users", { room: room_code });

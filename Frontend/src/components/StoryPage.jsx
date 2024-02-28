@@ -15,13 +15,13 @@ export default function StoryPage({
   const { user } = useContext(UserContext);
   let navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
-  const [usernameInput, setUsernameInput] = useState('')
+  const [usernameInput, setUsernameInput] = useState("");
 
   useEffect(() => {
     function onJoin(data) {
       const room = data.room;
-      console.log(data.name + " has joined the room " + data.room);
-      console.log(room);
+      // console.log(data.name + " has joined the room " + data.room);
+      // console.log(room);
       needsEmit = true;
 
       setRoomName(data.room);
@@ -48,17 +48,16 @@ export default function StoryPage({
   function handleInput(value) {
     setUsername(value);
   }
-  function handleSubmit(event){
+  function handleSubmit(event) {
     socket.emit("frontend_create_room", { name: username });
     user.username = username;
-    event.preventDefault()
+    event.preventDefault();
   }
-
 
   return (
     <div className="container">
       {roomName ? navigate(`/rooms/${roomName}`) : null}
-      {console.log(roomName, username)}
+      {/* {console.log(roomName, username)} */}
       <div className="parent">
         <img src={"../../images/scroll.png"} className="story-scroll" />
         <div className="child">
@@ -77,9 +76,7 @@ export default function StoryPage({
         </div>
       </div>
       <form>
-
-        { isOpen &&  (
-
+        {isOpen && (
           <>
             <label htmlFor="username">Enter Username</label>
             <br />
@@ -92,7 +89,7 @@ export default function StoryPage({
             />
             <button onClick={handleSubmit}>Submit</button>
           </>
-        ) }
+        )}
 
         <br />
         <button onClick={handleJoin}>Join Room</button>
@@ -101,4 +98,3 @@ export default function StoryPage({
     </div>
   );
 }
-
