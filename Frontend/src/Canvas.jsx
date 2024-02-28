@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState, useContext } from "react";
 import socket from "./components/Utils/Socket";
+import Timer from "./components/Timer";
 
 import { LivesContext } from "./contexts/LivesContext";
 import { UserContext } from "./contexts/UserContext";
