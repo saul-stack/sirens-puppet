@@ -17,18 +17,22 @@ function GameRoom(users, setUsers) {
   const [showRoundPage, setShowRoundPage] = useState(false);
   const [showCanvasTestPage, setShowCanvasTestPage] = useState(false);
   const [gameOver, setGameOver] = useState(false);
-  const { user } = useContext(UserContext);
-  const {usersArray} = useContext(UserContext)
+  const { user, usersArray } = useContext(UserContext);
   const [drawTurn, setDrawTurn] = useState(0)
   const [guessTurn, setGuessTurn] = useState(1)
 
   const [round, setRound] = useState(0);
 
+  console.log(users.users, '<users')
+  console.log(usersArray);
+
   // let drawTurn = -1;
   // let guessTurn = 0;
 
   const pickTurn = () => {
-    if (drawTurn > users.users.length) {
+    console.log(drawTurn, '<<<<drawTurn');
+    console.log(guessTurn, '<<<<guessTurn');
+    if (drawTurn === users.users[0].length) {
       setDrawTurn(0)
     }
     
@@ -36,15 +40,19 @@ function GameRoom(users, setUsers) {
     const currentDraw = users.users[0][drawTurn]
     
     currentDraw === user.username ? user.draw = true : user.draw = false
-    if (guessTurn > users.users.length) {
+    if (guessTurn === users.users[0].length) {
       setGuessTurn(0)
     }
     console.log(guessTurn, '<<guessturn');
     const currentGuess = users.users[0][guessTurn]
     currentGuess === user.username ? user.guess = true : user.guess = false
-  }; 
-  
-  
+    console.log(user.guess, '<<<<user.guess');
+    console.log(user.draw, '<<<<user.draw');
+    setDrawTurn((prevTurn) => (prevTurn + 1))
+    setGuessTurn((prevTurn) => (prevTurn + 1))
+  };
+
+
   console.log(user, 'userUpdated ');
   
   let playerDesignationLength = 3000;
@@ -64,8 +72,8 @@ function GameRoom(users, setUsers) {
   
   useEffect(() => {
     if (showRoundPage) {
-      setDrawTurn((prevTurn) => (prevTurn + 1))
-      setGuessTurn((prevTurn) => (prevTurn + 1))
+      // drawTurn++;
+      // guessTurn++;
       pickTurn()
       if (round + 1 > numberOfRounds) setGameOver(true);
       else {
@@ -96,9 +104,9 @@ function GameRoom(users, setUsers) {
       {teamLives.lives > 1
         ? console.log("team has lives remaining")
         : () => {
-            console.log("team has no lives remaining");
-            navigate("/endGamePageTest");
-          }}
+          console.log("team has no lives remaining");
+          navigate("/endGamePageTest");
+        }}
       {!gameOver && (
         <div>
           {showPlayerDesignation && <PlayerDesignation />}
