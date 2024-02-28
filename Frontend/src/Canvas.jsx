@@ -16,9 +16,7 @@ function Canvas({ users, randomPrompt, hiddenWord, timerCountdownSeconds }) {
   const { setLives } = useContext(LivesContext);
   const { user } = useContext(UserContext);
 
-  const currentDrawer = users.users.find((player) => player.draw);
-  const currentGuesser = users.users.find((player) => player.guess);
-  const saboteur = users.users.find((player) => player.isSaboteur);
+  console.log(user, 'userincanvas');
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -198,7 +196,7 @@ function Canvas({ users, randomPrompt, hiddenWord, timerCountdownSeconds }) {
     <div>
       <h1>
         {" "}
-        {currentDrawer[0]} is Drawing... {currentGuesser[0]} is Guessing...
+        {user.draw} is Drawing... : null {user.guess} is Guessing...
       </h1>
       <Timer timerCountdownSeconds={timerCountdownSeconds} />
       {win && <h2> Correct Answer! Sail onto the next Round!</h2>}
@@ -210,11 +208,11 @@ function Canvas({ users, randomPrompt, hiddenWord, timerCountdownSeconds }) {
         width={1000}
         height={800}
         onMouseDown={(e) =>
-          currentDrawer[0] === user.username && startDrawing(e)
+          user.drawer && startDrawing(e)
         }
-        onMouseMove={(e) => currentDrawer[0] === user.username && drawFE(e)}
-        onMouseUp={() => currentDrawer[0] === user.username && finishDrawing()}
-        onMouseOut={() => currentDrawer[0] === user.username && finishDrawing()}
+        onMouseMove={(e) => user.drawer && drawFE(e)}
+        onMouseUp={() => user.drawer && finishDrawing()}
+        onMouseOut={() => user.drawer  && finishDrawing()}
         style={{
           backgroundColor: "white",
           transform: `rotate(${rotationAngle}deg)`,
@@ -223,15 +221,15 @@ function Canvas({ users, randomPrompt, hiddenWord, timerCountdownSeconds }) {
       />
 
       <div>
-        {currentDrawer[0] === user.username ? (
+        {user.draw ? (
           <h1 className="drawPrompt">Draw a {randomPrompt}</h1>
         ) : (
           <h1> Guess the Word ... {hiddenWord.flat()} </h1>
         )}
-        {currentDrawer[0] === user.username && (
+        {user.draw && (
           <button onClick={handleReset}>Reset</button>
         )}
-        {currentGuesser[0] === user.username && (
+        {user.guess && (
           <form method="post">
             <div>
               <input
@@ -246,7 +244,7 @@ function Canvas({ users, randomPrompt, hiddenWord, timerCountdownSeconds }) {
             </div>
           </form>
         )}
-        {saboteur[0] === user.username && (
+        {user.isSaboteur && (
           <button onClick={rotateCanvas}>Rotate</button>
         )}
       </div>
