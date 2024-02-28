@@ -83,7 +83,7 @@ export default function LobbyPage({ users, setUsers, roomName }) {
         <PlayerCard key={user.username} player={user} />
         {playerList.map((player) => {
           if (player.username !== user.username) {
-            return <PlayerCard key={player.username} player={player} />;
+            return <PlayerCard key={player.username} player={player} chosenAvatar={chosenAvatar} />;
           }
         })}
         <div className="avatar-buttons">
