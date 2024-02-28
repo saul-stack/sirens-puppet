@@ -332,7 +332,10 @@ def send_users_in_room(data):
     sys.stdout.flush()
 
     room = data['room']
-    socketio.emit("backend_send_users", existing_rooms[room]['users'])
+    content = {
+        "room": room, "users": existing_rooms[room]['users']
+    }
+    socketio.emit("backend_send_users", content)
 
     print(existing_rooms[room]['users'])
     sys.stdout.flush()
