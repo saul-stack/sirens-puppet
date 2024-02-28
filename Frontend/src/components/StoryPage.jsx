@@ -5,6 +5,7 @@ import CandleBackground from "./CandleBackground";
 import socket from "./Utils/Socket";
 import Timer from "./Timer";
 
+
 export default function StoryPage({
   roomName,
   username,
@@ -12,10 +13,12 @@ export default function StoryPage({
   setRoomName,
   needsEmit,
 }) {
+
   const { user } = useContext(UserContext);
   let navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [usernameInput, setUsernameInput] = useState('')
+  const [inputError, setInputError] = useState(false)
 
   useEffect(() => {
     function onJoin(data) {
@@ -43,11 +46,9 @@ export default function StoryPage({
   //   }
   // }, [room, navigate]);
 
+
   function handleJoin() {
-    socket.emit("frontend_request_existing_rooms_list");
-    // user.username = username;
-    navigate("/rooms");
-    window.location.reload();
+    
   }
 
   const handleCreate = (event) => {
@@ -55,9 +56,40 @@ export default function StoryPage({
     user.username = username;
     event.preventDefault();
     setIsOpen(true);
+=======
+  function handleJoin(event) {
+    if(!username.length){
+      setInputError(true)
+      event.preventDefault()
+    } else {
+      setInputError(false)
+      socket.emit("frontend_request_existing_rooms_list");
+    // user.username = username;
+    navigate("/rooms");
+    window.location.reload();
+    }
+    
+  }
+
+  const handleCreate = (event) => {
+    if(!username.length){
+      setInputError(true)
+      event.preventDefault()
+    } else {
+      setInputError(false)
+          socket.emit("frontend_create_room", { name: username });
+    user.username = username;
+    event.preventDefault();
+    setIsOpen(true);
+      if (roomName !== "") {
+      navigate(`/rooms/${roomName}`);
+      }
+    }
+
   };
 
   function handleInput(value) {
+    setInputError(false)
     setUsername(value);
   }
   function handleSubmit(){
@@ -85,6 +117,7 @@ export default function StoryPage({
           </p>
         </div>
       </div>
+      {inputError ? <p className="error-message">Please enter a username</p> : null}
       <form>
         { (
           <>

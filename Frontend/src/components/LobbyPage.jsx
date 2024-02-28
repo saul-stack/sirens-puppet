@@ -7,10 +7,15 @@ import AvatarButton from "./AvatarButton";
 import socket from "./Utils/Socket";
 
 export default function LobbyPage({ users, setUsers, roomName }) {
+  //set this to 0 on your local machine to test the game components
+  const minimumPlayers = 4;
+
   const navigate = useNavigate();
   const [chosenAvatar, setChosenAvatar] = useState(null);
   const { user } = useContext(UserContext);
   const { room_code } = useParams();
+  const [avatars, setAvatars] = useState([]);
+
 
   console.log(room_code);
 
@@ -20,15 +25,16 @@ export default function LobbyPage({ users, setUsers, roomName }) {
 })
 console.log(users, '<<users');
 console.log(playerList);
+  
+   const totalPlayers = users.length;
+
 
 
   const [players, setPlayers] = useState(() => [...playerList]);
 
-  const [avatars, setAvatars] = useState([]);
-
   useEffect(() => {
     socket.emit("frontend_send_users", { room: room_code });
-    console.log("inside use effect");
+
     getAvatars()
       .then((data) => {
         const { Avatars } = data;
@@ -38,10 +44,11 @@ console.log(playerList);
         setIsError(true);
         setError(err);
       });
+
   }, [players]);
 
+
   function handleStart() {
-    const totalPlayers = users.length;
     if (totalPlayers > 0) {
       const randomIndex = Math.floor(Math.random() * totalPlayers);
       setUsers((prevUsers) =>
@@ -58,9 +65,18 @@ console.log(playerList);
 
   return (
     <>
-      <main>
-        <h2>{room_code}</h2>
-        {console.log(playerList)}
+
+      <main
+        style={{
+          // backgroundColor: "rgba(32, 178, 170, 0.2)",
+          backgroundColor: "rgba(255, 255, 255, 0.3)",
+          padding: "20px",
+          borderRadius: "8px",
+          boxShadow: "0 0 10px 0 rgba(0, 0, 0, 0.9)",
+        }}
+      >
+        <h2 style={{ fontSize: "5vw" }}>{room_code}</h2>
+
         <PlayerCard key={user.username} player={user} />
         {playerList.map((player) => {
           if (player.username !== user.username) {
@@ -68,7 +84,9 @@ console.log(playerList);
           }
         })}
         <div className="avatar-buttons">
-          <h3>Choose an avatar:</h3>
+
+          <h3 style={{ fontSize: "2vw" }}>Choose an avatar:</h3>
+
           {avatars.map((avatar, index) => {
             return (
               <AvatarButton
@@ -83,7 +101,14 @@ console.log(playerList);
           })}
           <br />
         </div>
-        <button onClick={handleStart}>Start Game!</button>
+
+        {totalPlayers < minimumPlayers && (
+          <p className="error-message">Not enough players</p>
+        )}
+        <button onClick={handleStart} disabled={totalPlayers < minimumPlayers}>
+          Start Game!
+        </button>
+
       </main>
     </>
   );
