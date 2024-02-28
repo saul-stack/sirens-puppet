@@ -83,6 +83,8 @@ function App() {
               roomName={roomName}
               username={username}
               setUsername={setUsername}
+              setRoomName={setRoomName}
+              needsEmit={needsEmit}
             />
           }
         />

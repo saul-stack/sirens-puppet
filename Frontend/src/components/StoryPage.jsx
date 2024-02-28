@@ -14,7 +14,9 @@ export default function StoryPage({
 }) {
   const { user } = useContext(UserContext);
   let navigate = useNavigate();
-  
+  const [isOpen, setIsOpen] = useState(false);
+  const [usernameInput, setUsernameInput] = useState('')
+
   useEffect(() => {
     function onJoin(data) {
       const room = data.room;
@@ -31,16 +33,16 @@ export default function StoryPage({
 
     return () => {
       socket.off("join-room", onJoin);
-    }
-  }, [])
-  
+    };
+  }, []);
+
   // useEffect(() => {
   //   if (roomName !== null) {
   //     navigate(`/rooms/${roomName}`);
   //     window.location.reload()
   //   }
   // }, [room, navigate]);
-  
+
   function handleJoin() {
     socket.emit("frontend_request_existing_rooms_list");
     // user.username = username;
@@ -52,33 +54,20 @@ export default function StoryPage({
     socket.emit("frontend_create_room", { name: username });
     user.username = username;
     event.preventDefault();
+    setIsOpen(true);
   };
 
   function handleInput(value) {
     setUsername(value);
   }
-
-  // function setUserRole(){
-  //   const totalPlayers = users.length;
-  //   if (totalPlayers > 0){
-  //     const randomIndex = Math.floor(Math.random() * totalPlayers)
-  //     console.log(randomIndex);
-  //    setUsers((prevUsers) =>
-  //    prevUsers.map((user, index) =>
-  //    index === randomIndex ? { ...user, isSaboteur: true} : user
-  //    )
-  //    )
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   setUserRole()
-  // }, [users])
+  function handleSubmit(){
+    setUsernameInput(username)
+  }
 
   return (
     <div className="container">
-      {console.log(roomName)}
-      {roomName ? navigate(`/rooms/${roomName}`) : null}
+      {roomName && username ? navigate(`/rooms/${roomName}`) : null}
+      {console.log(roomName, username)}
       <div className="parent">
         <img src={"../../images/scroll.png"} className="story-scroll" />
         <div className="child">
@@ -97,15 +86,20 @@ export default function StoryPage({
         </div>
       </div>
       <form>
-        <label htmlFor="username">Enter Username</label>
-        <br />
-        <input
-          value={username}
-          onChange={(event) => handleInput(event.target.value)}
-          id="username"
-          type="text"
-          placeholder="Username"
-        />
+        { (
+          <>
+            <label htmlFor="username">Enter Username</label>
+            <br />
+            <input
+              value={username}
+              onChange={(event) => handleInput(event.target.value)}
+              // onSubmit={handleSubmit}
+              id="username"
+              type="text"
+              placeholder="Username"
+            />
+          </>
+        ) }
 
         <br />
         <button onClick={handleJoin}>Join Room</button>
