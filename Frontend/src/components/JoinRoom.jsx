@@ -5,7 +5,7 @@ import { useState } from "react";
 import socket from "./Utils/Socket";
 import { useEffect } from "react";
 
-export default function JoinRoom({username, needsEmit, roomArr, setRoomArr, users}) {
+export default function JoinRoom({username, needsEmit, roomArr, setRoomArr, users, setUsername}) {
     const { user } = useContext(UserContext);
   let navigate = useNavigate();
   const [inputError, setInputError] = useState(false)
@@ -56,8 +56,8 @@ export default function JoinRoom({username, needsEmit, roomArr, setRoomArr, user
   const handleRoomClick = (event) => {
     event.preventDefault();
     user.username = username
-    // console.log(usernameInput);
-    console.log(event.target.value);
+    console.log(username);
+    console.log(event.target.innerText);
     console.log("clicked");
     socket.emit("frontend_join_room", {
       name: username,
@@ -65,6 +65,10 @@ export default function JoinRoom({username, needsEmit, roomArr, setRoomArr, user
     });
     navigate(`/rooms/${event.target.innerText}`)
   };
+
+  function handleInput(value) {
+    setUsername(value);
+  }
 
   return (
     <main className="room-container">
@@ -76,6 +80,17 @@ export default function JoinRoom({username, needsEmit, roomArr, setRoomArr, user
         </div>
       </div>
       <form className="room-button-container">
+
+      <label htmlFor="username">Enter Username</label>
+        <br />
+        <input
+          value={username}
+          onChange={(event) => handleInput(event.target.value)}
+          id="username"
+          type="text"
+          placeholder="Username"
+        />
+
         <label htmlFor="room-code"> Room Code: </label>
         <input
           id="room-code"
@@ -91,7 +106,6 @@ export default function JoinRoom({username, needsEmit, roomArr, setRoomArr, user
         <ul>
         {roomArr !== 0 &&
           roomArr.map((room) => {
-            console.log(room, "<<room");
             return (
               <button onClick={handleRoomClick} key={room}>
                 {room}

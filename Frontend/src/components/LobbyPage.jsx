@@ -15,20 +15,26 @@ export default function LobbyPage({ users, setUsers, roomName }) {
   const { user } = useContext(UserContext);
   const { room_code } = useParams();
   const [avatars, setAvatars] = useState([]);
-  const totalPlayers = users.length;
-  console.log(roomName);
+
+
+  console.log(room_code);
 
   const playerList = [];
-  users.map((user) => {
-    if (!playerList.includes(user)) {
-      playerList.push({ username: user });
-    }
-  });
+  users.flat().map((user) => {
+    playerList.push({username: user})
+})
+console.log(users, '<<users');
+console.log(playerList);
+  
+   const totalPlayers = users.length;
+
+
 
   const [players, setPlayers] = useState(() => [...playerList]);
 
   useEffect(() => {
-    socket.emit("frontend_send_users", { room: roomName });
+    socket.emit("frontend_send_users", { room: room_code });
+
     getAvatars()
       .then((data) => {
         const { Avatars } = data;
@@ -38,7 +44,9 @@ export default function LobbyPage({ users, setUsers, roomName }) {
         setIsError(true);
         setError(err);
       });
-  }, []);
+
+  }, [players]);
+
 
   function handleStart() {
     if (totalPlayers > 0) {
@@ -57,6 +65,7 @@ export default function LobbyPage({ users, setUsers, roomName }) {
 
   return (
     <>
+
       <main
         style={{
           // backgroundColor: "rgba(32, 178, 170, 0.2)",
@@ -67,6 +76,7 @@ export default function LobbyPage({ users, setUsers, roomName }) {
         }}
       >
         <h2 style={{ fontSize: "5vw" }}>{room_code}</h2>
+
         <PlayerCard key={user.username} player={user} />
         {playerList.map((player) => {
           if (player.username !== user.username) {
@@ -74,7 +84,9 @@ export default function LobbyPage({ users, setUsers, roomName }) {
           }
         })}
         <div className="avatar-buttons">
+
           <h3 style={{ fontSize: "2vw" }}>Choose an avatar:</h3>
+
           {avatars.map((avatar, index) => {
             return (
               <AvatarButton
@@ -89,12 +101,14 @@ export default function LobbyPage({ users, setUsers, roomName }) {
           })}
           <br />
         </div>
+
         {totalPlayers < minimumPlayers && (
           <p className="error-message">Not enough players</p>
         )}
         <button onClick={handleStart} disabled={totalPlayers < minimumPlayers}>
           Start Game!
         </button>
+
       </main>
     </>
   );

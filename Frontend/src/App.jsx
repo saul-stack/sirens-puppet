@@ -14,8 +14,10 @@ import GameRoom from "./components/GameRoom";
 import { UserProvider } from "./contexts/UserContext";
 import ErrorHandler from "./components/ErrorHandler";
 // import CanvasTestPage from './components/CanvasTestPage'
+
 import VotePage from "./components/VotePage";
 import EndGamePage from "./components/EndGamePage";
+
 
 function App() {
   const [mousePos, setMousePos] = useState({});
@@ -26,7 +28,7 @@ function App() {
 
   const [play, { stop }] = useSound(BattleShip, { volume: 0.05 });
 
-  const [roomName, setRoomName] = useState("");
+  const [roomName, setRoomName] = useState(null);
 
   const [username, setUsername] = useState("");
 
@@ -48,66 +50,61 @@ function App() {
   };
   return (
     <>
-      <UserProvider>
-        <SocketFunctions
-          roomName={roomName}
-          setRoomName={setRoomName}
-          setUsers={setUsers}
-          needsEmit={needsEmit}
-          setMessages={setMessages}
-          setMousePos={setMousePos}
+
+    <UserProvider>
+      <SocketFunctions
+        roomName={roomName}
+        setRoomName={setRoomName}
+        setUsers={setUsers}
+        needsEmit={needsEmit}
+        setMessages={setMessages}
+        users={users}
+      />
+      <Mute
+        isMute={isMute}
+        setIsMute={setIsMute}
+        playMusic={playMusic}
+        musicPlaying={musicPlaying} 
+        stopMusic={stopMusic}
+      />
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <TitlePage
+              setIsMute={setIsMute}
+              playMusic={playMusic}
+              setMusicPlaying={setMusicPlaying}
+            />
+          }
+        />
+        <Route
+          path="/story"
+          element={
+            <StoryPage
+              roomName={roomName}
+              username={username}
+              setUsername={setUsername}
+              setRoomName={setRoomName}
+              needsEmit={needsEmit}
+            />
+          }
+        />
+        <Route path="/rooms/:room_code" element={<LobbyPage users={users} roomName={roomName}  setUsers={setUsers} />} />
+        <Route
+          path="/rooms"
+          element={
+            <JoinRoom
+              username={username}
+              needsEmit={needsEmit}
+              roomArr={roomArr}
+              setRoomArr={setRoomArr}
+              users={users}
+              setUsername={setUsername}
+            />
+          }
         />
 
-        <Mute
-          isMute={isMute}
-          setIsMute={setIsMute}
-          playMusic={playMusic}
-          musicPlaying={musicPlaying}
-          stopMusic={stopMusic}
-        />
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <TitlePage
-                setIsMute={setIsMute}
-                playMusic={playMusic}
-                setMusicPlaying={setMusicPlaying}
-              />
-            }
-          />
-          <Route
-            path="/story"
-            element={
-              <StoryPage
-                roomName={roomName}
-                username={username}
-                setUsername={setUsername}
-              />
-            }
-          />
-          <Route
-            path="/rooms/:room_code"
-            element={
-              <LobbyPage
-                users={users}
-                roomName={roomName}
-                setUsers={setUsers}
-              />
-            }
-          />
-          <Route
-            path="/rooms"
-            element={
-              <JoinRoom
-                username={username}
-                needsEmit={needsEmit}
-                roomArr={roomArr}
-                setRoomArr={setRoomArr}
-                users={users}
-              />
-            }
-          />
           <Route
             path="/rooms/:room_code/role"
             element={
@@ -119,8 +116,10 @@ function App() {
             element={<ChatBox messages={messages} roomName={roomName} />}
           />
           <Route path="*" element={<ErrorHandler code={404} />} />
+
           <Route path="/votePage" element={<VotePage />} />
           <Route path="/endGamePage" element={<EndGamePage />} />
+
         </Routes>
       </UserProvider>
     </>

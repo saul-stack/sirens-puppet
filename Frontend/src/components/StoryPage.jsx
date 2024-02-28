@@ -5,11 +5,58 @@ import CandleBackground from "./CandleBackground";
 import socket from "./Utils/Socket";
 import Timer from "./Timer";
 
-export default function StoryPage({ roomName, username, setUsername }) {
-  const [inputError, setInputError] = useState(false)
+
+export default function StoryPage({
+  roomName,
+  username,
+  setUsername,
+  setRoomName,
+  needsEmit,
+}) {
+
   const { user } = useContext(UserContext);
   let navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false);
+  const [usernameInput, setUsernameInput] = useState('')
+  const [inputError, setInputError] = useState(false)
 
+  useEffect(() => {
+    function onJoin(data) {
+      const room = data.room;
+      console.log(data.name + " has joined the room " + data.room);
+      console.log(room);
+      needsEmit = true;
+
+      setRoomName(data.room);
+      // setRoom(data.room)
+      // setUsers(() => [...data.users]);
+    }
+
+    socket.on("join-room", onJoin);
+
+    return () => {
+      socket.off("join-room", onJoin);
+    };
+  }, []);
+
+  // useEffect(() => {
+  //   if (roomName !== null) {
+  //     navigate(`/rooms/${roomName}`);
+  //     window.location.reload()
+  //   }
+  // }, [room, navigate]);
+
+
+  function handleJoin() {
+    
+  }
+
+  const handleCreate = (event) => {
+    socket.emit("frontend_create_room", { name: username });
+    user.username = username;
+    event.preventDefault();
+    setIsOpen(true);
+=======
   function handleJoin(event) {
     if(!username.length){
       setInputError(true)
@@ -17,9 +64,9 @@ export default function StoryPage({ roomName, username, setUsername }) {
     } else {
       setInputError(false)
       socket.emit("frontend_request_existing_rooms_list");
-    user.username = username;
+    // user.username = username;
     navigate("/rooms");
-    // window.location.reload()
+    window.location.reload();
     }
     
   }
@@ -30,40 +77,29 @@ export default function StoryPage({ roomName, username, setUsername }) {
       event.preventDefault()
     } else {
       setInputError(false)
-      user.username = username;
-      event.preventDefault();
-      socket.emit("frontend_create_room", { name: username });
+          socket.emit("frontend_create_room", { name: username });
+    user.username = username;
+    event.preventDefault();
+    setIsOpen(true);
       if (roomName !== "") {
       navigate(`/rooms/${roomName}`);
       }
     }
-    
+
   };
 
   function handleInput(value) {
     setInputError(false)
     setUsername(value);
   }
-
-  // function setUserRole(){
-  //   const totalPlayers = users.length;
-  //   if (totalPlayers > 0){
-  //     const randomIndex = Math.floor(Math.random() * totalPlayers)
-  //     console.log(randomIndex);
-  //    setUsers((prevUsers) =>
-  //    prevUsers.map((user, index) =>
-  //    index === randomIndex ? { ...user, isSaboteur: true} : user
-  //    )
-  //    )
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   setUserRole()
-  // }, [users])
+  function handleSubmit(){
+    setUsernameInput(username)
+  }
 
   return (
     <div className="container">
+      {roomName && username ? navigate(`/rooms/${roomName}`) : null}
+      {console.log(roomName, username)}
       <div className="parent">
         <img src={"../../images/scroll.png"} className="story-scroll" />
         <div className="child">
@@ -83,15 +119,20 @@ export default function StoryPage({ roomName, username, setUsername }) {
       </div>
       {inputError ? <p className="error-message">Please enter a username</p> : null}
       <form>
-        <label htmlFor="username">Enter Username</label>
-        <br />
-        <input
-          value={username}
-          onChange={(event) => handleInput(event.target.value)}
-          id="username"
-          type="text"
-          placeholder="Username"
-        />
+        { (
+          <>
+            <label htmlFor="username">Enter Username</label>
+            <br />
+            <input
+              value={username}
+              onChange={(event) => handleInput(event.target.value)}
+              // onSubmit={handleSubmit}
+              id="username"
+              type="text"
+              placeholder="Username"
+            />
+          </>
+        ) }
 
         <br />
         <button onClick={handleJoin}>Join Room</button>
