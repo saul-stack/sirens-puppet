@@ -34,54 +34,34 @@ export default function StoryPage({
     };
   }, []);
 
-  function handleJoin(event) {
-    if(!username.length){
-      setInputError(true)
-      event.preventDefault()
-    } else {
-      setInputError(false)
-      socket.emit("frontend_request_existing_rooms_list");
-    user.username = username;
+  function handleJoin() {
+    socket.emit("frontend_request_existing_rooms_list");
     navigate("/rooms");
-    }
+    window.location.reload();
   }
 
   const handleCreate = (event) => {
-    if(!username.length){
-      setInputError(true)
-      event.preventDefault()
-    } else {
-      setInputError(false)
-      setIsOpen(true)
-      user.username = username;
-      event.preventDefault();
-      socket.emit("frontend_create_room", { name: username });
-      if (roomName !== "") {
-      navigate(`/rooms/${roomName}`);
-      }
-    }
+    event.preventDefault();
+    setIsOpen(true);
   };
 
   function handleInput(value) {
-    setInputError(false)
     setUsername(value);
   }
-  function handleSubmit(event){
-    if(!username.length){
+  function handleSubmit(event) {
+    if (!username.length) {
       setInputError(true)
       event.preventDefault()
     } else {
-      setInputError(false)
-    socket.emit("frontend_create_room", { name: username });
-    user.username = username;
-    event.preventDefault()
+      socket.emit("frontend_create_room", { name: username });
+      user.username = username;
+      event.preventDefault()
     }
   }
 
-
   return (
     <div className="container">
-      {roomName ? navigate(`/rooms/${roomName}`) : null}
+      {roomName && username ? navigate(`/rooms/${roomName}`) : null}
       {console.log(roomName, username)}
       <div className="parent">
         <img src={"../../images/scroll.png"} className="story-scroll" />
@@ -102,7 +82,7 @@ export default function StoryPage({
       </div>
       <form>
 
-        { isOpen &&  (
+        {isOpen && (
 
           <>
             <label htmlFor="username">Enter Username</label>
@@ -117,7 +97,7 @@ export default function StoryPage({
             {inputError && <p className="error-message">Please enter valid username</p>}
             <button onClick={handleSubmit}>Submit</button>
           </>
-        ) }
+        )}
 
         <br />
         <button onClick={handleJoin}>Join Room</button>
