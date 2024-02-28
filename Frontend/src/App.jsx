@@ -14,8 +14,6 @@ import GameRoom from "./components/GameRoom";
 import { UserProvider } from "./contexts/UserContext";
 import ErrorHandler from "./components/ErrorHandler";
 // import CanvasTestPage from './components/CanvasTestPage'
-import VotePage from "./components/VotePage";
-import EndGamePage from "./components/EndGamePage";
 
 function App() {
   const [mousePos, setMousePos] = useState({});
@@ -26,7 +24,7 @@ function App() {
 
   const [play, { stop }] = useSound(BattleShip, { volume: 0.05 });
 
-  const [roomName, setRoomName] = useState("");
+  const [roomName, setRoomName] = useState(null);
 
   const [username, setUsername] = useState("");
 
@@ -55,7 +53,7 @@ function App() {
           setUsers={setUsers}
           needsEmit={needsEmit}
           setMessages={setMessages}
-          setMousePos={setMousePos}
+          users={users}
         />
 
         <Mute
@@ -83,6 +81,8 @@ function App() {
                 roomName={roomName}
                 username={username}
                 setUsername={setUsername}
+                setRoomName={setRoomName}
+                needsEmit={needsEmit}
               />
             }
           />
@@ -105,6 +105,7 @@ function App() {
                 roomArr={roomArr}
                 setRoomArr={setRoomArr}
                 users={users}
+                setUsername={setUsername}
               />
             }
           />
@@ -119,8 +120,6 @@ function App() {
             element={<ChatBox messages={messages} roomName={roomName} />}
           />
           <Route path="*" element={<ErrorHandler code={404} />} />
-          <Route path="/votePage" element={<VotePage />} />
-          <Route path="/endGamePage" element={<EndGamePage />} />
         </Routes>
       </UserProvider>
     </>
