@@ -8,7 +8,7 @@ import socket from "./Utils/Socket";
 import Timer from "./Timer";
 
 export default function LobbyPage({ users, setUsers, roomName }) {
-  const minimumPlayers = 4;
+  const minimumPlayers = 1;
 
   const navigate = useNavigate();
   const [chosenAvatar, setChosenAvatar] = useState(null);
@@ -37,6 +37,7 @@ export default function LobbyPage({ users, setUsers, roomName }) {
   console.log(playerList, '<<playerList');
 
   const totalPlayers = users.length;
+  console.log(totalPlayers);
 
   const [players, setPlayers] = useState(() => [...playerList]);
 
