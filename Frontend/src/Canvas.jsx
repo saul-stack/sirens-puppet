@@ -1,12 +1,10 @@
 import React, { useRef, useEffect, useState, useContext } from "react";
 import socket from "./components/Utils/Socket";
 
-import CandleBackground from "./components/CandleBackground";
-import Timer from "./components/Timer";
-
 import { UserContext } from "./contexts/UserContext";
 
 function Canvas({ users, randomPrompt, hiddenWord, timerCountdownSeconds }) {
+
   const canvasRef = useRef(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [drawingCommands, setDrawingCommands] = useState([]);
