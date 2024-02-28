@@ -56,6 +56,7 @@ export default function LobbyPage({ users, setUsers, roomName }) {
     function onStartGame(){
       //start a countdown of 5 secs and the navigate
       navigate(`/rooms/${room_code}/role`);
+      console.log('inside start game fun');
     }
 
     socket.on('backend_start_game', onStartGame)
