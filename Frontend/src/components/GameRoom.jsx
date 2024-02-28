@@ -30,26 +30,25 @@ function GameRoom(users, setUsers) {
   // let guessTurn = 0;
 
   const pickTurn = () => {
+    setDrawTurn((prevTurn) => (prevTurn + 1))
+    setGuessTurn((prevTurn) => (prevTurn + 1))
     console.log(drawTurn, '<<<<drawTurn');
     console.log(guessTurn, '<<<<guessTurn');
-    if (drawTurn === users.users[0].length) {
+    if (drawTurn === users.users[0].length - 1) {
       setDrawTurn(0)
     }
-    
-    console.log(drawTurn, '<<drawTurn');
     const currentDraw = users.users[0][drawTurn]
     
     currentDraw === user.username ? user.draw = true : user.draw = false
-    if (guessTurn === users.users[0].length) {
+    console.log(currentDraw, '<<<<currentDaaw');
+    if (guessTurn === users.users[0].length - 1) {
       setGuessTurn(0)
     }
-    console.log(guessTurn, '<<guessturn');
     const currentGuess = users.users[0][guessTurn]
+    console.log(currentGuess, '<<<<currentGuess');
     currentGuess === user.username ? user.guess = true : user.guess = false
     console.log(user.guess, '<<<<user.guess');
     console.log(user.draw, '<<<<user.draw');
-    setDrawTurn((prevTurn) => (prevTurn + 1))
-    setGuessTurn((prevTurn) => (prevTurn + 1))
   };
 
 
