@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import "../App.css";
 
-function Timer({ timerCountdownSeconds }) {
+function Timer({ timerCountdownSeconds, onTimeUp }) {
   const [seconds, setSeconds] = useState(timerCountdownSeconds);
   const [isRunning, setIsRunning] = useState(true); // Set to true to start automatically
+  let timeUp = false;
 
   useEffect(() => {
     let timerInterval;
@@ -11,6 +12,7 @@ function Timer({ timerCountdownSeconds }) {
     if (isRunning) {
       if (seconds === 0) {
         setIsRunning(false);
+        if (onTimeUp) onTimeUp();
         return;
       }
       timerInterval = setInterval(() => {

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Timer from "./Timer";
+import { useNavigate } from "react-router-dom";
 
 //timer countdown length
 let timerCountdownSeconds = 30;
@@ -21,6 +22,11 @@ const players = [
 ];
 
 function VotingPage() {
+  const navigate = useNavigate();
+  function handleTimeUp() {
+    navigate("/walkThePlankTest");
+  }
+
   const [votedIndex, setVotedIndex] = useState(null);
 
   // Function to handle voting
@@ -43,8 +49,11 @@ function VotingPage() {
         boxShadow: "1px 1px 50px black",
       }}
     >
-      <h2>Arrr! Hunt Down the Scallywag Saboteur!</h2>
-      <Timer timerCountdownSeconds={timerCountdownSeconds} />
+      <h2>Hunt down the traitor!</h2>
+      <Timer
+        timerCountdownSeconds={timerCountdownSeconds}
+        onTimeUp={handleTimeUp}
+      />
       {players.map((person, index) => (
         <div
           key={index}
