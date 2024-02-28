@@ -1,20 +1,24 @@
 import React, { useRef, useEffect, useState, useContext } from "react";
 import socket from "./components/Utils/Socket";
-import { getPictonaryPrompts } from "./components/Utils/utils";
-import CandleBackground from "./components/CandleBackground";
 import Timer from "./components/Timer";
 
-function Canvas({ users, timerCountdownSeconds }) {
+import { LivesContext } from "./contexts/LivesContext";
+import { UserContext } from "./contexts/UserContext";
+
+function Canvas({ users, randomPrompt, hiddenWord, timerCountdownSeconds }) {
   const canvasRef = useRef(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [drawingCommands, setDrawingCommands] = useState([]);
   const [backgroundImage, setBackgroundImage] = useState(null);
 
   const [rotationAngle, setRotationAngle] = useState(0);
-  const [picturePrompts, setpicturePrompts] = useState([]);
+
+  const { setLives } = useContext(LivesContext);
+  const { user } = useContext(UserContext);
 
   const currentDrawer = users.users.find((player) => player.draw);
   const currentGuesser = users.users.find((player) => player.guess);
+  const saboteur = users.users.find((player) => player.isSaboteur);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -41,7 +45,7 @@ function Canvas({ users, timerCountdownSeconds }) {
     const context = canvas.getContext("2d");
     context.moveTo(offsetX, offsetY);
     context.beginPath();
-    if (currentDrawer) {
+    if (currentDrawer[0] === user.username) {
       setIsDrawing(true);
       socket.emit("frontend_canvas_mouse_click");
     }
@@ -54,7 +58,7 @@ function Canvas({ users, timerCountdownSeconds }) {
       const context = canvas.getContext("2d");
       context.lineTo(offsetX, offsetY);
 
-      if (currentDrawer) {
+      if (currentDrawer[0] === user.username) {
         context.stroke();
         socket.emit("frontend_canvas_mouse_move", {
           mouseX: offsetX,
@@ -98,13 +102,15 @@ function Canvas({ users, timerCountdownSeconds }) {
   }, []);
 
   const mirrorDrawBE = (data) => {
-    console.log("inside mirror draw");
-    // if (!isDrawing) return;
-    const canvas = canvasRef.current;
-    const context = canvas.getContext("2d");
-    context.lineTo(data.mouseX, data.mouseY);
-    // console.log("in mirrorDrawBE");
-    context.stroke();
+    if (user.username !== currentDrawer) {
+      console.log("inside mirror draw");
+      // if (!isDrawing) return;
+      const canvas = canvasRef.current;
+      const context = canvas.getContext("2d");
+      context.lineTo(data.mouseX, data.mouseY);
+      // console.log("in mirrorDrawBE");
+      context.stroke();
+    }
   };
 
   const finishDrawing = () => {
@@ -115,13 +121,6 @@ function Canvas({ users, timerCountdownSeconds }) {
       socket.emit("frontend_canvas_mouse_release");
     }
   };
-
-  useEffect(() => {
-    getPictonaryPrompts().then((data) => {
-      const { PictionaryPrompts } = data;
-      setpicturePrompts(PictionaryPrompts);
-    });
-  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -169,14 +168,31 @@ function Canvas({ users, timerCountdownSeconds }) {
     socket.emit("frontend_canvas_rotate");
   };
 
-  function getRandomPrompt() {
-    const randomIndex = Math.floor(Math.random() * picturePrompts.length);
-    return picturePrompts[randomIndex];
-  }
+  const [win, setWin] = useState(false);
 
-  const randomPrompt = getRandomPrompt();
+  const [lose, setLose] = useState(false);
 
-  const handleGuess = (e) => {};
+  const guess = useRef(null);
+
+  const handleGuess = (e) => {
+    e.preventDefault();
+    const currentGuess = guess.current.value;
+    if (currentGuess.toLowerCase() === randomPrompt.toLowerCase()) {
+      setWin(true);
+    }
+  };
+
+  const roundLength = 19000;
+
+  useEffect(() => {
+    const roundPageTimer = setTimeout(() => {
+      if (!win) {
+        setLives((currentLives) => currentLives - 1);
+        setLose(true);
+      }
+    }, roundLength);
+    return () => clearTimeout(roundPageTimer);
+  }, []);
 
   return (
     <div>
@@ -185,47 +201,54 @@ function Canvas({ users, timerCountdownSeconds }) {
         {currentDrawer[0]} is Drawing... {currentGuesser[0]} is Guessing...
       </h1>
       <Timer timerCountdownSeconds={timerCountdownSeconds} />
-      <CandleBackground />
+      {win && <h2> Correct Answer! Sail onto the next Round!</h2>}
+      {lose && <h2> Too Slow! The crew loses a life</h2>}
 
       <canvas
         className="draw-canvas"
         ref={canvasRef}
         width={1000}
         height={800}
-        onMouseDown={(e) => currentDrawer && startDrawing(e)}
-        onMouseMove={(e) => currentDrawer && drawFE(e)}
-        onMouseUp={() => currentDrawer && finishDrawing()}
-        onMouseOut={() => currentDrawer && finishDrawing()}
+        onMouseDown={(e) =>
+          currentDrawer[0] === user.username && startDrawing(e)
+        }
+        onMouseMove={(e) => currentDrawer[0] === user.username && drawFE(e)}
+        onMouseUp={() => currentDrawer[0] === user.username && finishDrawing()}
+        onMouseOut={() => currentDrawer[0] === user.username && finishDrawing()}
         style={{
           backgroundColor: "white",
           transform: `rotate(${rotationAngle}deg)`,
           border: "7px solid lightseagreen",
         }}
       />
+
       <div>
-        {users.users.map((player) => {
-          return (
-            <div key={player.id}>
-              {player.draw && (
-                <h1 className="drawPrompt">Draw a {randomPrompt}</h1>
-              )}
-              {player.draw && <button onClick={handleReset}>Reset</button>}
-              {player.guess && (
-                <form method="post">
-                  <div>
-                    <input type="text" placeholder="SwordBoat" name="guess" />
-                    <button onClick={handleGuess} type="submit" name="guess">
-                      Guess
-                    </button>
-                  </div>
-                </form>
-              )}
-              {player.isSaboteur && (
-                <button onClick={rotateCanvas}>Rotate</button>
-              )}
+        {currentDrawer[0] === user.username ? (
+          <h1 className="drawPrompt">Draw a {randomPrompt}</h1>
+        ) : (
+          <h1> Guess the Word ... {hiddenWord.flat()} </h1>
+        )}
+        {currentDrawer[0] === user.username && (
+          <button onClick={handleReset}>Reset</button>
+        )}
+        {currentGuesser[0] === user.username && (
+          <form method="post">
+            <div>
+              <input
+                type="text"
+                placeholder="SwordBoat"
+                name="guess"
+                ref={guess}
+              />
+              <button onClick={handleGuess} type="submit" name="guess">
+                Guess
+              </button>
             </div>
-          );
-        })}
+          </form>
+        )}
+        {saboteur[0] === user.username && (
+          <button onClick={rotateCanvas}>Rotate</button>
+        )}
       </div>
     </div>
   );

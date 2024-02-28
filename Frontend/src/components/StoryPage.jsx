@@ -54,6 +54,7 @@ export default function StoryPage({
     event.preventDefault()
   }
 
+
   return (
     <div className="container">
       {roomName ? navigate(`/rooms/${roomName}`) : null}
@@ -76,7 +77,9 @@ export default function StoryPage({
         </div>
       </div>
       <form>
-        { isOpen && (
+
+        { isOpen &&  (
+
           <>
             <label htmlFor="username">Enter Username</label>
             <br />

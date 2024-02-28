@@ -50,6 +50,7 @@ function GameRoom(users, setUsers) {
 
   useEffect(() => {
     if (showRoundPage) {
+      pickTurn();
       console.log(round + 1, "<--currentRound");
       console.log(numberOfRounds, "<--numberOfRounds");
       console.log(gameOver, "<--gameOver, round > numberOfRounds");
@@ -57,7 +58,6 @@ function GameRoom(users, setUsers) {
       if (round + 1 > numberOfRounds) setGameOver(true);
       else {
         const roundPageTimer = setTimeout(() => {
-          pickTurn();
           setShowRoundPage(false);
           setShowCanvasTestPage(true);
         }, roundBreakLength);

@@ -5,6 +5,7 @@ import { getAvatars } from "./Utils/utils";
 import PlayerCard from "./PlayerCard";
 import AvatarButton from "./AvatarButton";
 import socket from "./Utils/Socket";
+import Timer from "./Timer";
 
 export default function LobbyPage({ users, setUsers, roomName }) {
   //set this to 0 on your local machine to test the game components
@@ -16,19 +17,19 @@ export default function LobbyPage({ users, setUsers, roomName }) {
   const { room_code } = useParams();
   const [avatars, setAvatars] = useState([]);
 
-
   console.log(room_code);
 
   const playerList = [];
   users.flat().map((user) => {
-    playerList.push({username: user})
-})
-console.log(users, '<<users');
-console.log(playerList);
-  
-   const totalPlayers = users.length;
+    if (!playerList.some((player) => player.username === user)) {
+      playerList.push({ username: user });
+    }
+  });
 
+  console.log(users, "<<users");
+  console.log(playerList);
 
+  const totalPlayers = users.length;
 
   const [players, setPlayers] = useState(() => [...playerList]);
 
@@ -44,9 +45,7 @@ console.log(playerList);
         setIsError(true);
         setError(err);
       });
-
-  }, [players]);
-
+  }, []);
 
   function handleStart() {
     if (totalPlayers > 0) {
@@ -65,7 +64,6 @@ console.log(playerList);
 
   return (
     <>
-
       <main
         style={{
           // backgroundColor: "rgba(32, 178, 170, 0.2)",
@@ -84,7 +82,6 @@ console.log(playerList);
           }
         })}
         <div className="avatar-buttons">
-
           <h3 style={{ fontSize: "2vw" }}>Choose an avatar:</h3>
 
           {avatars.map((avatar, index) => {
@@ -108,7 +105,6 @@ console.log(playerList);
         <button onClick={handleStart} disabled={totalPlayers < minimumPlayers}>
           Start Game!
         </button>
-
       </main>
     </>
   );
