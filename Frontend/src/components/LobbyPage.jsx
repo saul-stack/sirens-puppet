@@ -5,6 +5,7 @@ import { getAvatars } from "./Utils/utils";
 import PlayerCard from "./PlayerCard";
 import AvatarButton from "./AvatarButton";
 import socket from "./Utils/Socket";
+import Timer from "./Timer";
 
 export default function LobbyPage({ users, setUsers, roomName }) {
   //set this to 0 on your local machine to test the game components
@@ -20,10 +21,11 @@ export default function LobbyPage({ users, setUsers, roomName }) {
 
   const playerList = [];
   users.flat().map((user) => {
-    if (!playerList.some(player => player.username === user)) {
+    if (!playerList.some((player) => player.username === user)) {
       playerList.push({ username: user });
     }
   });
+
   console.log(users, "<<users");
   console.log(playerList);
 

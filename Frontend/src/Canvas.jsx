@@ -1,10 +1,10 @@
 import React, { useRef, useEffect, useState, useContext } from "react";
 import socket from "./components/Utils/Socket";
 
+import { LivesContext } from "./contexts/LivesContext";
 import { UserContext } from "./contexts/UserContext";
 
 function Canvas({ users, randomPrompt, hiddenWord, timerCountdownSeconds }) {
-
   const canvasRef = useRef(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [drawingCommands, setDrawingCommands] = useState([]);
@@ -12,11 +12,12 @@ function Canvas({ users, randomPrompt, hiddenWord, timerCountdownSeconds }) {
 
   const [rotationAngle, setRotationAngle] = useState(0);
 
-  const { setLives, user } = useContext (UserContext)
+  const { setLives } = useContext(LivesContext);
+  const { user } = useContext(UserContext);
 
-  const currentDrawer = users.users.find((player) => player.draw)
-  const currentGuesser = users.users.find((player) => player.guess)
-  const saboteur = users.users.find((player) => player.isSaboteur)
+  const currentDrawer = users.users.find((player) => player.draw);
+  const currentGuesser = users.users.find((player) => player.guess);
+  const saboteur = users.users.find((player) => player.isSaboteur);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -100,14 +101,14 @@ function Canvas({ users, randomPrompt, hiddenWord, timerCountdownSeconds }) {
   }, []);
 
   const mirrorDrawBE = (data) => {
-    if(user.username !== currentDrawer){
-    console.log("inside mirror draw");
-    // if (!isDrawing) return;
-    const canvas = canvasRef.current;
-    const context = canvas.getContext("2d");
-    context.lineTo(data.mouseX, data.mouseY);
-    // console.log("in mirrorDrawBE");
-    context.stroke();
+    if (user.username !== currentDrawer) {
+      console.log("inside mirror draw");
+      // if (!isDrawing) return;
+      const canvas = canvasRef.current;
+      const context = canvas.getContext("2d");
+      context.lineTo(data.mouseX, data.mouseY);
+      // console.log("in mirrorDrawBE");
+      context.stroke();
     }
   };
 
@@ -166,22 +167,21 @@ function Canvas({ users, randomPrompt, hiddenWord, timerCountdownSeconds }) {
     socket.emit("frontend_canvas_rotate");
   };
 
-  const [win, setWin] = useState(false)
+  const [win, setWin] = useState(false);
 
-  const [lose, setLose] = useState(false)
+  const [lose, setLose] = useState(false);
 
-  const guess = useRef(null)
+  const guess = useRef(null);
 
-
-  const handleGuess = ((e) => {
-    e.preventDefault()
-    const currentGuess = guess.current.value
-    if (currentGuess.toLowerCase() === randomPrompt.toLowerCase()){
-        setWin(true)
+  const handleGuess = (e) => {
+    e.preventDefault();
+    const currentGuess = guess.current.value;
+    if (currentGuess.toLowerCase() === randomPrompt.toLowerCase()) {
+      setWin(true);
     }
-  })
+  };
 
-  const roundLength = 19000
+  const roundLength = 19000;
 
   useEffect(() => {
     const roundPageTimer = setTimeout(() => {
@@ -190,25 +190,30 @@ function Canvas({ users, randomPrompt, hiddenWord, timerCountdownSeconds }) {
         setLose(true);
       }
     }, roundLength);
-  return () => clearTimeout(roundPageTimer);
-}, [])
+    return () => clearTimeout(roundPageTimer);
+  }, []);
 
   return (
     <div>
-       <h1> {currentDrawer[0]} is Drawing...  {currentGuesser[0]} is Guessing...</h1> 
-       {win && <h2> Correct Answer! Sail onto the next Round!</h2>}
-       {lose && <h2> Too Slow! The crew loses a life</h2>}
+      <h1>
+        {" "}
+        {currentDrawer[0]} is Drawing... {currentGuesser[0]} is Guessing...
+      </h1>
+      <Timer timerCountdownSeconds={timerCountdownSeconds} />
+      {win && <h2> Correct Answer! Sail onto the next Round!</h2>}
+      {lose && <h2> Too Slow! The crew loses a life</h2>}
 
-      <canvas className="draw-canvas"
+      <canvas
+        className="draw-canvas"
         ref={canvasRef}
         width={1000}
         height={800}
-
-        onMouseDown={(e) => currentDrawer[0] === user.username && startDrawing(e)}
+        onMouseDown={(e) =>
+          currentDrawer[0] === user.username && startDrawing(e)
+        }
         onMouseMove={(e) => currentDrawer[0] === user.username && drawFE(e)}
         onMouseUp={() => currentDrawer[0] === user.username && finishDrawing()}
         onMouseOut={() => currentDrawer[0] === user.username && finishDrawing()}
-
         style={{
           backgroundColor: "white",
           transform: `rotate(${rotationAngle}deg)`,
@@ -217,22 +222,34 @@ function Canvas({ users, randomPrompt, hiddenWord, timerCountdownSeconds }) {
       />
 
       <div>
-
-         {currentDrawer[0] === user.username ? <h1 className = 'drawPrompt'>Draw a {randomPrompt}</h1> : <h1> Guess the Word ... {hiddenWord.flat()} </h1>} 
-         {currentDrawer[0] === user.username && <button onClick={handleReset}>Reset</button>}
-         {currentGuesser[0] === user.username && 
-         <form method="post">
-         <div>
-           <input type="text" placeholder="SwordBoat" name="guess" ref={guess}/>
-           <button onClick={handleGuess} type="submit" name="guess">Guess</button>
-          </div>
-          </form>}
-         {saboteur[0] === user.username && (
-           <button onClick={rotateCanvas}>Rotate</button>
-         )}
-       </div>
-
+        {currentDrawer[0] === user.username ? (
+          <h1 className="drawPrompt">Draw a {randomPrompt}</h1>
+        ) : (
+          <h1> Guess the Word ... {hiddenWord.flat()} </h1>
+        )}
+        {currentDrawer[0] === user.username && (
+          <button onClick={handleReset}>Reset</button>
+        )}
+        {currentGuesser[0] === user.username && (
+          <form method="post">
+            <div>
+              <input
+                type="text"
+                placeholder="SwordBoat"
+                name="guess"
+                ref={guess}
+              />
+              <button onClick={handleGuess} type="submit" name="guess">
+                Guess
+              </button>
+            </div>
+          </form>
+        )}
+        {saboteur[0] === user.username && (
+          <button onClick={rotateCanvas}>Rotate</button>
+        )}
       </div>
+    </div>
   );
 }
 

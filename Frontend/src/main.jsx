@@ -4,13 +4,16 @@ import App from "./App.jsx";
 import { BrowserRouter } from "react-router-dom";
 import "./index.css";
 import { UserProvider } from "./contexts/UserContext.jsx";
+import { LivesProvider } from "./contexts/LivesContext.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   // <React.StrictMode>
-    <BrowserRouter>
+  <BrowserRouter>
+    <LivesProvider>
       <UserProvider>
         <App />
       </UserProvider>
-    </BrowserRouter>
+    </LivesProvider>
+  </BrowserRouter>
   /* </React.StrictMode> */
 );
