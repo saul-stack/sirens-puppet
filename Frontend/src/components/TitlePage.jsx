@@ -11,10 +11,6 @@ export default function TitlePage({isMute, playMusic, setMusicPlaying}) {
     }
   }
 
-  function handleTesting(){
-    navigate("/testing")
-  }
-
   return (
     <>
     <center>

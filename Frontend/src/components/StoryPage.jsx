@@ -15,7 +15,7 @@ export default function StoryPage({
   const { user } = useContext(UserContext);
   let navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
-  const [usernameInput, setUsernameInput] = useState('')
+  const [inputError, setInputError] = useState(false)
 
   useEffect(() => {
     function onJoin(data) {
@@ -34,24 +34,48 @@ export default function StoryPage({
     };
   }, []);
 
-  function handleJoin() {
-    socket.emit("frontend_request_existing_rooms_list");
+  function handleJoin(event) {
+    if(!username.length){
+      setInputError(true)
+      event.preventDefault()
+    } else {
+      setInputError(false)
+      socket.emit("frontend_request_existing_rooms_list");
+    user.username = username;
     navigate("/rooms");
-    window.location.reload();
+    }
   }
 
   const handleCreate = (event) => {
-    event.preventDefault();
-    setIsOpen(true);
+    if(!username.length){
+      setInputError(true)
+      event.preventDefault()
+    } else {
+      setInputError(false)
+      setIsOpen(true)
+      user.username = username;
+      event.preventDefault();
+      socket.emit("frontend_create_room", { name: username });
+      if (roomName !== "") {
+      navigate(`/rooms/${roomName}`);
+      }
+    }
   };
 
   function handleInput(value) {
+    setInputError(false)
     setUsername(value);
   }
   function handleSubmit(event){
+    if(!username.length){
+      setInputError(true)
+      event.preventDefault()
+    } else {
+      setInputError(false)
     socket.emit("frontend_create_room", { name: username });
     user.username = username;
     event.preventDefault()
+    }
   }
 
 
