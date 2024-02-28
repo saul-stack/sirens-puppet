@@ -20,13 +20,6 @@ export default function LobbyPage({ users, setUsers, roomName }) {
 
   const playerList = [];
   
-  // const usersList = users.filter((roomObj) => roomObj.room === room_code)
-  // usersList.map((user) => {
-  //   if (!playerList.some((player) => player.username === user)) {
-  //     playerList.push({ username: user });
-  //   }
-  // })
-  
   users.flat().map((user) => {
     if (!playerList.some((player) => player.username === user)) {
       playerList.push({ username: user });
@@ -37,7 +30,6 @@ export default function LobbyPage({ users, setUsers, roomName }) {
   console.log(playerList, '<<playerList');
 
   const totalPlayers = playerList.length;
-  console.log(totalPlayers);
 
   const [players, setPlayers] = useState(() => [...playerList]);
 
@@ -53,6 +45,14 @@ export default function LobbyPage({ users, setUsers, roomName }) {
         setIsError(true);
         setError(err);
       });
+
+    function onStartGame(){
+      //start a countdown of 5 secs and the navigate
+      navigate(`/rooms/${room_code}/role`);
+      console.log('inside start game fun');
+    }
+
+    socket.on('backend_start_game', onStartGame)
   }, []);
 
   function handleStart() {
@@ -67,7 +67,7 @@ export default function LobbyPage({ users, setUsers, roomName }) {
         user.isSaboteur = true;
       }
     }
-    navigate(`/rooms/${room_code}/role`);
+    socket.emit("frontend_start_game")
   }
 
   return (
