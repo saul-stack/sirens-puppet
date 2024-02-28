@@ -8,7 +8,6 @@ import JoinRoom from "./components/JoinRoom";
 import useSound from "use-sound";
 import BattleShip from "../music/BattleShip.mp3";
 import Mute from "./components/Mute";
-import CandleBackground from "./components/CandleBackground";
 import SocketFunctions from "./components/SocketFunctions";
 import ChatBox from "./components/ChatBox";
 import GameRoom from "./components/GameRoom";
@@ -47,61 +46,69 @@ function App() {
   };
   return (
     <>
-    <UserProvider>
-      <SocketFunctions
-        roomName={roomName}
-        setRoomName={setRoomName}
-        setUsers={setUsers}
-        needsEmit={needsEmit}
-        setMessages={setMessages}
-        users={users}
-      />
+      <UserProvider>
+        <SocketFunctions
+          roomName={roomName}
+          setRoomName={setRoomName}
+          setUsers={setUsers}
+          needsEmit={needsEmit}
+          setMessages={setMessages}
+          users={users}
+        />
 
-      <CandleBackground />
-      <Mute
-        isMute={isMute}
-        setIsMute={setIsMute}
-        playMusic={playMusic}
-        musicPlaying={musicPlaying} 
-        stopMusic={stopMusic}
-      />
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <TitlePage
-              setIsMute={setIsMute}
-              playMusic={playMusic}
-              setMusicPlaying={setMusicPlaying}
-            />
-          }
+        <Mute
+          isMute={isMute}
+          setIsMute={setIsMute}
+          playMusic={playMusic}
+          musicPlaying={musicPlaying}
+          stopMusic={stopMusic}
         />
-        <Route
-          path="/story"
-          element={
-            <StoryPage
-              roomName={roomName}
-              username={username}
-              setUsername={setUsername}
-              setRoomName={setRoomName}
-              needsEmit={needsEmit}
-            />
-          }
-        />
-        <Route path="/rooms/:room_code" element={<LobbyPage users={users} roomName={roomName}  setUsers={setUsers} />} />
-        <Route
-          path="/rooms"
-          element={
-            <JoinRoom
-              username={username}
-              needsEmit={needsEmit}
-              roomArr={roomArr}
-              setRoomArr={setRoomArr}
-              users={users}
-              setUsername={setUsername}
-            />
-          }
-        />
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <TitlePage
+                setIsMute={setIsMute}
+                playMusic={playMusic}
+                setMusicPlaying={setMusicPlaying}
+              />
+            }
+          />
+          <Route
+            path="/story"
+            element={
+              <StoryPage
+                roomName={roomName}
+                username={username}
+                setUsername={setUsername}
+                setRoomName={setRoomName}
+                needsEmit={needsEmit}
+              />
+            }
+          />
+          <Route
+            path="/rooms/:room_code"
+            element={
+              <LobbyPage
+                users={users}
+                roomName={roomName}
+                setUsers={setUsers}
+              />
+            }
+          />
+          <Route
+            path="/rooms"
+            element={
+              <JoinRoom
+                username={username}
+                needsEmit={needsEmit}
+                roomArr={roomArr}
+                setRoomArr={setRoomArr}
+                users={users}
+                setUsername={setUsername}
+              />
+            }
+          />
           <Route
             path="/rooms/:room_code/role"
             element={
