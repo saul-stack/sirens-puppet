@@ -1,8 +1,12 @@
 import React, { useRef, useEffect, useState, useContext } from "react";
 import socket from "./components/Utils/Socket";
+
 import { UserContext } from "./contexts/UserContext";
 
-function Canvas({ users, randomPrompt, hiddenWord }) {
+function Canvas({ users, randomPrompt, hiddenWord, timerCountdownSeconds }) {
+
+import CandleBackground from "./components/CandleBackground";
+import Timer from "./components/Timer";
   const canvasRef = useRef(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [drawingCommands, setDrawingCommands] = useState([]);
@@ -15,7 +19,6 @@ function Canvas({ users, randomPrompt, hiddenWord }) {
   const currentDrawer = users.users.find((player) => player.draw)
   const currentGuesser = users.users.find((player) => player.guess)
   const saboteur = users.users.find((player) => player.isSaboteur)
-
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -36,7 +39,6 @@ function Canvas({ users, randomPrompt, hiddenWord }) {
     };
   }, []);
 
- 
   const startDrawing = ({ nativeEvent }) => {
     const { offsetX, offsetY } = nativeEvent;
     const canvas = canvasRef.current;
@@ -51,10 +53,10 @@ function Canvas({ users, randomPrompt, hiddenWord }) {
 
   const drawFE = ({ nativeEvent }) => {
     if (isDrawing) {
-    const { offsetX, offsetY } = nativeEvent;
-    const canvas = canvasRef.current;
-    const context = canvas.getContext("2d");
-    context.lineTo(offsetX, offsetY);
+      const { offsetX, offsetY } = nativeEvent;
+      const canvas = canvasRef.current;
+      const context = canvas.getContext("2d");
+      context.lineTo(offsetX, offsetY);
 
       if (currentDrawer[0] === user.username) {
         context.stroke();
@@ -111,7 +113,6 @@ function Canvas({ users, randomPrompt, hiddenWord }) {
     }
   };
 
-
   const finishDrawing = () => {
     if (isDrawing) {
       setIsDrawing(false);
@@ -120,7 +121,6 @@ function Canvas({ users, randomPrompt, hiddenWord }) {
       socket.emit("frontend_canvas_mouse_release");
     }
   };
-
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -219,6 +219,7 @@ function Canvas({ users, randomPrompt, hiddenWord }) {
       />
 
       <div>
+
          {currentDrawer[0] === user.username ? <h1 className = 'drawPrompt'>Draw a {randomPrompt}</h1> : <h1> Guess the Word ... {hiddenWord.flat()} </h1>} 
          {currentDrawer[0] === user.username && <button onClick={handleReset}>Reset</button>}
          {currentGuesser[0] === user.username && 
@@ -232,10 +233,9 @@ function Canvas({ users, randomPrompt, hiddenWord }) {
            <button onClick={rotateCanvas}>Rotate</button>
          )}
        </div>
+
       </div>
   );
 }
-
-
 
 export default Canvas;

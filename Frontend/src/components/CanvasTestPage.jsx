@@ -2,7 +2,8 @@ import Canvas from "../Canvas";
 import { useEffect, useState } from "react";
 import { getPictonaryPrompts } from "./Utils/utils";
 
-function CanvasTestPage({mousePos, users, setUsers}) {
+function CanvasTestPage({ mousePos, users, setUsers, timerCountdownSeconds }) {
+
 
   const [picturePrompts, setpicturePrompts] = useState([]);
 
@@ -37,7 +38,8 @@ function CanvasTestPage({mousePos, users, setUsers}) {
         "Ready, set, doodle! Let's see if your masterpiece speaks louder than
         words
       </h1>
-      <Canvas users={users} setUsers={setUsers} randomPrompt={randomPrompt} hiddenWord={hiddenWord}/>
+      <Canvas timerCountdownSeconds={timerCountdownSeconds} users={users} setUsers={setUsers} randomPrompt={randomPrompt} hiddenWord={hiddenWord}/>
+      
     </div>
   );
 }

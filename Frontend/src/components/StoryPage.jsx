@@ -5,49 +5,66 @@ import CandleBackground from "./CandleBackground";
 import socket from "./Utils/Socket";
 import Timer from "./Timer";
 
-export default function StoryPage({ roomName, username, setUsername }) {
+export default function StoryPage({
+  roomName,
+  username,
+  setUsername,
+  setRoomName,
+  needsEmit,
+}) {
   const { user } = useContext(UserContext);
   let navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false);
+  const [usernameInput, setUsernameInput] = useState('')
+
+  useEffect(() => {
+    function onJoin(data) {
+      const room = data.room;
+      console.log(data.name + " has joined the room " + data.room);
+      console.log(room);
+      needsEmit = true;
+
+      setRoomName(data.room);
+      // setRoom(data.room)
+      // setUsers(() => [...data.users]);
+    }
+
+    socket.on("join-room", onJoin);
+
+    return () => {
+      socket.off("join-room", onJoin);
+    };
+  }, []);
+
+  // useEffect(() => {
+  //   if (roomName !== null) {
+  //     navigate(`/rooms/${roomName}`);
+  //     window.location.reload()
+  //   }
+  // }, [room, navigate]);
 
   function handleJoin() {
     socket.emit("frontend_request_existing_rooms_list");
-    user.username = username;
+    // user.username = username;
     navigate("/rooms");
-    // window.location.reload()
+    window.location.reload();
   }
 
   const handleCreate = (event) => {
+    socket.emit("frontend_create_room", { name: username });
     user.username = username;
     event.preventDefault();
-    socket.emit("frontend_create_room", { name: username });
-    if (roomName !== "") {
-      navigate(`/rooms/${roomName}`);
-    }
+    // setIsOpen(true);
   };
 
   function handleInput(value) {
     setUsername(value);
   }
 
-  // function setUserRole(){
-  //   const totalPlayers = users.length;
-  //   if (totalPlayers > 0){
-  //     const randomIndex = Math.floor(Math.random() * totalPlayers)
-  //     console.log(randomIndex);
-  //    setUsers((prevUsers) =>
-  //    prevUsers.map((user, index) =>
-  //    index === randomIndex ? { ...user, isSaboteur: true} : user
-  //    )
-  //    )
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   setUserRole()
-  // }, [users])
-
   return (
     <div className="container">
+      {roomName && username ? navigate(`/rooms/${roomName}`) : null}
+      {console.log(roomName, username)}
       <div className="parent">
         <img src={"../../images/scroll.png"} className="story-scroll" />
         <div className="child">
@@ -66,15 +83,19 @@ export default function StoryPage({ roomName, username, setUsername }) {
         </div>
       </div>
       <form>
-        <label htmlFor="username">Enter Username</label>
-        <br />
-        <input
-          value={username}
-          onChange={(event) => handleInput(event.target.value)}
-          id="username"
-          type="text"
-          placeholder="Username"
-        />
+        {  (
+          <>
+            <label htmlFor="username">Enter Username</label>
+            <br />
+            <input
+              value={username}
+              onChange={(event) => handleInput(event.target.value)}
+              id="username"
+              type="text"
+              placeholder="Username"
+            />
+          </>
+        ) }
 
         <br />
         <button onClick={handleJoin}>Join Room</button>
