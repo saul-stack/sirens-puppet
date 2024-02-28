@@ -25,8 +25,6 @@ export default function StoryPage({
       needsEmit = true;
 
       setRoomName(data.room);
-      // setRoom(data.room)
-      // setUsers(() => [...data.users]);
     }
 
     socket.on("join-room", onJoin);
@@ -36,34 +34,30 @@ export default function StoryPage({
     };
   }, []);
 
-  // useEffect(() => {
-  //   if (roomName !== null) {
-  //     navigate(`/rooms/${roomName}`);
-  //     window.location.reload()
-  //   }
-  // }, [room, navigate]);
-
   function handleJoin() {
     socket.emit("frontend_request_existing_rooms_list");
-    // user.username = username;
     navigate("/rooms");
     window.location.reload();
   }
 
   const handleCreate = (event) => {
-    socket.emit("frontend_create_room", { name: username });
-    user.username = username;
     event.preventDefault();
-    // setIsOpen(true);
+    setIsOpen(true);
   };
 
   function handleInput(value) {
     setUsername(value);
   }
+  function handleSubmit(event){
+    socket.emit("frontend_create_room", { name: username });
+    user.username = username;
+    event.preventDefault()
+  }
+
 
   return (
     <div className="container">
-      {roomName && username ? navigate(`/rooms/${roomName}`) : null}
+      {roomName ? navigate(`/rooms/${roomName}`) : null}
       {console.log(roomName, username)}
       <div className="parent">
         <img src={"../../images/scroll.png"} className="story-scroll" />
@@ -83,7 +77,9 @@ export default function StoryPage({
         </div>
       </div>
       <form>
-        {  (
+
+        { isOpen &&  (
+
           <>
             <label htmlFor="username">Enter Username</label>
             <br />
@@ -94,6 +90,7 @@ export default function StoryPage({
               type="text"
               placeholder="Username"
             />
+            <button onClick={handleSubmit}>Submit</button>
           </>
         ) }
 
@@ -105,38 +102,3 @@ export default function StoryPage({
   );
 }
 
-// (
-//       <main className="container">
-//         <div className="wrapper">
-//           <img src={"../../images/scroll.png"} className="story-scroll" />
-//           <div className="story-text">
-//            <p>
-//              An infamous crew of fearsome pirates sail the seven seas, plundering and pillaging all in their wake.
-//              <br />
-//              <br />
-//              Unbeknownst to the rest of the crew, one of the pirates is seduced by The Siren, who longs to bring the ship to its watery demise.
-//              <br />
-//              <br />
-//              Will the crew make it to land, or will they be united with The Siren for all eternity?
-//             </p>
-//           </div>
-//         <center>
-//           <form>
-//             <label htmlFor="username">Enter Username</label>
-//             <br />
-//             <input
-//               value={username}
-//               onChange={(event) => handleInput(event.target.value)}
-//               id="username"
-//               type="text"
-//               placeholder="Username"
-//               />
-//               <br />
-//               <button onClick={handleJoin}>Join Room</button>
-//               <button onClick={handleCreate}>Create Room</button>
-//             </form>
-//           </center>
-//         </div>
-//       </main>
-//   );
-// }
