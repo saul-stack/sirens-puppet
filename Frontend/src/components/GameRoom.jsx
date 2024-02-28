@@ -24,6 +24,9 @@ function GameRoom(users, setUsers) {
 
   const [round, setRound] = useState(0);
 
+
+  console.log(usersArray, '!!!!!useersArr!!!!!!');
+
   // let drawTurn = -1;
   // let guessTurn = 0;
 
