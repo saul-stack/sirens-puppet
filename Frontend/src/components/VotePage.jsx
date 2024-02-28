@@ -21,7 +21,7 @@ const players = [
   },
 ];
 
-function VotingPage() {
+function VotePage() {
   const navigate = useNavigate();
   function handleTimeUp() {
     navigate("/EndGamePageTest");
@@ -98,4 +98,4 @@ function VotingPage() {
   );
 }
 
-export default VotingPage;
+export default VotePage;
