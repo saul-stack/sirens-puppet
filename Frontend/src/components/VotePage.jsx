@@ -24,7 +24,7 @@ const players = [
 function VotingPage() {
   const navigate = useNavigate();
   function handleTimeUp() {
-    navigate("/walkThePlankTest");
+    navigate("/EndGamePageTest");
   }
 
   const [votedIndex, setVotedIndex] = useState(null);
