@@ -17,13 +17,13 @@ function CanvasTestPage({ mousePos, users, setUsers, timerCountdownSeconds }) {
       drawTurn = 0;
     }
     console.log(users.users[drawTurn][drawTurn], 'drawturn');
-    const currentDraw = users.users[drawTurn][drawTurn]
+    const currentDraw = users.users[drawTurn]
     console.log(currentDraw, 'currentDraw');
     currentDraw === user.username ? user.draw = true : user.draw = false
     if (guessTurn === users.users.length) {
       guessTurn = 0;
     }
-    const currentGuess = users.users[guessTurn][guessTurn]
+    const currentGuess = users.users[guessTurn]
     console.log(currentGuess, 'currentGuess');
     currentGuess === user.username ? user.guess = true : user.guess = false
   }; 
