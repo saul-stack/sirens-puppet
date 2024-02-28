@@ -208,11 +208,11 @@ function Canvas({ users, randomPrompt, hiddenWord, timerCountdownSeconds }) {
         width={1000}
         height={800}
         onMouseDown={(e) =>
-          user.drawer && startDrawing(e)
+          user.draw && startDrawing(e)
         }
-        onMouseMove={(e) => user.drawer && drawFE(e)}
-        onMouseUp={() => user.drawer && finishDrawing()}
-        onMouseOut={() => user.drawer  && finishDrawing()}
+        onMouseMove={(e) => user.draw && drawFE(e)}
+        onMouseUp={() => user.draw && finishDrawing()}
+        onMouseOut={() => user.draw  && finishDrawing()}
         style={{
           backgroundColor: "white",
           transform: `rotate(${rotationAngle}deg)`,
