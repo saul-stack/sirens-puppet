@@ -8,16 +8,13 @@ import JoinRoom from "./components/JoinRoom";
 import useSound from "use-sound";
 import BattleShip from "../music/BattleShip.mp3";
 import Mute from "./components/Mute";
+import CandleBackground from "./components/CandleBackground";
 import SocketFunctions from "./components/SocketFunctions";
 import ChatBox from "./components/ChatBox";
 import GameRoom from "./components/GameRoom";
 import { UserProvider } from "./contexts/UserContext";
 import ErrorHandler from "./components/ErrorHandler";
 // import CanvasTestPage from './components/CanvasTestPage'
-
-import VotePage from "./components/VotePage";
-import EndGamePage from "./components/EndGamePage";
-
 
 function App() {
   const [mousePos, setMousePos] = useState({});
@@ -50,7 +47,6 @@ function App() {
   };
   return (
     <>
-
     <UserProvider>
       <SocketFunctions
         roomName={roomName}
@@ -60,6 +56,8 @@ function App() {
         setMessages={setMessages}
         users={users}
       />
+
+      <CandleBackground />
       <Mute
         isMute={isMute}
         setIsMute={setIsMute}
@@ -104,7 +102,6 @@ function App() {
             />
           }
         />
-
           <Route
             path="/rooms/:room_code/role"
             element={
@@ -116,10 +113,6 @@ function App() {
             element={<ChatBox messages={messages} roomName={roomName} />}
           />
           <Route path="*" element={<ErrorHandler code={404} />} />
-
-          <Route path="/votePage" element={<VotePage />} />
-          <Route path="/endGamePage" element={<EndGamePage />} />
-
         </Routes>
       </UserProvider>
     </>
