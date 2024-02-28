@@ -1,8 +1,11 @@
 import Canvas from "../Canvas";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { getPictonaryPrompts } from "./Utils/utils";
+import { UserContext } from "../contexts/UserContext";
 
 function CanvasTestPage({ mousePos, users, setUsers, timerCountdownSeconds }) {
+
+  const { user } = useContext(UserContext)
 
   let drawTurn = -1;
   let guessTurn = 0;
