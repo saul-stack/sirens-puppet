@@ -29,12 +29,12 @@ export default function LobbyPage({ users, setUsers, roomName }) {
   console.log(users, "<<users");
   console.log(playerList);
 
-  const totalPlayers = users.length;
-
+  const [totalPlayers, setTotalPlayers] = useState(users.length);
   const [players, setPlayers] = useState(() => [...playerList]);
 
   useEffect(() => {
     socket.emit("frontend_send_users", { room: room_code });
+    setTotalPlayers(users.length);
 
     getAvatars()
       .then((data) => {
@@ -45,7 +45,7 @@ export default function LobbyPage({ users, setUsers, roomName }) {
         setIsError(true);
         setError(err);
       });
-  }, []);
+  }, [users.length]);
 
   function handleStart() {
     if (totalPlayers > 0) {
