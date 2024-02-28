@@ -8,7 +8,6 @@ import socket from "./Utils/Socket";
 import Timer from "./Timer";
 
 export default function LobbyPage({ users, setUsers, roomName }) {
-  //set this to 0 on your local machine to test the game components
   const minimumPlayers = 4;
 
   const navigate = useNavigate();
