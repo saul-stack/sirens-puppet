@@ -8,7 +8,6 @@ import socket from "./Utils/Socket";
 import Timer from "./Timer";
 
 export default function LobbyPage({ users, setUsers, roomName }) {
-  //set this to 0 on your local machine to test the game components
   const minimumPlayers = 4;
 
   const navigate = useNavigate();
@@ -17,8 +16,6 @@ export default function LobbyPage({ users, setUsers, roomName }) {
   const { room_code } = useParams();
   const [avatars, setAvatars] = useState([]);
 
-  console.log(room_code);
-
   const playerList = [];
   users.flat().map((user) => {
     if (!playerList.some((player) => player.username === user)) {
@@ -26,15 +23,24 @@ export default function LobbyPage({ users, setUsers, roomName }) {
     }
   });
 
-  console.log(users, "<<users");
-  console.log(playerList);
+  let totalPlayers = users.length;
 
-  const [totalPlayers, setTotalPlayers] = useState(users.length);
+  const [totalPLayers, setTotalPlayers] = useState(users.length);
+  console.log("in the beginning, totalPLayers = ", totalPlayers);
+  console.log("in the beginning, users.length = ", users.length);
+
   const [players, setPlayers] = useState(() => [...playerList]);
+
+  //totalPlayers should refresh to reflect number of players in room
+
+  useEffect(() => {
+    setTotalPlayers(users.length);
+    console.log("inside useEffect, users.length =", users.length);
+    console.log("inside useEffect, totalPlayers=", totalPLayers);
+  }, [users.length]);
 
   useEffect(() => {
     socket.emit("frontend_send_users", { room: room_code });
-    setTotalPlayers(users.length);
 
     getAvatars()
       .then((data) => {
@@ -45,7 +51,7 @@ export default function LobbyPage({ users, setUsers, roomName }) {
         setIsError(true);
         setError(err);
       });
-  }, [users.length]);
+  }, []);
 
   function handleStart() {
     if (totalPlayers > 0) {
