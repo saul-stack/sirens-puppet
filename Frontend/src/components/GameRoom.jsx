@@ -5,7 +5,6 @@ import RoundPage from "./RoundPage";
 import CanvasTestPage from "./CanvasTestPage";
 import ChatWindow from "./ChatWindow";
 import VotePage from "./VotePage";
-import { useContext } from "react";
 import { LivesContext } from "../contexts/LivesContext";
 import { useNavigate } from "react-router-dom";
 
