@@ -7,7 +7,7 @@ import AvatarButton from "./AvatarButton";
 import socket from "./Utils/Socket";
 import Timer from "./Timer";
 
-export default function LobbyPage({ users, setUsers, roomName }) {
+export default function LobbyPage({ users, setUsers, roomName, playerList }) {
 
   const {usersArray, setUsersArray} = useContext(UserContext)
   const minimumPlayers = 1;
@@ -18,7 +18,6 @@ export default function LobbyPage({ users, setUsers, roomName }) {
   const { room_code } = useParams();
   const [avatars, setAvatars] = useState([]);
 
-  const playerList = [];
   
   users.flat().map((user) => {
     if (!playerList.some((player) => player.username === user)) {
@@ -61,13 +60,10 @@ export default function LobbyPage({ users, setUsers, roomName }) {
       setSaboteur(playerList[randomIndex]); 
       if (playerList[randomIndex].username === user.username) {
         user.isSaboteur = true;
+        playerList[randomIndex].isSaboteur = true
+      } else {
+        playerList[randomIndex].isSaboteur = false
       }
-
-    if(!usersArray.includes(user)){
-    setUsersArray((currentUsersArray) => {
-      return [...currentUsersArray, user]
-    })
-    }
   }
     socket.emit("frontend_start_game")
   }

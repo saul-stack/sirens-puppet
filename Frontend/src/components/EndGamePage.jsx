@@ -6,16 +6,14 @@ import { VotesContext } from "../contexts/VotesContext";
 import { getMost } from "./Utils/utils";
 import { TfiFaceSad } from "react-icons/tfi";
 
-function EndGamePage() {
-  const { usersArray } = useContext(UserContext);
+function EndGamePage({playerList}) {
   const {votes} = useContext(VotesContext)
-  console.log(usersArray, "<-- usersArray");
 
-  const saboteurIndex = usersArray.findIndex(
+  const saboteurIndex = playerList.findIndex(
     (user) => user.isSaboteur === true
   );
 
-  console.log(usersArray[saboteurIndex], "<- this should be the saboteur!!");
+  console.log(playerList[saboteurIndex], "<- this should be the saboteur!!");
 
   const mostVoted = getMost(votes)
  
@@ -23,7 +21,7 @@ function EndGamePage() {
 
   const [resultsVisible, setResultsVisible] = useState(false);
 
-  const saboteur = usersArray[saboteurIndex];
+  const saboteur = playerList[saboteurIndex];
 
   const teamWin = (mostVoted.length === 1 && mostVoted[0] === saboteur);
 
@@ -84,10 +82,10 @@ function EndGamePage() {
           <h2 style={{ color: "black", fontSize: "4vw" }}>
             The saboteur was...
           </h2>
-          <h2>{saboteur.username}</h2>
+          <h2>{saboteur}</h2>
 
           <div>
-            <h3 style={{ color: "black", fontSize: "2vw" }}>{saboteur.username}</h3>
+            <h3 style={{ color: "black", fontSize: "2vw" }}>{saboteur}</h3>
             {teamWin ? (
               <p style={{ color: "black", fontSize: "2vw" }}>
                 The crew made it home safely.
