@@ -38,7 +38,6 @@ function CanvasTestPage({ mousePos, users, setUsers, timerCountdownSeconds, isDr
     function fetchRandomPrompt(data){
       setRandomPrompt(data.prompt)
       if(data.prompt){
-        console.log('here');
         for (let i = 0; i < data.prompt.length; i++) {
           hiddenWord.push("_");
     }
@@ -47,12 +46,12 @@ function CanvasTestPage({ mousePos, users, setUsers, timerCountdownSeconds, isDr
     socket.on('backend-randomPrompt', fetchRandomPrompt)
   })
 
-  const hiddenWord = []
+  let hiddenWord = ''
 
   useEffect(() => {
   if(randomPrompt){
   for (let i = 0; i < randomPrompt.length; i++) {
-    hiddenWord.push("_");
+    hiddenWord += '_'
   }
   } 
   }, [randomPrompt])

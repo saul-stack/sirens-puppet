@@ -13,7 +13,8 @@ function Canvas({ users, randomPrompt, hiddenWord, timerCountdownSeconds, isDraw
 
   const [rotationAngle, setRotationAngle] = useState(0);
 
-  const { setLives } = useContext(LivesContext);
+
+  const { setLives, lives } = useContext(LivesContext);
   const { user } = useContext(UserContext);
 
   useEffect(() => {
