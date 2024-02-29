@@ -166,18 +166,20 @@ function Canvas({ users, randomPrompt, hiddenWord, timerCountdownSeconds, isDraw
     socket.emit("frontend_canvas_rotate");
   };
 
-  const [win, setWin] = useState(false);
+  const [win, setWin] = useState(true);
 
-  const [lose, setLose] = useState(false);
+  const [lose, setLose] = useState(true);
 
   const guess = useRef(null);
 
   const handleGuess = (e) => {
     e.preventDefault();
     const currentGuess = guess.current.value;
-    if (currentGuess.toLowerCase() === randomPrompt.toLowerCase()) {
-      setWin(true);
-    }
+    if (currentGuess.toLowerCase() !== randomPrompt.toLowerCase()) {
+      setWin(false);
+    } else (
+      setWin(true)
+    )
   };
 
   console.log(randomPrompt, '<<<<<rand prompt!!!>>>>>>>>>');
@@ -187,13 +189,15 @@ function Canvas({ users, randomPrompt, hiddenWord, timerCountdownSeconds, isDraw
 
   useEffect(() => {
     const roundPageTimer = setTimeout(() => {
-      if (!win) {
+      if (user.guess && !win) {
         setLives((currentLives) => currentLives - 1);
-        setLose(true);
+        setLose(false);
       }
     }, roundLength);
     return () => clearTimeout(roundPageTimer);
   }, []);
+  
+  console.log(win, 'win');
 
   return (
     <div>
@@ -202,8 +206,8 @@ function Canvas({ users, randomPrompt, hiddenWord, timerCountdownSeconds, isDraw
         {isDrawer} is Drawing... : {isGuesser} is Guessing...
       </h1>
       <Timer timerCountdownSeconds={timerCountdownSeconds} />
-      {win && <h2> Correct Answer! Sail onto the next Round!</h2>}
-      {lose && <h2> Too Slow! The crew loses a life</h2>}
+      {win && !user.draw && <h2> Correct Answer! Sail onto the next Round!</h2>}
+      {lose && !user.draw && <h2> Too Slow! The crew loses a life</h2>}
       <canvas
         className="draw-canvas"
         ref={canvasRef}
@@ -240,7 +244,7 @@ function Canvas({ users, randomPrompt, hiddenWord, timerCountdownSeconds, isDraw
                 name="guess"
                 ref={guess}
               />
-              <button onClick={handleGuess} disabled={win} type="submit" name="guess">
+              <button onClick={handleGuess}  type="submit" name="guess">
                 Guess
               </button>
             </div>
