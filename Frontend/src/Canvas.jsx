@@ -169,12 +169,15 @@ function Canvas({ users, randomPrompt, hiddenWord, timerCountdownSeconds, isDraw
 
   const [lose, setLose] = useState(false);
 
-  const guess = useRef(null);
+  // const guess = useRef(null);
+
+  const [inputGuess, setInputGuess] = useState('')
 
   const handleGuess = (e) => {
     e.preventDefault();
-    const currentGuess = guess.current.value;
-    if (currentGuess.toLowerCase() === randomPrompt.toLowerCase()) {
+    // const currentGuess = guess.current.value;
+    if (inputGuess.toLowerCase() === randomPrompt.toLowerCase()) {
+      console.log(inputGuess);
       setWin(true);
       socket.emit("frontend-lives", {lives: lives, win: win, lose: lose})
     }
@@ -251,7 +254,9 @@ function Canvas({ users, randomPrompt, hiddenWord, timerCountdownSeconds, isDraw
                 type="text"
                 placeholder="SwordBoat"
                 name="guess"
-                ref={guess}
+                // ref={guess}
+                value={inputGuess}
+                onChange={(e) => {setInputGuess(e.target.value)}}
               />
               <button onClick={handleGuess} disabled={win} type="submit" name="guess">
                 Guess
