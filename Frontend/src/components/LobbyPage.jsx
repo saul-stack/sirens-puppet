@@ -58,12 +58,13 @@ export default function LobbyPage({ users, setUsers, roomName, playerList }) {
     if (totalPlayers > 0) {
       const randomIndex = Math.floor(Math.random() * totalPlayers);
       setSaboteur(playerList[randomIndex]); 
+      console.log(playerList[randomIndex], '<<<<<<<<<<saboteur');
       if (playerList[randomIndex].username === user.username) {
         user.isSaboteur = true;
         playerList[randomIndex].isSaboteur = true
-      } else {
-        playerList[randomIndex].isSaboteur = false
       }
+      
+      console.log(playerList, '<<<<Playerlist');
   }
     socket.emit("frontend_start_game")
   }
