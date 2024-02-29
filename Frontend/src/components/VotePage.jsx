@@ -32,11 +32,6 @@ function VotePage() {
   const navigate = useNavigate();
 
 
-  function handleTimeUp() {
-    navigate("/EndGamePageTest");
-  }
-
-
   const [votedIndex, setVotedIndex] = useState(null);
   const [timerCompleted, setTimerCompleted] = useState(false);
 
