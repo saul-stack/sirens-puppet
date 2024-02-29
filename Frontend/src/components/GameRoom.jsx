@@ -116,7 +116,7 @@ function GameRoom(users, setUsers, playerList) {
             )}
           </div>
         )}
-        {gameOver && <VotePage />}
+        {gameOver && <VotePage playerList={users.playerList} />}
         <ChatWindow />
       </div>
     </>
