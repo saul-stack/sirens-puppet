@@ -45,7 +45,14 @@ function CanvasTestPage({ mousePos, users, setUsers, timerCountdownSeconds, isDr
     return picturePrompts[randomIndex];
   }
 
-  const randomPrompt = getRandomPrompt()
+  const [randomPrompt, setRandomPrompt] = useState()
+
+  useEffect(() => {
+    const newPrompt = getRandomPrompt()
+    setRandomPrompt(newPrompt)
+  }, [picturePrompts])
+
+
 
   const hiddenWord = []
 

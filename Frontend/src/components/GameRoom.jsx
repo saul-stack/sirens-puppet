@@ -58,7 +58,7 @@ function GameRoom(users, setUsers) {
   console.log(user, 'userUpdated ');
   
   let playerDesignationLength = 3000;
-  let roundLength = 5000;
+  let roundLength = 20000;
   let roundBreakLength = 2000;
   
   let numberOfRounds = 3;
@@ -99,6 +99,8 @@ function GameRoom(users, setUsers) {
       return () => clearTimeout(canvasTestPageTimer);
     }
   }, [showCanvasTestPage]);
+
+  
 
   return (
     <div>

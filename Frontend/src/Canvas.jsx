@@ -16,8 +16,6 @@ function Canvas({ users, randomPrompt, hiddenWord, timerCountdownSeconds, isDraw
   const { setLives } = useContext(LivesContext);
   const { user } = useContext(UserContext);
 
-  console.log(user, 'userincanvas');
-
   useEffect(() => {
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
@@ -180,6 +178,9 @@ function Canvas({ users, randomPrompt, hiddenWord, timerCountdownSeconds, isDraw
     }
   };
 
+  console.log(randomPrompt, 'rand promot');
+ 
+
   const roundLength = 19000;
 
   useEffect(() => {
@@ -238,7 +239,7 @@ function Canvas({ users, randomPrompt, hiddenWord, timerCountdownSeconds, isDraw
                 name="guess"
                 ref={guess}
               />
-              <button onClick={handleGuess} type="submit" name="guess">
+              <button onClick={handleGuess} disabled={win} type="submit" name="guess">
                 Guess
               </button>
             </div>
