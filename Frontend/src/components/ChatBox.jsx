@@ -3,19 +3,22 @@ import { UserContext } from "../contexts/UserContext";
 import { useState } from "react";
 import socket from "./Utils/Socket";
 
-export default function ChatBox({messages, roomName}){
-    const [inputMessage, setInputMessage] = useState("");
+export default function ChatBox({ messages, roomName }) {
+  const [inputMessage, setInputMessage] = useState("");
 
-    const {user} = useContext(UserContext)
+  const { user } = useContext(UserContext);
 
-    const handleSubmit = (event) => {
-      event.preventDefault();
-      console.log(inputMessage);
-      socket.emit("frontend_send_message", { name:user.username, message: inputMessage , room: roomName});
-    };
-  
-    return (
-        <>
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    socket.emit("frontend_send_message", {
+      name: user.username,
+      message: inputMessage,
+      room: roomName,
+    });
+  };
+
+  return (
+    <>
       <form onSubmit={handleSubmit}>
         <label htmlFor="message">Message: </label>
         <input
@@ -24,13 +27,13 @@ export default function ChatBox({messages, roomName}){
           placeholder="Enter message: "
           value={inputMessage}
           onChange={(event) => setInputMessage(event.target.value)}
-          />
+        />
       </form>
       <div>
         {messages.map((message, index) => {
-            return <p key={message+index}>{message}</p>
+          return <p key={message + index}>{message}</p>;
         })}
       </div>
-          </>
-    );
+    </>
+  );
 }

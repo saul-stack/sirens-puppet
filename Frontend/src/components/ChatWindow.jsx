@@ -9,8 +9,8 @@ function ChatWindow() {
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState("");
   const chatMessageRef = useRef(null);
-  const {room_code} = useParams()
-  const {user} = useContext(UserContext)
+  const { room_code } = useParams();
+  const { user } = useContext(UserContext);
 
   // const handleInputChange = (event) => {
   //   setInputText(event.target.value);
@@ -24,9 +24,12 @@ function ChatWindow() {
       minute: "numeric",
     });
     event.preventDefault();
-    console.log(room_code);
-    socket.emit("frontend_send_message", { name: user.username, message: inputMessage, room: room_code });
-    setInputMessage('')
+    socket.emit("frontend_send_message", {
+      name: user.username,
+      message: inputMessage,
+      room: room_code,
+    });
+    setInputMessage("");
   };
 
   useEffect(() => {
@@ -39,23 +42,15 @@ function ChatWindow() {
           `${data.name} : ${data.message}`,
         ]);
       }
-
-      console.log(room_code, '<<room_code');
-      console.log(data.message === room_code, "<<data.message === roomName ?");
-      console.log(data, "<<message");
-      console.log("message sent");
     }
-
 
     socket.on("send-message", onMessage);
     socket.on("backend_send_message", onMessage);
 
     return () => {
-
-    socket.off("send-message", onMessage);
-    socket.off("backend_send_message", onMessage);
-    }
-
+      socket.off("send-message", onMessage);
+      socket.off("backend_send_message", onMessage);
+    };
   }, []);
 
   return (
