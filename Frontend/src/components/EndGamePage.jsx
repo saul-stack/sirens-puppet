@@ -23,8 +23,10 @@ function EndGamePage({ playerList }) {
 
   const saboteur = playerList[saboteurIndex];
 
+  saboteur = "Saul"
+  
   const teamWin = mostVoted.length === 1 && mostVoted[0] === saboteur;
-
+  
   mostVoted[0] = "Michael";
 
   return (

@@ -60,10 +60,10 @@ function CanvasTestPage({ mousePos, users, setUsers, timerCountdownSeconds, isDr
 
   return (
     <div className="canvas-container">
-      <h1 className="canvas-title">
+      {/* <h1 className="canvas-title">
         "Ready, set, doodle! Let's see if your masterpiece speaks louder than
         words
-      </h1>
+      </h1> */}
       <Canvas timerCountdownSeconds={timerCountdownSeconds} users={users} setUsers={setUsers} randomPrompt={randomPrompt} hiddenWord={hiddenWord} isDrawer={isDrawer} isGuesser={isGuesser}/>
       
     </div>
