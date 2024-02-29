@@ -78,7 +78,7 @@ function CanvasTestPage({
         setUsers={setUsers}
         randomPrompt={randomPrompt}
         hiddenWord={hiddenWord}
-        currenDraw={currentDraw}
+        currentDraw={currentDraw}
         currentGuess={currentGuess}
       />
     </div>

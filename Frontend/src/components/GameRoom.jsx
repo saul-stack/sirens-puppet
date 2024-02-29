@@ -29,6 +29,8 @@ function GameRoom(users, setUsers, playerList) {
 
   // let drawTurn = -1;
   // let guessTurn = 0;
+  let currentDraw = "";
+  let currentGuess = "";
 
   const pickTurn = () => {
     if (drawTurn > users.users.length) {
@@ -36,14 +38,14 @@ function GameRoom(users, setUsers, playerList) {
     }
 
     console.log(drawTurn, "<<drawTurn");
-    const currentDraw = users.users[0][drawTurn];
+    currentDraw = users.users[0][drawTurn];
 
     currentDraw === user.username ? (user.draw = true) : (user.draw = false);
     if (guessTurn > users.users.length) {
       setGuessTurn(0);
     }
     console.log(guessTurn, "<<guessturn");
-    const currentGuess = users.users[0][guessTurn];
+    currentGuess = users.users[0][guessTurn];
     currentGuess === user.username ? (user.guess = true) : (user.guess = false);
   };
 
