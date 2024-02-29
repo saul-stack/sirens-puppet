@@ -1,133 +1,255 @@
-import React, { useState, useEffect, useContext } from "react";
-import { UserContext } from "../contexts/UserContext";
-import PlayerDesignation from "./PlayerDesignation";
-import RoundPage from "./RoundPage";
-import CanvasTestPage from "./CanvasTestPage";
-import ChatWindow from "./ChatWindow";
-import VotePage from "./VotePage";
-import { LivesContext } from "../contexts/LivesContext";
-import { useNavigate } from "react-router-dom";
+import React, { useRef, useEffect, useState, useContext } from "react";
+import socket from "./components/Utils/Socket";
+import Timer from "./components/Timer";
 
-function GameRoom(users, setUsers) {
-  const navigate = useNavigate;
-  let teamLives = useContext(LivesContext);
-  // console.log(teamLives.lives, "<----team Lives");
+import { LivesContext } from "./contexts/LivesContext";
+import { UserContext } from "./contexts/UserContext";
 
-  const [showPlayerDesignation, setShowPlayerDesignation] = useState(true);
-  const [showRoundPage, setShowRoundPage] = useState(false);
-  const [showCanvasTestPage, setShowCanvasTestPage] = useState(false);
-  const [gameOver, setGameOver] = useState(false);
-  const { user, usersArray } = useContext(UserContext);
-  const [drawTurn, setDrawTurn] = useState(0)
-  const [guessTurn, setGuessTurn] = useState(1)
-  const [isDrawer, setIsDrawer] = useState()
-  const [isGuesser, setIsGuesser] = useState()
+function Canvas({ users, randomPrompt, hiddenWord, timerCountdownSeconds, isDrawer, isGuesser }) {
+  const canvasRef = useRef(null);
+  const [isDrawing, setIsDrawing] = useState(false);
+  const [drawingCommands, setDrawingCommands] = useState([]);
+  const [backgroundImage, setBackgroundImage] = useState(null);
 
-  const [round, setRound] = useState(0);
+  const [rotationAngle, setRotationAngle] = useState(0);
 
-  console.log(users.users, '<users')
-  console.log(usersArray);
+  const { setLives } = useContext(LivesContext);
+  const { user } = useContext(UserContext);
 
-  // let drawTurn = -1;
-  // let guessTurn = 0;
+  console.log(user, 'userincanvas');
 
-  const pickTurn = () => {
-    setDrawTurn((prevTurn) => (prevTurn + 1))
-    setGuessTurn((prevTurn) => (prevTurn + 1))
-    console.log(drawTurn, '<<<<drawTurn');
-    console.log(guessTurn, '<<<<guessTurn');
-    if (drawTurn === users.users[0].length - 1) {
-      setDrawTurn(0)
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const context = canvas.getContext("2d");
+
+    context.fillStyle = "white";
+    context.fillRect(0, 0, canvas.width, canvas.height);
+
+    context.strokeStyle = "black";
+    context.lineWidth = 5; // if we want to change the width of the line
+    context.lineCap = "round";
+    context.lineJoin = "round";
+
+    const img = new Image();
+    img.src = "../images/gridPaper.png";
+    img.onload = () => {
+      setBackgroundImage(img);
+    };
+  }, []);
+
+  const startDrawing = ({ nativeEvent }) => {
+    const { offsetX, offsetY } = nativeEvent;
+    const canvas = canvasRef.current;
+    const context = canvas.getContext("2d");
+    context.moveTo(offsetX, offsetY);
+    context.beginPath();
+    if (user.draw) {
+      setIsDrawing(true);
+      socket.emit("frontend_canvas_mouse_click");
     }
-    const currentDraw = users.users[0][drawTurn]
-    setIsDrawer(currentDraw)
-    currentDraw === user.username ? user.draw = true : user.draw = false
-    console.log(currentDraw, '<<<<currentDaaw');
-    if (guessTurn === users.users[0].length - 1) {
-      setGuessTurn(0)
-    }
-    const currentGuess = users.users[0][guessTurn]
-    setIsGuesser(currentGuess)
-    console.log(currentGuess, '<<<<currentGuess');
-    currentGuess === user.username ? user.guess = true : user.guess = false
-    console.log(user.guess, '<<<<user.guess');
-    console.log(user.draw, '<<<<user.draw');
   };
 
+  const drawFE = ({ nativeEvent }) => {
+    if (isDrawing) {
+      const { offsetX, offsetY } = nativeEvent;
+      const canvas = canvasRef.current;
+      const context = canvas.getContext("2d");
+      context.lineTo(offsetX, offsetY);
 
-  console.log(user, 'userUpdated ');
-  
-  let playerDesignationLength = 3000;
-  let roundLength = 30000;
-  let roundBreakLength = 2000;
-  
-  let numberOfRounds = 3;
-  
-  useEffect(() => {
-    const playerDesignationTimer = setTimeout(() => {
-      setShowPlayerDesignation(false);
-      setShowRoundPage(true);
-    }, playerDesignationLength);
-    
-    return () => clearTimeout(playerDesignationTimer);
-  }, []);
-  
-  useEffect(() => {
-    if (showRoundPage) {
-      // drawTurn++;
-      // guessTurn++;
-      pickTurn()
-      if (round + 1 > numberOfRounds) setGameOver(true);
-      else {
-        const roundPageTimer = setTimeout(() => {
-          setShowRoundPage(false);
-          setShowCanvasTestPage(true);
-        }, roundBreakLength);
-
-        return () => clearTimeout(roundPageTimer);
+      if (user.draw) {
+        context.stroke();
+        socket.emit("frontend_canvas_mouse_move", {
+          mouseX: offsetX,
+          mouseY: offsetY,
+        });
       }
     }
-  }, [showRoundPage]);
+  };
 
   useEffect(() => {
-    if (showCanvasTestPage) {
-      const canvasTestPageTimer = setTimeout(() => {
-        setShowCanvasTestPage(false);
-        setShowRoundPage(true);
-      }, roundLength);
-
-      return () => clearTimeout(canvasTestPageTimer);
+    function onCavasMove(data) {
+      // console.log(data);
+      mirrorDrawBE(data);
     }
-  }, [showCanvasTestPage]);
+
+    function onCanvasRotate() {
+      let start = null;
+      const animate = (timestamp) => {
+        if (!start) start = timestamp;
+        const progress = timestamp - start;
+        const angle = (progress / 2000) * 360; // Rotate over 2 seconds
+        setRotationAngle(angle);
+        if (progress < 2000) {
+          requestAnimationFrame(animate);
+        } else {
+          // Reset rotation angle to 0 after rotation completes
+          setRotationAngle(0);
+        }
+      };
+      requestAnimationFrame(animate);
+    }
+
+    socket.on("backend_canvas_rotate", onCanvasRotate);
+
+    socket.on("backend_canvas_mouse_move", onCavasMove);
+
+    return () => {
+      socket.off("backend_canvas_mouse_move", onCavasMove);
+      socket.off("backend_canvas_rotate", onCanvasRotate);
+    };
+  }, []);
+
+  const mirrorDrawBE = (data) => {
+    if (!user.draw) {
+      console.log("inside mirror draw");
+      // if (!isDrawing) return;
+      const canvas = canvasRef.current;
+      const context = canvas.getContext("2d");
+      context.lineTo(data.mouseX, data.mouseY);
+      // console.log("in mirrorDrawBE");
+      context.stroke();
+    }
+  };
+
+  const finishDrawing = () => {
+    if (isDrawing) {
+      setIsDrawing(false);
+      const canvas = canvasRef.current;
+      setDrawingCommands([...drawingCommands, canvas.toDataURL()]);
+      socket.emit("frontend_canvas_mouse_release");
+    }
+  };
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const context = canvas.getContext("2d");
+
+    context.clearRect(0, 0, canvas.width, canvas.height);
+
+    if (backgroundImage) {
+      context.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
+    }
+
+    drawingCommands.forEach((command) => {
+      const img = new Image();
+      img.src = command;
+      img.onload = () => {
+        context.drawImage(img, 0, 0);
+      };
+    });
+  }, [drawingCommands, backgroundImage]);
+
+  const handleReset = () => {
+    const canvas = canvasRef.current;
+    const context = canvas.getContext("2d");
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    setDrawingCommands([]);
+    setRotationAngle(0); // Reset rotation angle
+  };
+
+  // Function to handle the rotation animation
+  const rotateCanvas = () => {
+    let start = null;
+    const animate = (timestamp) => {
+      if (!start) start = timestamp;
+      const progress = timestamp - start;
+      const angle = (progress / 2000) * 360; // Rotate over 2 seconds
+      setRotationAngle(angle);
+      if (progress < 2000) {
+        requestAnimationFrame(animate);
+      } else {
+        // Reset rotation angle to 0 after rotation completes
+        setRotationAngle(0);
+      }
+    };
+    requestAnimationFrame(animate);
+    socket.emit("frontend_canvas_rotate");
+  };
+
+  const [win, setWin] = useState(false);
+
+  const [lose, setLose] = useState(false);
+
+  const guess = useRef(null);
+
+  const handleGuess = (e) => {
+    e.preventDefault();
+    const currentGuess = guess.current.value;
+    if (currentGuess.toLowerCase() === randomPrompt.toLowerCase()) {
+      setWin(true);
+    }
+  };
+
+  const roundLength = 29000;
+
+  useEffect(() => {
+    const roundPageTimer = setTimeout(() => {
+      if (!win) {
+        setLives((currentLives) => currentLives - 1);
+        setLose(true);
+      }
+    }, roundLength);
+    return () => clearTimeout(roundPageTimer);
+  }, []);
 
   return (
     <div>
-      <h2>Lives: {teamLives.lives}</h2>
-      {teamLives.lives > 1
-        ? console.log("team has lives remaining")
-        : () => {
-          console.log("team has no lives remaining");
-          navigate("/endGamePageTest");
+      <h1>
+        {" "}
+        {isDrawer} is Drawing... : {isGuesser} is Guessing...
+      </h1>
+      <Timer timerCountdownSeconds={timerCountdownSeconds} />
+      {win && <h2> Correct Answer! Sail onto the next Round!</h2>}
+      {lose && <h2> Too Slow! The crew loses a life</h2>}
+
+      <canvas
+        className="draw-canvas"
+        ref={canvasRef}
+        width={1000}
+        height={800}
+        onMouseDown={(e) =>
+          user.draw && startDrawing(e)
+        }
+        onMouseMove={(e) => user.draw && drawFE(e)}
+        onMouseUp={() => user.draw && finishDrawing()}
+        onMouseOut={() => user.draw  && finishDrawing()}
+        style={{
+          backgroundColor: "white",
+          transform: `rotate(${rotationAngle}deg)`,
+          border: "7px solid lightseagreen",
         }}
-      {!gameOver && (
-        <div>
-          {showPlayerDesignation && <PlayerDesignation />}
-          {showRoundPage && <RoundPage round={round} setRound={setRound} />}
-          {showCanvasTestPage && (
-            <CanvasTestPage
-              timerCountdownSeconds={roundLength / 1000}
-              users={users}
-              setUsers={setUsers}
-              isDrawer={isDrawer}
-              isGuesser={isGuesser}
-            />
-          )}
-        </div>
-      )}
-      {gameOver && <VotePage playerList={users.playerList} />}
-      <ChatWindow />
+      />
+
+      <div>
+        {user.draw ? (
+          <h1 className="drawPrompt">Draw a {randomPrompt}</h1>
+        ) : (
+          <h1> Guess the Word ... {hiddenWord.flat()} </h1>
+        )}
+        {user.draw && (
+          <button onClick={handleReset}>Reset</button>
+        )}
+        {user.guess && (
+          <form method="post">
+            <div>
+              <input
+                type="text"
+                placeholder="SwordBoat"
+                name="guess"
+                ref={guess}
+              />
+              <button onClick={handleGuess} type="submit" name="guess">
+                Guess
+              </button>
+            </div>
+          </form>
+        )}
+        {user.isSaboteur && (
+          <button onClick={rotateCanvas}>Rotate</button>
+        )}
+      </div>
     </div>
   );
 }
 
-export default GameRoom;
+export default Canvas;
