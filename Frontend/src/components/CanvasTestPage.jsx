@@ -30,15 +30,19 @@ function CanvasTestPage({ mousePos, users, setUsers, timerCountdownSeconds, isDr
     const newPrompt = getRandomPrompt()
     socket.emit('front-end-randomPrompt', {prompt: newPrompt})
     }
-  }, [picturePrompts])
+  }, [])
 
 
   useEffect(() => {
     function fetchRandomPrompt(data){
+      console.log(data.prompt, '<<<<<<<<<data.prompt');
       setRandomPrompt(data.prompt)
     }
     socket.on('backend-randomPrompt', fetchRandomPrompt)
-  })
+    return() => {
+      socket.off('backend-randomPrompt', fetchRandomPrompt)
+    }
+  }, [])
 
 
   const hiddenWord = []

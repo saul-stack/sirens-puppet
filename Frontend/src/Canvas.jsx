@@ -180,7 +180,7 @@ function Canvas({ users, randomPrompt, hiddenWord, timerCountdownSeconds, isDraw
     }
   };
 
-  console.log(randomPrompt, 'rand promot');
+  console.log(randomPrompt, '<<<<<rand prompt!!!>>>>>>>>>');
  
 
   const roundLength = 19000;
