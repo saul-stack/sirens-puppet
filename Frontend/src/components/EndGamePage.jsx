@@ -1,23 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-// Sample object for testing purposes
-const samplePersons = [
-  {
-    name: "John Doe",
-    profileImage: "../../images/gold coin image.png",
-  },
-  {
-    name: "Jane Smith",
-    profileImage: "../../images/gold coin image.png",
-  },
-  {
-    name: "Alice Johnson",
-    profileImage: "../../images/gold coin image.png",
-  },
-];
-
-function EndGamePage() {
+function EndGamePage({ usersArray, votedPerson }) {
   const navigate = useNavigate();
   const [saboteurIndex, setSaboteurIndex] = useState(0);
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -28,7 +12,7 @@ function EndGamePage() {
     setSaboteurIndex(randomIndex);
   }, []);
 
-  const saboteur = samplePersons[saboteurIndex];
+  const saboteur = usersArray[saboteurIndex];
 
   useEffect(() => {
     const image = new Image();
@@ -48,7 +32,8 @@ function EndGamePage() {
             <img src={"../../images/scroll2.png"} className="title-scroll" />
             <div className="scroll-child">
               <h2>
-                (player) <br />
+                {votedPerson}
+                <br />
                 must walk the plank...
               </h2>
             </div>
