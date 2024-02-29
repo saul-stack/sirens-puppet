@@ -25,7 +25,7 @@ function EndGamePage() {
 
   const saboteur = usersArray[saboteurIndex];
 
-  const teamWin = saboteurIndex !== 0;
+  const teamWin = (mostVoted.length === 1 && mostVoted[0] === saboteur);
 
   return (
     <>
@@ -84,7 +84,7 @@ function EndGamePage() {
           <h2 style={{ color: "black", fontSize: "4vw" }}>
             The saboteur was...
           </h2>
-          <h2>{usersArray[saboteurIndex].username}</h2>
+          <h2>{saboteur.username}</h2>
 
           <div>
             <h3 style={{ color: "black", fontSize: "2vw" }}>{saboteur.username}</h3>
