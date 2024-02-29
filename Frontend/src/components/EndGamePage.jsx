@@ -21,7 +21,7 @@ function EndGamePage({ playerList }) {
 
   const [resultsVisible, setResultsVisible] = useState(false);
 
-  const saboteur = playerList[saboteurIndex];
+  let saboteur = playerList[saboteurIndex];
 
   saboteur = "Saul"
   
