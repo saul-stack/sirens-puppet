@@ -1,9 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { UserContext } from "../contexts/UserContext";
 
-function EndGamePage({ usersArray, votedPerson }) {
+function EndGamePage() {
+  const { usersArray } = useContext(UserContext);
+  console.log(usersArray, "<-- usersArray");
+
+  const saboteurIndex = usersArray.findIndex(
+    (user) => user.isSaboteur === true
+  );
+
+  console.log(usersArray[saboteurIndex], "<- this should be the saboteur!!");
+
+  let votedPerson = "test";
+
   const navigate = useNavigate();
-  const [saboteurIndex, setSaboteurIndex] = useState(0);
+  // const [saboteurIndex, setSaboteurIndex] = useState(0);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [resultsVisible, setResultsVisible] = useState(false);
 

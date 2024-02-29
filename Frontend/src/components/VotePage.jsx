@@ -5,7 +5,7 @@ import { useContext } from "react";
 import { UserContext } from "../contexts/UserContext";
 
 //timer countdown length
-let timerCountdownSeconds = 30;
+let timerCountdownSeconds = 5;
 
 // Sample object for testing purposes
 const players = [
@@ -28,9 +28,8 @@ function VotePage() {
   console.log(usersArray, "<-- users from the context");
 
   const [votedIndex, setVotedIndex] = useState(null);
-  const [timerCompleted, setTimerCompleted] = useState(false); // State to track if timer completed
+  const [timerCompleted, setTimerCompleted] = useState(false);
 
-  // Function to handle voting
   const handleVote = (index) => {
     if (votedIndex === null) {
       setVotedIndex(index);
@@ -38,7 +37,7 @@ function VotePage() {
   };
 
   const handleTimeUp = () => {
-    setTimerCompleted(true); // Set timer completed state to true
+    setTimerCompleted(true);
   };
 
   const votedPerson = votedIndex !== null ? usersArray[votedIndex] : null;
@@ -54,7 +53,7 @@ function VotePage() {
         boxShadow: "1px 1px 50px black",
       }}
     >
-      {!timerCompleted ? ( // Render Timer component if timer is not completed
+      {!timerCompleted ? (
         <>
           <h2>Hunt down the traitor!</h2>
           <Timer
@@ -76,7 +75,6 @@ function VotePage() {
                 style={{ width: "100px", marginRight: "10px" }}
               />
               <div>{person.username}</div>
-              {/* Button for voting */}
               <button
                 onClick={() => handleVote(index)}
                 disabled={votedIndex !== null}
@@ -106,7 +104,7 @@ function VotePage() {
         <EndGamePage
           votedPerson={votedPerson.username}
           usersArray={usersArray}
-        /> // Render EndGamePage component when timer is completed
+        />
       )}
     </div>
   );
