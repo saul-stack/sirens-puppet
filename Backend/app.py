@@ -403,5 +403,17 @@ def lives(data):
     content = {'lives': lives, 'win': win, 'lose': lose}
     socketio.emit("backend_lives", content)  
 
+
+@socketio.on("frontend_saboteur")
+def saboteur(data):
+    saboteur = data['saboteur']
+
+    print(saboteur)
+    sys.stdout.flush()
+
+    content = {'saboteur': saboteur}
+
+    socketio.emit("backend_saboteur", content)
+
 if __name__ == '__main__':
     socketio.run(app, debug=True, host="0.0.0.0", port=8080, allow_unsafe_werkzeug=True)

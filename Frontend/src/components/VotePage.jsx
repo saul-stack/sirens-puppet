@@ -9,11 +9,11 @@ import {VotesContext} from "../contexts/VotesContext"
 let timerCountdownSeconds = 5;
 
 
-function VotePage() {
+function VotePage({playerList}) {
   const { usersArray } = useContext(UserContext);
-  const {votes, setVotes} = useContext(VotesContext)
+  const {setVotes} = useContext(VotesContext)
   console.log(usersArray, "<-- users from the context");
-
+console.log(playerList, "<- playerlist")
 
   const [votedIndex, setVotedIndex] = useState(null);
   const [timerCompleted, setTimerCompleted] = useState(false);
@@ -24,7 +24,7 @@ function VotePage() {
     if (votedIndex === null) {
       setVotedIndex(index);
     }
-    const votedPerson = usersArray[index].username
+    const votedPerson = playerList[index].username
     setVotes((currentVotes) => {
       return {...currentVotes, [votedPerson]: +1}
     })
@@ -55,7 +55,7 @@ function VotePage() {
             timerCountdownSeconds={timerCountdownSeconds}
             onTimeUp={handleTimeUp}
           />
-          {usersArray.map((person, index) => (
+          {playerList.map((person, index) => (
             <div
               key={index}
               style={{
@@ -65,10 +65,6 @@ function VotePage() {
                 boxShadow: "1px 1px 50px #888888",
               }}
             >
-              <img
-                src={person.avatarURL}
-                style={{ width: "100px", marginRight: "10px" }}
-              />
               <div>{person.username}</div>
               <button
                 onClick={() => handleVote(index)}
@@ -86,7 +82,7 @@ function VotePage() {
           )) }
           </>
           ):(
-            <EndGamePage/>
+            <EndGamePage playerList={playerList}/>
           )}
     </div>
   );

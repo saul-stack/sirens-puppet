@@ -9,7 +9,7 @@ import { LivesContext } from "../contexts/LivesContext";
 import { useNavigate } from "react-router-dom";
 import Lives from "./Lives";
 
-function GameRoom(users, setUsers) {
+function GameRoom(users, setUsers, playerList) {
   const navigate = useNavigate;
   let teamLives = useContext(LivesContext);
   // console.log(teamLives.lives, "<----team Lives");

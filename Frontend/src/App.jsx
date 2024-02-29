@@ -33,6 +33,8 @@ function App() {
 
   const [messages, setMessages] = useState([]);
 
+  const playerList = [];
+
   let needsEmit = false;
 
   const playMusic = () => {
@@ -94,6 +96,7 @@ function App() {
                 users={users}
                 roomName={roomName}
                 setUsers={setUsers}
+                playerList={playerList}
               />
             }
           />
@@ -114,7 +117,7 @@ function App() {
           <Route
             path="/rooms/:room_code/role"
             element={
-              <GameRoom mousePos={mousePos} users={users} setUsers={setUsers} />
+              <GameRoom mousePos={mousePos} users={users} setUsers={setUsers} playerList={playerList}/>
             }
           />
           <Route
