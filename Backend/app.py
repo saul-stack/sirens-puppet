@@ -389,7 +389,7 @@ def randomPrompt(data):
     content = {'prompt': prompt}
 
     socketio.emit("backend-randomPrompt", content)
-
+  
 
 @socketio.on("frontend-lives")
 def lives(data):
@@ -401,7 +401,7 @@ def lives(data):
     sys.stdout.flush()
 
     content = {'lives': lives, 'win': win, 'lose': lose}
-    socketio.emit("backend_lives", content)    
+    socketio.emit("backend_lives", content)  
 
 if __name__ == '__main__':
     socketio.run(app, debug=True, host="0.0.0.0", port=8080, allow_unsafe_werkzeug=True)
