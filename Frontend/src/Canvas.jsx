@@ -196,13 +196,14 @@ function Canvas({ users, randomPrompt, hiddenWord, timerCountdownSeconds, isDraw
 
   useEffect(() => {
     function updateLives(data){
+      console.log(data, 'livesDataInLobby');
       setLives(data.lives)
       setWin(data.win)
       setLose(data.lose)
     }
-    socket.on("backend-lives", updateLives)
+    socket.on("backend_lives", updateLives)
     return() => {
-      socket.off("backend-lives", updateLives)
+      socket.off("backend_lives", updateLives)
     }
   }, [])
 
