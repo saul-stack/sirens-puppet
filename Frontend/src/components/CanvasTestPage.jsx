@@ -38,7 +38,12 @@ function CanvasTestPage({ mousePos, users, setUsers, timerCountdownSeconds, isDr
     function fetchRandomPrompt(data){
       console.log(data, '<<<<<data');
       setRandomPrompt(data.prompt)
+      if(data.prompt){
+        for (let i = 0; i < randomPrompt.length; i++) {
+          hiddenWord.push("_");
     }
+  }
+  }
     socket.on('backend-randomPrompt', fetchRandomPrompt)
   })
 
@@ -52,6 +57,8 @@ function CanvasTestPage({ mousePos, users, setUsers, timerCountdownSeconds, isDr
   }
   } 
   }, [randomPrompt])
+
+  console.log(hiddenWord, 'hiddenWord');
 
 
   return (

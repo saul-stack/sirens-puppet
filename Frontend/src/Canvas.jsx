@@ -11,8 +11,6 @@ function Canvas({ users, randomPrompt, hiddenWord, timerCountdownSeconds, isDraw
   const [drawingCommands, setDrawingCommands] = useState([]);
   const [backgroundImage, setBackgroundImage] = useState(null);
 
-  console.log(hiddenWord, 'hiddenWord');
-
   const [rotationAngle, setRotationAngle] = useState(0);
 
   const { setLives } = useContext(LivesContext);
@@ -166,38 +164,47 @@ function Canvas({ users, randomPrompt, hiddenWord, timerCountdownSeconds, isDraw
     socket.emit("frontend_canvas_rotate");
   };
 
-  const [win, setWin] = useState(true);
+  const [win, setWin] = useState(false);
 
-  const [lose, setLose] = useState(true);
+  const [lose, setLose] = useState(false);
 
   const guess = useRef(null);
 
   const handleGuess = (e) => {
     e.preventDefault();
     const currentGuess = guess.current.value;
-    if (currentGuess.toLowerCase() !== randomPrompt.toLowerCase()) {
-      setWin(false);
-    } else (
-      setWin(true)
-    )
+    if (currentGuess.toLowerCase() === randomPrompt.toLowerCase()) {
+      setWin(true);
+      socket.emit("frontend-lives", {lives: lives, win: win, lose: lose})
+    }
   };
-
-  console.log(randomPrompt, '<<<<<rand prompt!!!>>>>>>>>>');
- 
 
   const roundLength = 19000;
 
   useEffect(() => {
     const roundPageTimer = setTimeout(() => {
-      if (user.guess && !win) {
+      if (!win) {
         setLives((currentLives) => currentLives - 1);
-        setLose(false);
+        setLose(true);
+        socket.emit("frontend-lives", {lives: lives, win: win, lose: lose})
       }
     }, roundLength);
     return () => clearTimeout(roundPageTimer);
   }, []);
-  
-  console.log(win, 'win');
+
+
+  useEffect(() => {
+    function updateLives(data){
+      setLives(data.lives)
+      setWin(data.win)
+      setLose(data.lose)
+    }
+    socket.on("backend-lives", updateLives)
+    return() => {
+      socket.off("backend-lives", updateLives)
+    }
+  }, [])
+
 
   return (
     <div>
@@ -206,8 +213,8 @@ function Canvas({ users, randomPrompt, hiddenWord, timerCountdownSeconds, isDraw
         {isDrawer} is Drawing... : {isGuesser} is Guessing...
       </h1>
       <Timer timerCountdownSeconds={timerCountdownSeconds} />
-      {win && !user.draw && <h2> Correct Answer! Sail onto the next Round!</h2>}
-      {lose && !user.draw && <h2> Too Slow! The crew loses a life</h2>}
+      {win && <h2> Correct Answer! Sail onto the next Round!</h2>}
+      {lose && <h2> Too Slow! The crew loses a life</h2>}
       <canvas
         className="draw-canvas"
         ref={canvasRef}
@@ -230,7 +237,7 @@ function Canvas({ users, randomPrompt, hiddenWord, timerCountdownSeconds, isDraw
         {user.draw ? (
           <h1 className="drawPrompt">Draw a {randomPrompt}</h1>
         ) : (
-          <h1> Guess the Word ... {hiddenWord.flat()} </h1>
+          <h1> Guess the Word ... {hiddenWord} </h1>
         )}
         {user.draw && (
           <button onClick={handleReset}>Reset</button>
@@ -244,7 +251,7 @@ function Canvas({ users, randomPrompt, hiddenWord, timerCountdownSeconds, isDraw
                 name="guess"
                 ref={guess}
               />
-              <button onClick={handleGuess}  type="submit" name="guess">
+              <button onClick={handleGuess} disabled={win} type="submit" name="guess">
                 Guess
               </button>
             </div>
