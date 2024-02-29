@@ -16,14 +16,11 @@ function EndGamePage() {
   let votedPerson = "test";
 
   const navigate = useNavigate();
+
   // const [saboteurIndex, setSaboteurIndex] = useState(0);
+
   const [imageLoaded, setImageLoaded] = useState(false);
   const [resultsVisible, setResultsVisible] = useState(false);
-
-  useEffect(() => {
-    const randomIndex = Math.floor(Math.random() * usersArray.length);
-    setSaboteurIndex(randomIndex);
-  }, []);
 
   const saboteur = usersArray[saboteurIndex];
 
@@ -73,6 +70,8 @@ function EndGamePage() {
           <h2 style={{ color: "black", fontSize: "4vw" }}>
             The saboteur was...
           </h2>
+          <h2>{usersArray[saboteurIndex].username}</h2>
+
           <div>
             <h3 style={{ color: "black", fontSize: "2vw" }}>{saboteur.name}</h3>
             {imageLoaded && (
