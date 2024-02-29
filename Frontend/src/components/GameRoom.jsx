@@ -97,7 +97,7 @@ function GameRoom(users, setUsers) {
   return (
     <>
     <div>
-    {/* <Lives /> */}
+    <Lives />
       <h2>Lives: {teamLives.lives}</h2>
       {teamLives.lives > 1
         ? console.log("team has lives remaining")
