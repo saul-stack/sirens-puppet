@@ -3,6 +3,7 @@ import Timer from "./Timer";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { UserContext } from "../contexts/UserContext";
+import {VotesContext} from "../contexts/VotesContext"
 
 //timer countdown length
 let timerCountdownSeconds = 30;
@@ -25,8 +26,11 @@ const players = [
 
 function VotePage() {
   const { usersArray } = useContext(UserContext);
+  const {votes, setVotes} = useContext(VotesContext)
   console.log(usersArray, "<-- users from the context");
   const navigate = useNavigate();
+
+
   function handleTimeUp() {
     navigate("/EndGamePageTest");
   }
@@ -34,13 +38,16 @@ function VotePage() {
   const [votedIndex, setVotedIndex] = useState(null);
 
   // Function to handle voting
+  
   const handleVote = (index) => {
     if (votedIndex === null) {
       setVotedIndex(index);
     }
+    const votedPerson = usersArray[index].username
+    setVotes((currentVotes) => {
+      return {...currentVotes, [votedPerson]: +1}
+    })
   };
-
-  const votedPerson = votedIndex !== null ? usersArray[votedIndex] : null;
 
   return (
     <div
@@ -87,17 +94,6 @@ function VotePage() {
           </button>
         </div>
       ))}
-      {votedPerson && (
-        <div style={{ marginTop: "20px" }}>
-          <h3>{votedPerson.username} is about to walk the plank!:</h3>
-          <div>
-            <img
-              src={votedPerson.avatarURL}
-              style={{ width: "100px", marginRight: "10px" }}
-            />
-          </div>
-        </div>
-      )}
     </div>
   );
 }

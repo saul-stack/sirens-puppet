@@ -40,6 +40,18 @@ function EndGamePage() {
 
   const teamWin = saboteurIndex !== 0;
 
+  // {mostVoted && (
+  //   <div style={{ marginTop: "20px" }}>
+  //     <h3>{mostVoted} is about to walk the plank!:</h3>
+  //     <div>
+  //       {/* <img
+  //         src={votedPerson.avatarURL}
+  //         style={{ width: "100px", marginRight: "10px" }}
+  //       /> */}
+  //     </div>
+  //   </div>
+  // )}
+
   return (
     <>
       {!resultsVisible && (
