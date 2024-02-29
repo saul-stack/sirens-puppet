@@ -5,7 +5,14 @@ import Timer from "./components/Timer";
 import { LivesContext } from "./contexts/LivesContext";
 import { UserContext } from "./contexts/UserContext";
 
-function Canvas({ users, randomPrompt, hiddenWord, timerCountdownSeconds, isDrawer, isGuesser }) {
+function Canvas({
+  users,
+  randomPrompt,
+  hiddenWord,
+  timerCountdownSeconds,
+  isDrawer,
+  isGuesser,
+}) {
   const canvasRef = useRef(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [drawingCommands, setDrawingCommands] = useState([]);
@@ -16,7 +23,7 @@ function Canvas({ users, randomPrompt, hiddenWord, timerCountdownSeconds, isDraw
   const { setLives } = useContext(LivesContext);
   const { user } = useContext(UserContext);
 
-  console.log(user, 'userincanvas');
+  console.log(user, "userincanvas");
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -207,12 +214,10 @@ function Canvas({ users, randomPrompt, hiddenWord, timerCountdownSeconds, isDraw
         ref={canvasRef}
         width={1000}
         height={800}
-        onMouseDown={(e) =>
-          user.draw && startDrawing(e)
-        }
+        onMouseDown={(e) => user.draw && startDrawing(e)}
         onMouseMove={(e) => user.draw && drawFE(e)}
         onMouseUp={() => user.draw && finishDrawing()}
-        onMouseOut={() => user.draw  && finishDrawing()}
+        onMouseOut={() => user.draw && finishDrawing()}
         style={{
           backgroundColor: "white",
           transform: `rotate(${rotationAngle}deg)`,
@@ -226,9 +231,7 @@ function Canvas({ users, randomPrompt, hiddenWord, timerCountdownSeconds, isDraw
         ) : (
           <h1> Guess the Word ... {hiddenWord.flat()} </h1>
         )}
-        {user.draw && (
-          <button onClick={handleReset}>Reset</button>
-        )}
+        {user.draw && <button onClick={handleReset}>Reset</button>}
         {user.guess && (
           <form method="post">
             <div>
@@ -244,9 +247,7 @@ function Canvas({ users, randomPrompt, hiddenWord, timerCountdownSeconds, isDraw
             </div>
           </form>
         )}
-        {user.isSaboteur && (
-          <button onClick={rotateCanvas}>Rotate</button>
-        )}
+        {user.isSaboteur && <button onClick={rotateCanvas}>Rotate</button>}
       </div>
     </div>
   );

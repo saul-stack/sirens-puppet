@@ -6,8 +6,8 @@ import { VotesContext } from "../contexts/VotesContext";
 import { getMost } from "./Utils/utils";
 import { TfiFaceSad } from "react-icons/tfi";
 
-function EndGamePage({playerList}) {
-  const {votes} = useContext(VotesContext)
+function EndGamePage({ playerList }) {
+  const { votes } = useContext(VotesContext);
 
   const saboteurIndex = playerList.findIndex(
     (user) => user.isSaboteur === true
@@ -15,58 +15,67 @@ function EndGamePage({playerList}) {
 
   console.log(playerList[saboteurIndex], "<- this should be the saboteur!!");
 
-  const mostVoted = getMost(votes)
- 
+  const mostVoted = getMost(votes);
+
   const navigate = useNavigate();
 
   const [resultsVisible, setResultsVisible] = useState(false);
 
   const saboteur = playerList[saboteurIndex];
 
-  const teamWin = (mostVoted.length === 1 && mostVoted[0] === saboteur);
+  const teamWin = mostVoted.length === 1 && mostVoted[0] === saboteur;
+
+  mostVoted[0] = "Michael";
 
   return (
     <>
       {!resultsVisible && (
         <>
-        {mostVoted.length === 1 ? (
-        <div>
-          <div className="parent">
-            <img src={"../../images/scroll2.png"} className="title-scroll" />
-            <div className="scroll-child">
-              <h2>
-                {mostVoted[0]}
-                <br />
-                must walk the plank...
-              </h2>
+          {mostVoted.length === 1 ? (
+            <div>
+              <div className="parent">
+                <img
+                  src={"../../images/scroll2.png"}
+                  className="title-scroll"
+                />
+                <div className="scroll-child">
+                  <h2>
+                    {mostVoted[0]}
+                    <br />
+                    must walk the plank...
+                  </h2>
+                </div>
+              </div>
+              <button
+                onClick={() => {
+                  setResultsVisible(true);
+                }}
+              >
+                View results
+              </button>
             </div>
-          </div>
-          <button
-            onClick={() => {
-              setResultsVisible(true);
-            }}
-          >
-            View results
-          </button>
-        </div>) : (
-          <div>
-          <div className="parent">
-            <img src={"../../images/scroll2.png"} className="title-scroll" />
-            <div className="scroll-child">
-              <h2>
-                It's a tie! <TfiFaceSad/>
-              </h2>
+          ) : (
+            <div>
+              <div className="parent">
+                <img
+                  src={"../../images/scroll2.png"}
+                  className="title-scroll"
+                />
+                <div className="scroll-child">
+                  <h2>
+                    It's a tie! <TfiFaceSad />
+                  </h2>
+                </div>
+              </div>
+              <button
+                onClick={() => {
+                  setResultsVisible(true);
+                }}
+              >
+                View results
+              </button>
             </div>
-          </div>
-          <button
-            onClick={() => {
-              setResultsVisible(true);
-            }}
-          >
-            View results
-          </button>
-        </div>
-        )}
+          )}
         </>
       )}
 

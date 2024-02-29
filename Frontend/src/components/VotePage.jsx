@@ -3,39 +3,34 @@ import Timer from "./Timer";
 import EndGamePage from "./EndGamePage"; // Import the EndGamePage component
 import { useContext } from "react";
 import { UserContext } from "../contexts/UserContext";
-import {VotesContext} from "../contexts/VotesContext"
+import { VotesContext } from "../contexts/VotesContext";
 
 //timer countdown length
-let timerCountdownSeconds = 5;
+let timerCountdownSeconds = 30;
 
-
-function VotePage({playerList}) {
+function VotePage({ playerList }) {
   const { usersArray } = useContext(UserContext);
-  const {setVotes} = useContext(VotesContext)
+  const { setVotes } = useContext(VotesContext);
   console.log(usersArray, "<-- users from the context");
-console.log(playerList, "<- playerlist")
+  console.log(playerList, "<- playerlist");
 
   const [votedIndex, setVotedIndex] = useState(null);
   const [timerCompleted, setTimerCompleted] = useState(false);
-
 
   // Function to handle voting
   const handleVote = (index) => {
     if (votedIndex === null) {
       setVotedIndex(index);
     }
-    const votedPerson = playerList[index].username
+    const votedPerson = playerList[index].username;
     setVotes((currentVotes) => {
-      return {...currentVotes, [votedPerson]: +1}
-    })
+      return { ...currentVotes, [votedPerson]: +1 };
+    });
   };
-
 
   const handleTimeUp = () => {
     setTimerCompleted(true);
   };
-
-
 
   return (
     <div
@@ -78,12 +73,11 @@ console.log(playerList, "<- playerlist")
                 Vote
               </button>
             </div>
-            
-          )) }
-          </>
-          ):(
-            <EndGamePage playerList={playerList}/>
-          )}
+          ))}
+        </>
+      ) : (
+        <EndGamePage playerList={playerList} />
+      )}
     </div>
   );
 }
