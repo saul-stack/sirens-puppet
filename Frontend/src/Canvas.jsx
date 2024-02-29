@@ -5,14 +5,20 @@ import Timer from "./components/Timer";
 import { LivesContext } from "./contexts/LivesContext";
 import { UserContext } from "./contexts/UserContext";
 
-function Canvas({ users, randomPrompt, hiddenWord, timerCountdownSeconds, isDrawer, isGuesser }) {
+function Canvas({
+  users,
+  randomPrompt,
+  hiddenWord,
+  timerCountdownSeconds,
+  currentDraw,
+  currentGuess,
+}) {
   const canvasRef = useRef(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [drawingCommands, setDrawingCommands] = useState([]);
   const [backgroundImage, setBackgroundImage] = useState(null);
 
   const [rotationAngle, setRotationAngle] = useState(0);
-
 
   const { setLives, lives } = useContext(LivesContext);
   const { user } = useContext(UserContext);
@@ -171,7 +177,7 @@ function Canvas({ users, randomPrompt, hiddenWord, timerCountdownSeconds, isDraw
 
   // const guess = useRef(null);
 
-  const [inputGuess, setInputGuess] = useState('')
+  const [inputGuess, setInputGuess] = useState("");
 
   const handleGuess = (e) => {
     e.preventDefault();
@@ -179,7 +185,7 @@ function Canvas({ users, randomPrompt, hiddenWord, timerCountdownSeconds, isDraw
     if (inputGuess.toLowerCase() === randomPrompt.toLowerCase()) {
       console.log(inputGuess);
       setWin(true);
-      socket.emit("frontend-lives", {lives: lives, win: win, lose: lose})
+      socket.emit("frontend-lives", { lives: lives, win: win, lose: lose });
     }
   };
 
@@ -190,32 +196,30 @@ function Canvas({ users, randomPrompt, hiddenWord, timerCountdownSeconds, isDraw
       if (!win) {
         setLives((currentLives) => currentLives - 1);
         setLose(true);
-        socket.emit("frontend-lives", {lives: lives, win: win, lose: lose})
+        socket.emit("frontend-lives", { lives: lives, win: win, lose: lose });
       }
     }, roundLength);
     return () => clearTimeout(roundPageTimer);
   }, []);
 
-
   useEffect(() => {
-    function updateLives(data){
-      console.log(data, 'livesDataInLobby');
-      setLives(data.lives)
-      setWin(data.win)
-      setLose(data.lose)
+    function updateLives(data) {
+      console.log(data, "livesDataInLobby");
+      setLives(data.lives);
+      setWin(data.win);
+      setLose(data.lose);
     }
-    socket.on("backend_lives", updateLives)
-    return() => {
-      socket.off("backend_lives", updateLives)
-    }
-  }, [])
-
+    socket.on("backend_lives", updateLives);
+    return () => {
+      socket.off("backend_lives", updateLives);
+    };
+  }, []);
 
   return (
     <div>
       <h1>
         {" "}
-        {isDrawer} is Drawing... : {isGuesser} is Guessing...
+        {currentDraw} is Drawing... : {currentGuess} is Guessing...
       </h1>
       <Timer timerCountdownSeconds={timerCountdownSeconds} />
       {win && <h2> Correct Answer! Sail onto the next Round!</h2>}
@@ -225,12 +229,10 @@ function Canvas({ users, randomPrompt, hiddenWord, timerCountdownSeconds, isDraw
         ref={canvasRef}
         width={1000}
         height={800}
-        onMouseDown={(e) =>
-          user.draw && startDrawing(e)
-        }
+        onMouseDown={(e) => user.draw && startDrawing(e)}
         onMouseMove={(e) => user.draw && drawFE(e)}
         onMouseUp={() => user.draw && finishDrawing()}
-        onMouseOut={() => user.draw  && finishDrawing()}
+        onMouseOut={() => user.draw && finishDrawing()}
         style={{
           backgroundColor: "white",
           transform: `rotate(${rotationAngle}deg)`,
@@ -244,9 +246,7 @@ function Canvas({ users, randomPrompt, hiddenWord, timerCountdownSeconds, isDraw
         ) : (
           <h1> Guess the Word ... {hiddenWord} </h1>
         )}
-        {user.draw && (
-          <button onClick={handleReset}>Reset</button>
-        )}
+        {user.draw && <button onClick={handleReset}>Reset</button>}
         {user.guess && (
           <form method="post">
             <div>
@@ -256,17 +256,22 @@ function Canvas({ users, randomPrompt, hiddenWord, timerCountdownSeconds, isDraw
                 name="guess"
                 // ref={guess}
                 value={inputGuess}
-                onChange={(e) => {setInputGuess(e.target.value)}}
+                onChange={(e) => {
+                  setInputGuess(e.target.value);
+                }}
               />
-              <button onClick={handleGuess} disabled={win} type="submit" name="guess">
+              <button
+                onClick={handleGuess}
+                disabled={win}
+                type="submit"
+                name="guess"
+              >
                 Guess
               </button>
             </div>
           </form>
         )}
-        {user.isSaboteur && (
-          <button onClick={rotateCanvas}>Rotate</button>
-        )}
+        {user.isSaboteur && <button onClick={rotateCanvas}>Rotate</button>}
       </div>
     </div>
   );

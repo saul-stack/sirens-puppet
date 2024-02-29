@@ -112,6 +112,8 @@ function GameRoom(users, setUsers, playerList) {
                 timerCountdownSeconds={roundLength / 1000}
                 users={users}
                 setUsers={setUsers}
+                currentDraw={currentDraw}
+                currentGuess={currentGuess}
               />
             )}
           </div>
