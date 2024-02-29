@@ -7,6 +7,7 @@ import ChatWindow from "./ChatWindow";
 import VotePage from "./VotePage";
 import { LivesContext } from "../contexts/LivesContext";
 import { useNavigate } from "react-router-dom";
+import Lives from "./Lives";
 
 function GameRoom(users, setUsers) {
   const navigate = useNavigate;
@@ -94,7 +95,9 @@ function GameRoom(users, setUsers) {
   }, [showCanvasTestPage]);
 
   return (
+    <>
     <div>
+    {/* <Lives /> */}
       <h2>Lives: {teamLives.lives}</h2>
       {teamLives.lives > 1
         ? console.log("team has lives remaining")
@@ -118,6 +121,7 @@ function GameRoom(users, setUsers) {
       {gameOver && <VotePage />}
       <ChatWindow />
     </div>
+    </>
   );
 }
 

@@ -14,3 +14,8 @@ body {
   min-width: 320px;
   min-height: 100vh;
 }
+
+.steering-wheel{
+  width: 80px;
+  height: 80px;
+}
