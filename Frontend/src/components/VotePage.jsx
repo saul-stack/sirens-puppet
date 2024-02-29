@@ -55,21 +55,6 @@ function VotePage() {
             timerCountdownSeconds={timerCountdownSeconds}
             onTimeUp={handleTimeUp}
           />
-          <div>{person.username}</div>
-          {/* Button for voting */}
-
-          <button
-            onClick={() => handleVote(index)}
-            disabled={votedIndex !== null}
-            style={{
-              marginLeft: "10px",
-              padding: "5px 10px",
-              fontSize: "14px",
-            }}
-          >
-            Vote
-          </button>
-
           {usersArray.map((person, index) => (
             <div
               key={index}
