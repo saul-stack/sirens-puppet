@@ -58,7 +58,7 @@ function GameRoom(users, setUsers) {
   console.log(user, 'userUpdated ');
   
   let playerDesignationLength = 3000;
-  let roundLength = 5000;
+  let roundLength = 30000;
   let roundBreakLength = 2000;
   
   let numberOfRounds = 3;
