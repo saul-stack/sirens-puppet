@@ -28,6 +28,7 @@ function CanvasTestPage({ mousePos, users, setUsers, timerCountdownSeconds, isDr
   useEffect(() => {
     if (user.draw){
     const newPrompt = getRandomPrompt()
+    console.log(newPrompt, '<<<<<newPrompt');
     socket.emit('front-end-randomPrompt', {prompt: newPrompt})
     }
   }, [picturePrompts])
@@ -35,6 +36,7 @@ function CanvasTestPage({ mousePos, users, setUsers, timerCountdownSeconds, isDr
 
   useEffect(() => {
     function fetchRandomPrompt(data){
+      console.log(data, '<<<<<data');
       setRandomPrompt(data.prompt)
     }
     socket.on('backend-randomPrompt', fetchRandomPrompt)
