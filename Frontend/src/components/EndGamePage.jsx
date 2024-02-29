@@ -21,18 +21,9 @@ function EndGamePage() {
  
   const navigate = useNavigate();
 
-  const [imageLoaded, setImageLoaded] = useState(false);
   const [resultsVisible, setResultsVisible] = useState(false);
 
   const saboteur = usersArray[saboteurIndex];
-
-  useEffect(() => {
-    const image = new Image();
-    image.onload = () => {
-      setImageLoaded(true);
-    };
-    image.src = saboteur.profileImage;
-  }, [saboteur.profileImage]);
 
   const teamWin = saboteurIndex !== 0;
 
@@ -96,20 +87,7 @@ function EndGamePage() {
           <h2>{usersArray[saboteurIndex].username}</h2>
 
           <div>
-            <h3 style={{ color: "black", fontSize: "2vw" }}>{saboteur.name}</h3>
-            {imageLoaded && (
-              <img
-                src={saboteur.profileImage}
-                alt={saboteur.name}
-                style={{
-                  borderRadius: "50%",
-                  animation: "spinImage 2s linear infinite",
-                  height: "5vw",
-                  width: "5vw",
-                }}
-                className="saboteur-image"
-              />
-            )}
+            <h3 style={{ color: "black", fontSize: "2vw" }}>{saboteur.username}</h3>
             {teamWin ? (
               <p style={{ color: "black", fontSize: "2vw" }}>
                 The crew made it home safely.
