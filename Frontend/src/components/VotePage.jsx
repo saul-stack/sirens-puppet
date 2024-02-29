@@ -3,6 +3,7 @@ import Timer from "./Timer";
 import EndGamePage from "./EndGamePage"; // Import the EndGamePage component
 import { useContext } from "react";
 import { UserContext } from "../contexts/UserContext";
+import {VotesContext} from "../contexts/VotesContext"
 
 //timer countdown length
 let timerCountdownSeconds = 5;
@@ -25,22 +26,38 @@ const players = [
 
 function VotePage() {
   const { usersArray } = useContext(UserContext);
+  const {votes, setVotes} = useContext(VotesContext)
   console.log(usersArray, "<-- users from the context");
+
+  const navigate = useNavigate();
+
+
+  function handleTimeUp() {
+    navigate("/EndGamePageTest");
+  }
+
 
   const [votedIndex, setVotedIndex] = useState(null);
   const [timerCompleted, setTimerCompleted] = useState(false);
 
+
+  // Function to handle voting
   const handleVote = (index) => {
     if (votedIndex === null) {
       setVotedIndex(index);
     }
+    const votedPerson = usersArray[index].username
+    setVotes((currentVotes) => {
+      return {...currentVotes, [votedPerson]: +1}
+    })
   };
+
 
   const handleTimeUp = () => {
     setTimerCompleted(true);
   };
 
-  const votedPerson = votedIndex !== null ? usersArray[votedIndex] : null;
+
 
   return (
     <div
@@ -60,6 +77,21 @@ function VotePage() {
             timerCountdownSeconds={timerCountdownSeconds}
             onTimeUp={handleTimeUp}
           />
+          <div>{person.username}</div>
+          {/* Button for voting */}
+          <button
+            onClick={() => handleVote(index)}
+            disabled={votedIndex !== null}
+            style={{
+              marginLeft: "10px",
+              padding: "5px 10px",
+              fontSize: "14px",
+            }}
+          >
+            Vote
+          </button>
+        </div>
+      ))}
           {usersArray.map((person, index) => (
             <div
               key={index}
@@ -88,24 +120,6 @@ function VotePage() {
               </button>
             </div>
           ))}
-          {votedPerson && (
-            <div style={{ marginTop: "20px" }}>
-              <h3>{votedPerson.username} is about to walk the plank!</h3>
-              <div>
-                <img
-                  src={votedPerson.avatarURL}
-                  style={{ width: "100px", marginRight: "10px" }}
-                />
-              </div>
-            </div>
-          )}
-        </>
-      ) : (
-        <EndGamePage
-          votedPerson={votedPerson.username}
-          usersArray={usersArray}
-        />
-      )}
     </div>
   );
 }
