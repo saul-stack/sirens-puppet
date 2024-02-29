@@ -1,39 +1,16 @@
 import Canvas from "../Canvas";
 import { useEffect, useState, useContext } from "react";
 import { getPictonaryPrompts } from "./Utils/utils";
+import socket from "./Utils/Socket";
 import { UserContext } from "../contexts/UserContext";
 
 function CanvasTestPage({ mousePos, users, setUsers, timerCountdownSeconds, isDrawer, isGuesser }) {
 
-  // const { user } = useContext(UserContext)
-
-  // let drawTurn = -1;
-  // let guessTurn = 0;
-
-  // const pickTurn = () => {
-  //   drawTurn++;
-  //   guessTurn++;
-  //   if (drawTurn === users.users.length) {
-  //     drawTurn = 0;
-  //   }
-  //   console.log(users.users[drawTurn][drawTurn], 'drawturn');
-  //   const currentDraw = users.users[drawTurn]
-  //   console.log(currentDraw, 'currentDraw');
-  //   currentDraw === user.username ? user.draw = true : user.draw = false
-  //   if (guessTurn === users.users.length) {
-  //     guessTurn = 0;
-  //   }
-  //   const currentGuess = users.users[guessTurn]
-  //   console.log(currentGuess, 'currentGuess');
-  //   currentGuess === user.username ? user.guess = true : user.guess = false
-  // }; 
-
-
-
   const [picturePrompts, setpicturePrompts] = useState([]);
 
+  const { user } = useContext(UserContext)
+
   useEffect(() => {
-    // pickTurn()
     getPictonaryPrompts().then((data) => {
       const { PictionaryPrompts } = data
       setpicturePrompts(PictionaryPrompts)
@@ -47,11 +24,21 @@ function CanvasTestPage({ mousePos, users, setUsers, timerCountdownSeconds, isDr
 
   const [randomPrompt, setRandomPrompt] = useState()
 
+
   useEffect(() => {
+    if (user.draw){
     const newPrompt = getRandomPrompt()
-    setRandomPrompt(newPrompt)
+    socket.emit('front-end-randomPrompt', {prompt: newPrompt})
+    }
   }, [picturePrompts])
 
+
+  useEffect(() => {
+    function fetchRandomPrompt(data){
+      setRandomPrompt(data.prompt)
+    }
+    socket.on('backend-randomPrompt', fetchRandomPrompt)
+  })
 
 
   const hiddenWord = []

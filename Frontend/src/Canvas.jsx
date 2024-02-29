@@ -11,6 +11,8 @@ function Canvas({ users, randomPrompt, hiddenWord, timerCountdownSeconds, isDraw
   const [drawingCommands, setDrawingCommands] = useState([]);
   const [backgroundImage, setBackgroundImage] = useState(null);
 
+  console.log(hiddenWord, 'hiddenWord');
+
   const [rotationAngle, setRotationAngle] = useState(0);
 
   const { setLives } = useContext(LivesContext);
@@ -202,7 +204,6 @@ function Canvas({ users, randomPrompt, hiddenWord, timerCountdownSeconds, isDraw
       <Timer timerCountdownSeconds={timerCountdownSeconds} />
       {win && <h2> Correct Answer! Sail onto the next Round!</h2>}
       {lose && <h2> Too Slow! The crew loses a life</h2>}
-
       <canvas
         className="draw-canvas"
         ref={canvasRef}

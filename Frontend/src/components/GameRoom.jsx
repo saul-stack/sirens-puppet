@@ -25,8 +25,6 @@ function GameRoom(users, setUsers) {
 
   const [round, setRound] = useState(0);
 
-  console.log(users.users, '<users')
-  console.log(usersArray);
 
   // let drawTurn = -1;
   // let guessTurn = 0;
@@ -34,28 +32,21 @@ function GameRoom(users, setUsers) {
   const pickTurn = () => {
     setDrawTurn((prevTurn) => (prevTurn + 1))
     setGuessTurn((prevTurn) => (prevTurn + 1))
-    console.log(drawTurn, '<<<<drawTurn');
-    console.log(guessTurn, '<<<<guessTurn');
+
     if (drawTurn === users.users[0].length - 1) {
       setDrawTurn(0)
     }
     const currentDraw = users.users[0][drawTurn]
     setIsDrawer(currentDraw)
     currentDraw === user.username ? user.draw = true : user.draw = false
-    console.log(currentDraw, '<<<<currentDaaw');
     if (guessTurn === users.users[0].length - 1) {
       setGuessTurn(0)
     }
     const currentGuess = users.users[0][guessTurn]
     setIsGuesser(currentGuess)
-    console.log(currentGuess, '<<<<currentGuess');
     currentGuess === user.username ? user.guess = true : user.guess = false
-    console.log(user.guess, '<<<<user.guess');
-    console.log(user.draw, '<<<<user.draw');
   };
 
-
-  console.log(user, 'userUpdated ');
   
   let playerDesignationLength = 3000;
   let roundLength = 20000;

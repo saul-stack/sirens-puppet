@@ -26,8 +26,6 @@ export default function LobbyPage({ users, setUsers, roomName }) {
   });
 
 
-  console.log(users, '<<users');
-
   const totalPlayers = playerList.length;
 
   const [players, setPlayers] = useState(() => [...playerList]);
