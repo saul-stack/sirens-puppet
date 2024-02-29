@@ -5,7 +5,7 @@ import Timer from "./components/Timer";
 import { LivesContext } from "./contexts/LivesContext";
 import { UserContext } from "./contexts/UserContext";
 
-function Canvas({ users, randomPrompt, hiddenWord, timerCountdownSeconds }) {
+function Canvas({ users, randomPrompt, hiddenWord, timerCountdownSeconds, isDrawer, isGuesser }) {
   const canvasRef = useRef(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [drawingCommands, setDrawingCommands] = useState([]);
@@ -13,10 +13,9 @@ function Canvas({ users, randomPrompt, hiddenWord, timerCountdownSeconds }) {
 
   const [rotationAngle, setRotationAngle] = useState(0);
 
-  const { setLives } = useContext(LivesContext);
-  const { user } = useContext(UserContext);
 
-  console.log(user, 'userincanvas');
+  const { setLives, lives } = useContext(LivesContext);
+  const { user } = useContext(UserContext);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -170,13 +169,17 @@ function Canvas({ users, randomPrompt, hiddenWord, timerCountdownSeconds }) {
 
   const [lose, setLose] = useState(false);
 
-  const guess = useRef(null);
+  // const guess = useRef(null);
+
+  const [inputGuess, setInputGuess] = useState('')
 
   const handleGuess = (e) => {
     e.preventDefault();
-    const currentGuess = guess.current.value;
-    if (currentGuess.toLowerCase() === randomPrompt.toLowerCase()) {
+    // const currentGuess = guess.current.value;
+    if (inputGuess.toLowerCase() === randomPrompt.toLowerCase()) {
+      console.log(inputGuess);
       setWin(true);
+      socket.emit("frontend-lives", {lives: lives, win: win, lose: lose})
     }
   };
 
@@ -187,21 +190,36 @@ function Canvas({ users, randomPrompt, hiddenWord, timerCountdownSeconds }) {
       if (!win) {
         setLives((currentLives) => currentLives - 1);
         setLose(true);
+        socket.emit("frontend-lives", {lives: lives, win: win, lose: lose})
       }
     }, roundLength);
     return () => clearTimeout(roundPageTimer);
   }, []);
 
+
+  useEffect(() => {
+    function updateLives(data){
+      console.log(data, 'livesDataInLobby');
+      setLives(data.lives)
+      setWin(data.win)
+      setLose(data.lose)
+    }
+    socket.on("backend_lives", updateLives)
+    return() => {
+      socket.off("backend_lives", updateLives)
+    }
+  }, [])
+
+
   return (
     <div>
       <h1>
         {" "}
-        {user.draw} is Drawing... : null {user.guess} is Guessing...
+        {isDrawer} is Drawing... : {isGuesser} is Guessing...
       </h1>
       <Timer timerCountdownSeconds={timerCountdownSeconds} />
       {win && <h2> Correct Answer! Sail onto the next Round!</h2>}
       {lose && <h2> Too Slow! The crew loses a life</h2>}
-
       <canvas
         className="draw-canvas"
         ref={canvasRef}
@@ -224,7 +242,7 @@ function Canvas({ users, randomPrompt, hiddenWord, timerCountdownSeconds }) {
         {user.draw ? (
           <h1 className="drawPrompt">Draw a {randomPrompt}</h1>
         ) : (
-          <h1> Guess the Word ... {hiddenWord.flat()} </h1>
+          <h1> Guess the Word ... {hiddenWord} </h1>
         )}
         {user.draw && (
           <button onClick={handleReset}>Reset</button>
@@ -236,9 +254,11 @@ function Canvas({ users, randomPrompt, hiddenWord, timerCountdownSeconds }) {
                 type="text"
                 placeholder="SwordBoat"
                 name="guess"
-                ref={guess}
+                // ref={guess}
+                value={inputGuess}
+                onChange={(e) => {setInputGuess(e.target.value)}}
               />
-              <button onClick={handleGuess} type="submit" name="guess">
+              <button onClick={handleGuess} disabled={win} type="submit" name="guess">
                 Guess
               </button>
             </div>
