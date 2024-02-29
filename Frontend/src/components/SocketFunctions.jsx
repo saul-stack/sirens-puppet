@@ -26,19 +26,8 @@ export default function SocketFunctions({
       setIsConnected(false);
     }
 
-    // function onJoin(data) {
-    //   const room = data.room;
-    //   console.log(data.name + " has joined the room " + data.room);
-
-    //   needsEmit = true;
-
-    //   setRoomName(data.room);
-    //   // setUsers(() => [...data.users]);
-    // }
-
     function onLeave(data) {
       setLeft(data.name + " has left the room " + data.room);
-      console.log(data.name + " has left the room " + data.room);
       socket.emit("frontend_send_users", { room: roomName });
     }
 
@@ -46,9 +35,8 @@ export default function SocketFunctions({
       setRoomName(data);
     }
 
-
-    function onUsersList(data){
-      setUsers([data])
+    function onUsersList(data) {
+      setUsers([data]);
     }
 
     function onMessage(data) {
@@ -58,10 +46,6 @@ export default function SocketFunctions({
           `${data.name} : ${data.message}`,
         ]);
       }
-
-      console.log(data.message === roomName, "<<data.message === roomName ?");
-      console.log(data, "<<message");
-      console.log("message sent");
     }
 
     function onCanvasClick(data) {
@@ -71,12 +55,6 @@ export default function SocketFunctions({
     function onCanvasRelease(data) {
       console.log(data);
     }
-
-    // function onCavasMove(data){
-    //   console.log(data);
-    //   setMousePos(data)
-
-    // }
 
     socket.on("connect", onConnect);
     socket.on("disconnect", onDisconnect);
@@ -101,22 +79,3 @@ export default function SocketFunctions({
     };
   }, []);
 }
-
-// useEffect(() => {
-//   function onJoin(data) {
-//     // room = data.room;
-//     console.log(data.name + " has joined the room " + data.room);
-//     console.log(room);
-//     needsEmit = true;
-
-//     setRoomName(data.room);
-//     setRoom(data.room)
-//     // setUsers(() => [...data.users]);
-
-//   }
-//   socket.on("join-room", onJoin);
-
-//   return () => {
-//     socket.off("join-room", onJoin);
-//   }
-// }, [navigate])

@@ -13,8 +13,6 @@ function EndGamePage({ playerList }) {
     (user) => user.isSaboteur === true
   );
 
-  console.log(playerList[saboteurIndex], "<- this should be the saboteur!!");
-
   const mostVoted = getMost(votes);
 
   const navigate = useNavigate();
@@ -23,10 +21,10 @@ function EndGamePage({ playerList }) {
 
   let saboteur = playerList[saboteurIndex];
 
-  saboteur = "Saul"
-  
+  saboteur = "saul";
+
   const teamWin = mostVoted.length === 1 && mostVoted[0] === saboteur;
-  
+
   mostVoted[0] = "Michael";
 
   return (
@@ -65,7 +63,8 @@ function EndGamePage({ playerList }) {
                 />
                 <div className="scroll-child">
                   <h2>
-                    It's a tie! <TfiFaceSad />
+                    No one was thrown overboard! The imposter survives!
+                    <TfiFaceSad />
                   </h2>
                 </div>
               </div>
@@ -96,7 +95,6 @@ function EndGamePage({ playerList }) {
           <h2>{saboteur}</h2>
 
           <div>
-            <h3 style={{ color: "black", fontSize: "2vw" }}>{saboteur}</h3>
             {teamWin ? (
               <p style={{ color: "black", fontSize: "2vw" }}>
                 The crew made it home safely.

@@ -23,8 +23,6 @@ function Canvas({
   const { setLives } = useContext(LivesContext);
   const { user } = useContext(UserContext);
 
-  console.log(user, "userincanvas");
-
   useEffect(() => {
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
@@ -75,7 +73,6 @@ function Canvas({
 
   useEffect(() => {
     function onCavasMove(data) {
-      // console.log(data);
       mirrorDrawBE(data);
     }
 
@@ -108,12 +105,9 @@ function Canvas({
 
   const mirrorDrawBE = (data) => {
     if (!user.draw) {
-      console.log("inside mirror draw");
-      // if (!isDrawing) return;
       const canvas = canvasRef.current;
       const context = canvas.getContext("2d");
       context.lineTo(data.mouseX, data.mouseY);
-      // console.log("in mirrorDrawBE");
       context.stroke();
     }
   };

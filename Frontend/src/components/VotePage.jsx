@@ -11,8 +11,6 @@ let timerCountdownSeconds = 30;
 function VotePage({ playerList }) {
   const { usersArray } = useContext(UserContext);
   const { setVotes } = useContext(VotesContext);
-  console.log(usersArray, "<-- users from the context");
-  console.log(playerList, "<- playerlist");
 
   const [votedIndex, setVotedIndex] = useState(null);
   const [timerCompleted, setTimerCompleted] = useState(false);
