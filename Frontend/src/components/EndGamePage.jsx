@@ -8,7 +8,7 @@ function EndGamePage({ usersArray, votedPerson }) {
   const [resultsVisible, setResultsVisible] = useState(false);
 
   useEffect(() => {
-    const randomIndex = Math.floor(Math.random() * samplePersons.length);
+    const randomIndex = Math.floor(Math.random() * usersArray.length);
     setSaboteurIndex(randomIndex);
   }, []);
 
