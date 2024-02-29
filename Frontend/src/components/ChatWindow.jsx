@@ -1,33 +1,62 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
+import socket from "./Utils/Socket";
 
 import "../App.css";
+import { useParams } from "react-router-dom";
+import { UserContext } from "../contexts/UserContext";
 
 function ChatWindow() {
   const [messages, setMessages] = useState([]);
-  const [inputText, setInputText] = useState("");
+  const [inputMessage, setInputMessage] = useState("");
   const chatMessageRef = useRef(null);
+  const {room_code} = useParams()
+  const {user} = useContext(UserContext)
 
-  const handleInputChange = (event) => {
-    setInputText(event.target.value);
-  };
+  // const handleInputChange = (event) => {
+  //   setInputText(event.target.value);
+  // };
 
-  const handleSendMessage = () => {
-    if (inputText.trim() !== "") {
-      const currentTime = new Date().toLocaleString(undefined, {
-        day: "numeric",
-        month: "short",
-        hour: "numeric",
-        minute: "numeric",
-      });
-      const newMessage = { text: inputText, sender: "Me", time: currentTime };
-      setMessages([...messages, newMessage]);
-      setInputText("");
-    }
+  const handleSubmit = (event) => {
+    const currentTime = new Date().toLocaleString(undefined, {
+      day: "numeric",
+      month: "short",
+      hour: "numeric",
+      minute: "numeric",
+    });
+    event.preventDefault();
+    console.log(room_code);
+    socket.emit("frontend_send_message", { name: user.username, message: inputMessage, room: room_code });
+    setInputMessage('')
   };
 
   useEffect(() => {
     chatMessageRef.current.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+
+    function onMessage(data) {
+      if (data.room === room_code || data.room === currentRoom) {
+        setMessages((prevMessage) => [
+          ...prevMessage,
+          `${data.name} : ${data.message}`,
+        ]);
+      }
+
+      console.log(room_code, '<<room_code');
+      console.log(data.message === room_code, "<<data.message === roomName ?");
+      console.log(data, "<<message");
+      console.log("message sent");
+    }
+
+
+    socket.on("send-message", onMessage);
+    socket.on("backend_send_message", onMessage);
+
+    return () => {
+
+    socket.off("send-message", onMessage);
+    socket.off("backend_send_message", onMessage);
+    }
+
+  }, []);
 
   return (
     <div
@@ -39,32 +68,26 @@ function ChatWindow() {
           {messages.map((message, index) => (
             <div key={index} className="chat-message">
               <div className="chat-message-text">
-                <span className="chat-message-sender">{message.sender}: </span>
-                {message.text}
+                <span className="chat-message-sender">{message}</span>
                 <span className="chat-message-details">{message.time}</span>
               </div>
             </div>
           ))}
           <div ref={chatMessageRef}></div>
         </div>
-        <div className="chat-input-container">
+        <form className="chat-input-container" onSubmit={handleSubmit}>
           <input
             style={{ width: "100%" }}
             className="chat-input-text"
             type="text"
             placeholder="Type your message..."
-            value={inputText}
-            onChange={handleInputChange}
-            onKeyPress={(event) => {
-              if (event.key === "Enter") {
-                handleSendMessage();
-              }
-            }}
+            value={inputMessage}
+            onChange={(event) => setInputMessage(event.target.value)}
           />
-          <button className="chat-send-button" onClick={handleSendMessage}>
+          {/* <button className="chat-send-button">
             Send
-          </button>
-        </div>
+          </button> */}
+        </form>
       </div>
     </div>
   );

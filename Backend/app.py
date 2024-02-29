@@ -380,5 +380,15 @@ def start_game():
 
     socketio.emit("backend_start_game")
 
+@socketio.on("front-end-randomPrompt")
+def randomPrompt(data):
+    prompt = data['prompt']
+    print(prompt)
+
+
+    content = {'prompt': prompt}
+
+    socketio.emit("backend-randomPrompt", content)
+
 if __name__ == '__main__':
     socketio.run(app, debug=True, host="0.0.0.0", port=8080, allow_unsafe_werkzeug=True)

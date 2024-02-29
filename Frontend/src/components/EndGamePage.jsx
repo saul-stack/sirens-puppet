@@ -1,34 +1,28 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
-// Sample object for testing purposes
-const samplePersons = [
-  {
-    name: "John Doe",
-    profileImage: "../../images/gold coin image.png",
-  },
-  {
-    name: "Jane Smith",
-    profileImage: "../../images/gold coin image.png",
-  },
-  {
-    name: "Alice Johnson",
-    profileImage: "../../images/gold coin image.png",
-  },
-];
+import { useContext } from "react";
+import { UserContext } from "../contexts/UserContext";
 
 function EndGamePage() {
+  const { usersArray } = useContext(UserContext);
+  console.log(usersArray, "<-- usersArray");
+
+  const saboteurIndex = usersArray.findIndex(
+    (user) => user.isSaboteur === true
+  );
+
+  console.log(usersArray[saboteurIndex], "<- this should be the saboteur!!");
+
+  let votedPerson = "test";
+
   const navigate = useNavigate();
-  const [saboteurIndex, setSaboteurIndex] = useState(0);
+
+  // const [saboteurIndex, setSaboteurIndex] = useState(0);
+
   const [imageLoaded, setImageLoaded] = useState(false);
   const [resultsVisible, setResultsVisible] = useState(false);
 
-  useEffect(() => {
-    const randomIndex = Math.floor(Math.random() * samplePersons.length);
-    setSaboteurIndex(randomIndex);
-  }, []);
-
-  const saboteur = samplePersons[saboteurIndex];
+  const saboteur = usersArray[saboteurIndex];
 
   useEffect(() => {
     const image = new Image();
@@ -60,7 +54,8 @@ function EndGamePage() {
             <img src={"../../images/scroll2.png"} className="title-scroll" />
             <div className="scroll-child">
               <h2>
-                (player) <br />
+                {votedPerson}
+                <br />
                 must walk the plank...
               </h2>
             </div>
@@ -87,6 +82,8 @@ function EndGamePage() {
           <h2 style={{ color: "black", fontSize: "4vw" }}>
             The saboteur was...
           </h2>
+          <h2>{usersArray[saboteurIndex].username}</h2>
+
           <div>
             <h3 style={{ color: "black", fontSize: "2vw" }}>{saboteur.name}</h3>
             {imageLoaded && (

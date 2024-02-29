@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import Timer from "./Timer";
-import { useNavigate } from "react-router-dom";
+import EndGamePage from "./EndGamePage"; // Import the EndGamePage component
 import { useContext } from "react";
 import { UserContext } from "../contexts/UserContext";
 import {VotesContext} from "../contexts/VotesContext"
 
 //timer countdown length
-let timerCountdownSeconds = 30;
+let timerCountdownSeconds = 5;
 
 // Sample object for testing purposes
 const players = [
@@ -28,6 +28,7 @@ function VotePage() {
   const { usersArray } = useContext(UserContext);
   const {votes, setVotes} = useContext(VotesContext)
   console.log(usersArray, "<-- users from the context");
+
   const navigate = useNavigate();
 
 
@@ -35,10 +36,12 @@ function VotePage() {
     navigate("/EndGamePageTest");
   }
 
+
   const [votedIndex, setVotedIndex] = useState(null);
+  const [timerCompleted, setTimerCompleted] = useState(false);
+
 
   // Function to handle voting
-  
   const handleVote = (index) => {
     if (votedIndex === null) {
       setVotedIndex(index);
@@ -48,6 +51,13 @@ function VotePage() {
       return {...currentVotes, [votedPerson]: +1}
     })
   };
+
+
+  const handleTimeUp = () => {
+    setTimerCompleted(true);
+  };
+
+
 
   return (
     <div
@@ -60,24 +70,12 @@ function VotePage() {
         boxShadow: "1px 1px 50px black",
       }}
     >
-      <h2>Hunt down the traitor!</h2>
-      <Timer
-        timerCountdownSeconds={timerCountdownSeconds}
-        onTimeUp={handleTimeUp}
-      />
-      {usersArray.map((person, index) => (
-        <div
-          key={index}
-          style={{
-            display: "flex",
-            alignItems: "center",
-            marginBottom: "10px",
-            boxShadow: "1px 1px 50px #888888",
-          }}
-        >
-          <img
-            src={person.avatarURL}
-            style={{ width: "100px", marginRight: "10px" }}
+      {!timerCompleted ? (
+        <>
+          <h2>Hunt down the traitor!</h2>
+          <Timer
+            timerCountdownSeconds={timerCountdownSeconds}
+            onTimeUp={handleTimeUp}
           />
           <div>{person.username}</div>
           {/* Button for voting */}
@@ -94,6 +92,34 @@ function VotePage() {
           </button>
         </div>
       ))}
+          {usersArray.map((person, index) => (
+            <div
+              key={index}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                marginBottom: "10px",
+                boxShadow: "1px 1px 50px #888888",
+              }}
+            >
+              <img
+                src={person.avatarURL}
+                style={{ width: "100px", marginRight: "10px" }}
+              />
+              <div>{person.username}</div>
+              <button
+                onClick={() => handleVote(index)}
+                disabled={votedIndex !== null}
+                style={{
+                  marginLeft: "10px",
+                  padding: "5px 10px",
+                  fontSize: "14px",
+                }}
+              >
+                Vote
+              </button>
+            </div>
+          ))}
     </div>
   );
 }
