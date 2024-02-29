@@ -131,7 +131,3 @@ function GameRoom(users, setUsers) {
 }
 
 export default GameRoom;
-  );
-}
-
-export default GameRoom;
