@@ -1,87 +1,73 @@
 import Canvas from "../Canvas";
 import { useEffect, useState, useContext } from "react";
 import { getPictonaryPrompts } from "./Utils/utils";
-import socket from "./Utils/Socket";
 import { UserContext } from "../contexts/UserContext";
-function CanvasTestPage({
-  mousePos,
-  users,
-  setUsers,
-  timerCountdownSeconds,
-  currentDraw,
-  currentGuess,
-}) {
+
+function CanvasTestPage({ mousePos, users, setUsers, timerCountdownSeconds, isDrawer, isGuesser }) {
+
+  // const { user } = useContext(UserContext)
+
+  // let drawTurn = -1;
+  // let guessTurn = 0;
+
+  // const pickTurn = () => {
+  //   drawTurn++;
+  //   guessTurn++;
+  //   if (drawTurn === users.users.length) {
+  //     drawTurn = 0;
+  //   }
+  //   console.log(users.users[drawTurn][drawTurn], 'drawturn');
+  //   const currentDraw = users.users[drawTurn]
+  //   console.log(currentDraw, 'currentDraw');
+  //   currentDraw === user.username ? user.draw = true : user.draw = false
+  //   if (guessTurn === users.users.length) {
+  //     guessTurn = 0;
+  //   }
+  //   const currentGuess = users.users[guessTurn]
+  //   console.log(currentGuess, 'currentGuess');
+  //   currentGuess === user.username ? user.guess = true : user.guess = false
+  // }; 
+
+
+
   const [picturePrompts, setpicturePrompts] = useState([]);
-  const { user } = useContext(UserContext);
-  let word;
 
   useEffect(() => {
+    // pickTurn()
     getPictonaryPrompts().then((data) => {
-      const { PictionaryPrompts } = data;
-      setpicturePrompts(PictionaryPrompts);
-    });
-  }, []);
+      const { PictionaryPrompts } = data
+      setpicturePrompts(PictionaryPrompts)
+    })
+  }, [])
 
   function getRandomPrompt() {
     const randomIndex = Math.floor(Math.random() * picturePrompts.length);
     return picturePrompts[randomIndex];
   }
 
-  const [randomPrompt, setRandomPrompt] = useState();
+  const randomPrompt = getRandomPrompt()
+
+  const hiddenWord = []
 
   useEffect(() => {
-    if (user.draw) {
-      const newPrompt = getRandomPrompt();
-      console.log(newPrompt, "<<<<<newPrompt");
-      socket.emit("front-end-randomPrompt", { prompt: newPrompt });
-    }
-  }, [picturePrompts]);
+  if(randomPrompt){
+  for (let i = 0; i < randomPrompt.length; i++) {
+    hiddenWord.push("_");
+  }
+  } 
+  }, [randomPrompt])
 
-  useEffect(() => {
-    function fetchRandomPrompt(data) {
-      setRandomPrompt(data.prompt);
-      word = data.prompt;
-      // if (data.prompt) {
-      //   for (let i = 0; i < data.prompt.length; i++) {
-      //     hiddenWord.push("_");
-      //   }
-      // }
-    }
-    socket.on("backend-randomPrompt", fetchRandomPrompt);
 
-    return () => {
-      socket.off("backend-randomPrompt", fetchRandomPrompt);
-    };
-  }, []);
-
-  let hiddenWord = "";
-
-  // useEffect(() => {
-  //   if (randomPrompt) {
-  //     for (let i = 0; i < randomPrompt.length; i++) {
-  //       hiddenWord += '_'
-  //     }
-  //   }
-  // }, [randomPrompt])
-
-  // console.log(hiddenWord, 'hiddenWord');
   return (
     <div className="canvas-container">
-      {/* {user.draw ? (
-        <h1 className="drawPrompt">Draw a {word}</h1>
-      ) : (
-        <h1> Guess the Word ... {hiddenWord} </h1>
-      )} */}
-      <Canvas
-        timerCountdownSeconds={timerCountdownSeconds}
-        users={users}
-        setUsers={setUsers}
-        randomPrompt={randomPrompt}
-        hiddenWord={hiddenWord}
-        currentDraw={currentDraw}
-        currentGuess={currentGuess}
-      />
+      <h1 className="canvas-title">
+        "Ready, set, doodle! Let's see if your masterpiece speaks louder than
+        words
+      </h1>
+      <Canvas timerCountdownSeconds={timerCountdownSeconds} users={users} setUsers={setUsers} randomPrompt={randomPrompt} hiddenWord={hiddenWord} isDrawer={isDrawer} isGuesser={isGuesser}/>
+      
     </div>
   );
 }
+
 export default CanvasTestPage;
