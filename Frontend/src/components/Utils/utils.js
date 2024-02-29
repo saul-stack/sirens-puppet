@@ -11,3 +11,9 @@ export function getPictonaryPrompts() {
         return response.data
     })
 }
+
+export function getMost(votes){
+    return Object.keys(votes).filter((x) => {
+        return votes[x] == Math.max.apply(null, Object.values(votes))
+    })
+}

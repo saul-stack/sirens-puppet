@@ -2,9 +2,13 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { UserContext } from "../contexts/UserContext";
+import { VotesContext } from "../contexts/VotesContext";
+import { getMost } from "./Utils/utils";
+import { TfiFaceSad } from "react-icons/tfi";
 
 function EndGamePage() {
   const { usersArray } = useContext(UserContext);
+  const {votes} = useContext(VotesContext)
   console.log(usersArray, "<-- usersArray");
 
   const saboteurIndex = usersArray.findIndex(
@@ -13,11 +17,9 @@ function EndGamePage() {
 
   console.log(usersArray[saboteurIndex], "<- this should be the saboteur!!");
 
-  let votedPerson = "test";
-
+  const mostVoted = getMost(votes)
+ 
   const navigate = useNavigate();
-
-  // const [saboteurIndex, setSaboteurIndex] = useState(0);
 
   const [imageLoaded, setImageLoaded] = useState(false);
   const [resultsVisible, setResultsVisible] = useState(false);
@@ -34,27 +36,17 @@ function EndGamePage() {
 
   const teamWin = saboteurIndex !== 0;
 
-  // {mostVoted && (
-  //   <div style={{ marginTop: "20px" }}>
-  //     <h3>{mostVoted} is about to walk the plank!:</h3>
-  //     <div>
-  //       {/* <img
-  //         src={votedPerson.avatarURL}
-  //         style={{ width: "100px", marginRight: "10px" }}
-  //       /> */}
-  //     </div>
-  //   </div>
-  // )}
-
   return (
     <>
       {!resultsVisible && (
+        <>
+        {mostVoted.length === 1 ? (
         <div>
           <div className="parent">
             <img src={"../../images/scroll2.png"} className="title-scroll" />
             <div className="scroll-child">
               <h2>
-                {votedPerson}
+                {mostVoted[0]}
                 <br />
                 must walk the plank...
               </h2>
@@ -67,7 +59,26 @@ function EndGamePage() {
           >
             View results
           </button>
+        </div>) : (
+          <div>
+          <div className="parent">
+            <img src={"../../images/scroll2.png"} className="title-scroll" />
+            <div className="scroll-child">
+              <h2>
+                It's a tie! <TfiFaceSad/>
+              </h2>
+            </div>
+          </div>
+          <button
+            onClick={() => {
+              setResultsVisible(true);
+            }}
+          >
+            View results
+          </button>
         </div>
+        )}
+        </>
       )}
 
       {resultsVisible && (

@@ -79,6 +79,7 @@ function VotePage() {
           />
           <div>{person.username}</div>
           {/* Button for voting */}
+
           <button
             onClick={() => handleVote(index)}
             disabled={votedIndex !== null}
@@ -90,8 +91,7 @@ function VotePage() {
           >
             Vote
           </button>
-        </div>
-      ))}
+
           {usersArray.map((person, index) => (
             <div
               key={index}
@@ -119,7 +119,12 @@ function VotePage() {
                 Vote
               </button>
             </div>
-          ))}
+            
+          )) }
+          </>
+          ):(
+            <EndGamePage/>
+          )}
     </div>
   );
 }
