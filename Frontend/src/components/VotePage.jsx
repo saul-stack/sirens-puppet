@@ -8,28 +8,11 @@ import {VotesContext} from "../contexts/VotesContext"
 //timer countdown length
 let timerCountdownSeconds = 5;
 
-// Sample object for testing purposes
-const players = [
-  {
-    name: "John Doe",
-    profileImage: "../../images/gold coin image.png",
-  },
-  {
-    name: "Jane Smith",
-    profileImage: "../../images/gold coin image.png",
-  },
-  {
-    name: "Alice Johnson",
-    profileImage: "../../images/gold coin image.png",
-  },
-];
 
 function VotePage() {
   const { usersArray } = useContext(UserContext);
   const {votes, setVotes} = useContext(VotesContext)
   console.log(usersArray, "<-- users from the context");
-
-  const navigate = useNavigate();
 
 
   const [votedIndex, setVotedIndex] = useState(null);
