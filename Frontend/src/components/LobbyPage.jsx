@@ -8,9 +8,8 @@ import socket from "./Utils/Socket";
 import Timer from "./Timer";
 
 export default function LobbyPage({ users, setUsers, roomName }) {
-
-  const {usersArray, setUsersArray} = useContext(UserContext)
-  const minimumPlayers = 1;
+  const { usersArray, setUsersArray } = useContext(UserContext);
+  const minimumPlayers = 4;
 
   const navigate = useNavigate();
   const [chosenAvatar, setChosenAvatar] = useState(null);
@@ -19,13 +18,12 @@ export default function LobbyPage({ users, setUsers, roomName }) {
   const [avatars, setAvatars] = useState([]);
 
   const playerList = [];
-  
+
   users.flat().map((user) => {
     if (!playerList.some((player) => player.username === user)) {
       playerList.push({ username: user });
     }
   });
-
 
   const totalPlayers = playerList.length;
 
@@ -44,34 +42,34 @@ export default function LobbyPage({ users, setUsers, roomName }) {
         setError(err);
       });
 
-    function onStartGame(){
+    function onStartGame() {
       //start a countdown of 5 secs and the navigate
       navigate(`/rooms/${room_code}/role`);
-      console.log('inside start game fun');
+      console.log("inside start game fun");
     }
 
-    socket.on('backend_start_game', onStartGame)
+    socket.on("backend_start_game", onStartGame);
   }, []);
 
-  const [saboteur, setSaboteur] = useState()
+  const [saboteur, setSaboteur] = useState();
 
   function handleStart() {
     if (totalPlayers > 0) {
       const randomIndex = Math.floor(Math.random() * totalPlayers);
-      setSaboteur(playerList[randomIndex]); 
+      setSaboteur(playerList[randomIndex]);
       if (playerList[randomIndex].username === user.username) {
         user.isSaboteur = true;
       }
 
-    if(!usersArray.includes(user)){
-    setUsersArray((currentUsersArray) => {
-      return [...currentUsersArray, user]
-    })
+      if (!usersArray.includes(user)) {
+        setUsersArray((currentUsersArray) => {
+          return [...currentUsersArray, user];
+        });
+      }
     }
+    socket.emit("frontend_start_game");
   }
-    socket.emit("frontend_start_game")
-  }
- 
+
   return (
     <>
       <main
@@ -88,7 +86,7 @@ export default function LobbyPage({ users, setUsers, roomName }) {
         <PlayerCard key={user.username} player={user} />
         {playerList.map((player) => {
           if (player.username !== user.username) {
-            return <PlayerCard key={player.username} player={player}/>;
+            return <PlayerCard key={player.username} player={player} />;
           }
         })}
         <div className="avatar-buttons">
