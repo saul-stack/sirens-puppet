@@ -25,8 +25,6 @@ function Timer({ timerCountdownSeconds, onTimeUp }) {
     return () => clearInterval(timerInterval);
   }, [isRunning, seconds]);
 
-  // No button handlers needed
-
   return (
     <div className="timer-container">
       <div className="timer-display">{seconds}</div>

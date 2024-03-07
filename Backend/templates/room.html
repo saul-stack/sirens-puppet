@@ -21,8 +21,6 @@
 <script type="text/javascript">
   var socketio = io();
 
-  // event listener on message box.
-  // if user press enter, simulate sendButton click
   message.addEventListener("keyup", function (event) {
     if (event.keyCode == 13) {
       sendButton.click();

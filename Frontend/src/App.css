@@ -419,8 +419,6 @@ h3 {
   transform: translateY(-50%);
 }
 
-
-
 @keyframes spinImage {
   from {
     transform: rotateY(0deg);

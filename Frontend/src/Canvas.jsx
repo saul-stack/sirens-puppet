@@ -31,7 +31,7 @@ function Canvas({
     context.fillRect(0, 0, canvas.width, canvas.height);
 
     context.strokeStyle = "black";
-    context.lineWidth = 5; // if we want to change the width of the line
+    context.lineWidth = 5;
     context.lineCap = "round";
     context.lineJoin = "round";
 
@@ -86,7 +86,6 @@ function Canvas({
         if (progress < 2000) {
           requestAnimationFrame(animate);
         } else {
-          // Reset rotation angle to 0 after rotation completes
           setRotationAngle(0);
         }
       };
@@ -145,21 +144,19 @@ function Canvas({
     const context = canvas.getContext("2d");
     context.clearRect(0, 0, canvas.width, canvas.height);
     setDrawingCommands([]);
-    setRotationAngle(0); // Reset rotation angle
+    setRotationAngle(0);
   };
 
-  // Function to handle the rotation animation
   const rotateCanvas = () => {
     let start = null;
     const animate = (timestamp) => {
       if (!start) start = timestamp;
       const progress = timestamp - start;
-      const angle = (progress / 2000) * 360; // Rotate over 2 seconds
+      const angle = (progress / 2000) * 360;
       setRotationAngle(angle);
       if (progress < 2000) {
         requestAnimationFrame(animate);
       } else {
-        // Reset rotation angle to 0 after rotation completes
         setRotationAngle(0);
       }
     };
