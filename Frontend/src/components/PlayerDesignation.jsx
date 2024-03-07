@@ -14,12 +14,12 @@ export default function PlayerDesignation() {
             {user.isSaboteur && (
               <>
                 <h1>The Siren's Puppet</h1>
-                <p> Sink the ship </p>
+                <p>Sink the ship</p>
               </>
             )}
             {!user.isSaboteur && (
               <>
-                <h1> Part of the crew</h1>
+                <h1>Part of the crew</h1>
                 <p>Find the Saboteur!</p>
               </>
             )}
