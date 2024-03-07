@@ -408,6 +408,17 @@ h3 {
   right: 40%;
 }
 
+.parent {
+  position: relative;
+}
+
+.title {
+  position: absolute;
+  top: 19%;
+  left: -5%;
+  transform: translateY(-50%);
+}
+
 
 
 @keyframes spinImage {
