@@ -74,8 +74,6 @@ Visit the address labelled "Network" in the browser of another device to access 
 
  *start_game.sh* and *end_game.sh*, are shell scripts to manage these operations and handle port closure. Proceed with caution when utilizing these scripts to prevent disturbing other processes which may be running on the port.
 
-        $ chmod +x start_game.sh end_game.sh
-
 To start the game:
 
         $ ./start_game.sh
