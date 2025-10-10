@@ -5,7 +5,6 @@ import { useContext } from "react";
 import { UserContext } from "../contexts/UserContext";
 import { VotesContext } from "../contexts/VotesContext";
 
-//timer countdown length
 let timerCountdownSeconds = 30;
 
 function VotePage({ playerList }) {
@@ -15,7 +14,6 @@ function VotePage({ playerList }) {
   const [votedIndex, setVotedIndex] = useState(null);
   const [timerCompleted, setTimerCompleted] = useState(false);
 
-  // Function to handle voting
   const handleVote = (index) => {
     if (votedIndex === null) {
       setVotedIndex(index);
